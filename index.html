@@ -1,4 +1,1908 @@
 <!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+<title>Sello del Peregrino · Camino de Santiago</title>
+
+<style>
+
+/* ============================================================
+
+   SELLO DEL PEREGRINO - KIOSK
+
+   Single file. No build tools. Operator settings = CONFIG block in the script.
+
+   ============================================================ */
+
+:root{
+
+  --ink:#8a2222;
+
+  --bg0:#0d0f14;
+
+  --bg1:#161a22;
+
+  --card:#1e232e;
+
+  --card2:#272d3a;
+
+  --line:#343c4c;
+
+  --txt:#f2f4f8;
+
+  --txt-dim:#9aa4b8;
+
+  --gold:#d8b25f;
+
+  --ok:#2f9e6b;
+
+  --err:#d0534a;
+
+  --r:18px;
+
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+html,body{height:100%;margin:0;overflow:hidden}
+
+body{
+
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+
+  background:radial-gradient(120% 90% at 50% 0%,var(--bg1) 0%,var(--bg0) 70%);
+
+  color:var(--txt);
+
+  user-select:none;-webkit-user-select:none;
+
+  touch-action:manipulation;
+
+}
+
+button{font-family:inherit}
+
+ 
+
+/* ---------- screens ---------- */
+
+.screen{
+
+  position:fixed;inset:0;display:none;flex-direction:column;
+
+  align-items:center;justify-content:flex-start;
+
+  padding:calc(env(safe-area-inset-top) + 10px) 14px calc(env(safe-area-inset-bottom) + 10px);
+
+  opacity:0;transform:scale(.985);
+
+  transition:opacity .35s ease,transform .35s ease;
+
+  overflow:hidden;
+
+}
+
+.screen.show{display:flex}
+
+.screen.visible{opacity:1;transform:scale(1)}
+
+ 
+
+/* ---------- shared bits ---------- */
+
+.topbar{width:100%;max-width:760px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto;z-index:5}
+
+.brand{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
+
+.langs{display:flex;gap:6px}
+
+.lang-btn{
+
+  background:var(--card);border:1px solid var(--line);color:var(--txt-dim);
+
+  padding:8px 12px;border-radius:10px;font-weight:700;font-size:.78rem;cursor:pointer;
+
+  min-width:44px;min-height:38px;transition:.2s;
+
+}
+
+.lang-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
+
+ 
+
+h1{font-size:clamp(1.6rem,5.2vw,2.5rem);margin:.2em 0 .1em;text-align:center;font-weight:800;letter-spacing:.01em}
+
+.sub{color:var(--txt-dim);text-align:center;font-size:clamp(.85rem,2.6vw,1rem);margin:0 0 4px;max-width:34ch}
+
+h2.scr-title{font-size:clamp(1.05rem,3.6vw,1.4rem);margin:6px 0 2px;text-align:center;font-weight:700}
+
+ 
+
+.btn{
+
+  border:none;border-radius:14px;cursor:pointer;font-weight:800;
+
+  padding:16px 26px;font-size:1.02rem;min-height:56px;
+
+  background:var(--ink);color:#fff;transition:transform .12s ease,filter .2s ease,opacity .2s;
+
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+
+}
+
+.btn:active{transform:scale(.97)}
+
+.btn[disabled]{opacity:.42;cursor:not-allowed}
+
+.btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--txt)}
+
+.btn.big{padding:22px 54px;font-size:1.3rem;border-radius:20px;min-height:74px;
+
+  box-shadow:0 10px 34px rgba(138,34,34,.45)}
+
+.btn.ok{background:var(--ok)}
+
+.btn.sm{padding:12px 16px;font-size:.9rem;min-height:48px;border-radius:12px}
+
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:760px}
+
+ 
+
+/* ---------- falling decorations ---------- */
+
+.fall{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+
+.fall span{position:absolute;top:-8vh;will-change:transform;opacity:.85;
+
+  animation:drop linear forwards}
+
+@keyframes drop{to{transform:translateY(118vh) rotate(var(--spin))}}
+
+ 
+
+/* ---------- screen 0 ---------- */
+
+.stage0{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
+
+  justify-content:center;flex:1 1 auto;gap:clamp(10px,2.4vh,22px);width:100%}
+
+.samples{display:flex;gap:clamp(8px,2.4vw,20px);justify-content:center;align-items:center;flex-wrap:nowrap}
+
+.samples canvas{
+
+  width:clamp(74px,19vw,140px);height:clamp(74px,19vw,140px);border-radius:50%;
+
+  background:#fff;box-shadow:0 8px 26px rgba(0,0,0,.5);
+
+  animation:bob 4.5s ease-in-out infinite;
+
+}
+
+.samples canvas:nth-child(2){animation-delay:.6s}
+
+.samples canvas:nth-child(3){animation-delay:1.2s}
+
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-9px) rotate(2deg)}}
+
+.hint{color:var(--txt-dim);font-size:.82rem;text-align:center}
+
+ 
+
+/* ---------- stamp stage (screens 1 & 2) ---------- */
+
+.stagewrap{position:relative;z-index:2;flex:1 1 auto;display:flex;align-items:center;justify-content:center;width:100%;min-height:0}
+
+.stage{position:relative;aspect-ratio:1/1;border-radius:50%;background:#fff;
+
+  box-shadow:0 12px 40px rgba(0,0,0,.55);overflow:hidden;
+
+  height:min(100%,var(--stagemax));width:min(100%,var(--stagemax));}
+
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+#liveVideo{
+
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scaleX(-1);
+
+  border-radius:50%;object-fit:cover;background:#111;z-index:1;
+
+}
+
+#liveVideo.nomirror{transform:translate(-50%,-50%)}
+
+#frameOverlay{z-index:2}
+
+ 
+
+/* countdown ring/badge */
+
+.cd{
+
+  position:absolute;z-index:6;right:8px;top:8px;
+
+  width:58px;height:58px;border-radius:50%;
+
+  background:rgba(12,14,20,.86);border:2px solid var(--gold);
+
+  display:flex;align-items:center;justify-content:center;
+
+  font-weight:800;font-size:1.25rem;color:var(--gold);
+
+}
+
+.cd.pulse{animation:pulse 1s ease-in-out infinite}
+
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+
+ 
+
+.badge{
+
+  position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);
+
+  background:rgba(10,12,16,.9);color:#fff;padding:14px 22px;border-radius:30px;
+
+  font-weight:700;font-size:.9rem;text-align:center;max-width:86%;
+
+  border:1px solid rgba(216,178,95,.45);
+
+}
+
+.badge .spin{display:inline-block;width:16px;height:16px;margin-right:8px;vertical-align:-3px;
+
+  border:2px solid rgba(255,255,255,.3);border-top-color:var(--gold);border-radius:50%;
+
+  animation:sp .9s linear infinite}
+
+@keyframes sp{to{transform:rotate(360deg)}}
+
+ 
+
+/* ---------- design cards ---------- */
+
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:560px}
+
+.card{
+
+  background:var(--card);border:2px solid var(--line);border-radius:14px;
+
+  padding:6px 4px 5px;cursor:pointer;text-align:center;transition:.18s;
+
+}
+
+.card.sel{border-color:var(--gold);background:var(--card2);box-shadow:0 0 0 3px rgba(216,178,95,.18)}
+
+.card canvas{width:100%;aspect-ratio:1/1;border-radius:50%;background:#fff;display:block}
+
+.card .nm{font-size:.62rem;color:var(--txt-dim);margin-top:4px;line-height:1.15;
+
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.card.sel .nm{color:var(--gold);font-weight:700}
+
+ 
+
+.datebox{display:flex;align-items:center;gap:10px;justify-content:center;width:100%;max-width:560px}
+
+.datebox label{font-size:.8rem;color:var(--txt-dim);font-weight:600;white-space:nowrap}
+
+input[type="date"]{
+
+  background:var(--card);border:1px solid var(--line);color:var(--txt);
+
+  padding:12px 14px;border-radius:12px;font-size:1rem;min-height:50px;flex:1;max-width:240px;
+
+}
+
+.ctlblock{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1.4vh,12px);width:100%;z-index:2}
+
+ 
+
+/* ---------- inline error panel ---------- */
+
+.panel{
+
+  background:var(--card);border:1px solid var(--line);border-left:4px solid var(--err);
+
+  border-radius:14px;padding:14px 16px;max-width:520px;width:100%;
+
+}
+
+.panel h3{margin:0 0 6px;font-size:1rem}
+
+.panel p{margin:0 0 12px;color:var(--txt-dim);font-size:.88rem;line-height:1.45}
+
+ 
+
+/* ---------- modal ---------- */
+
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;
+
+  background:rgba(6,8,12,.82);padding:18px}
+
+.modal.show{display:flex}
+
+.modal .box{background:var(--card);border:1px solid var(--line);border-radius:22px;
+
+  padding:26px 22px;max-width:440px;width:100%;text-align:center}
+
+.modal h3{margin:0 0 8px;font-size:1.3rem}
+
+.modal p{margin:0 0 18px;color:var(--txt-dim)}
+
+.modal .row{gap:12px}
+
+.modal .btn{flex:1 1 150px}
+
+ 
+
+/* ---------- done screen ---------- */
+
+.done-ico{font-size:4rem;animation:bob 2.4s ease-in-out infinite}
+
+ 
+
+/* operator warning strip */
+
+.warnstrip{position:fixed;left:0;right:0;bottom:0;z-index:99;background:#5a3a00;color:#ffe9b8;
+
+  font-size:.72rem;padding:6px 10px;text-align:center;display:none}
+
+</style>
+
+</head>
+
+<body>
+
+ 
+
+<!-- ================= SCREEN 0 : START ================= -->
+
+<section id="s0" class="screen">
+
+  <div class="fall" id="fall0"></div>
+
+  <div class="topbar">
+
+    <div class="brand">Ultreia et Suseia</div>
+
+    <div class="langs">
+
+      <button class="lang-btn active" data-lang="es">ES</button>
+
+      <button class="lang-btn" data-lang="en">EN</button>
+
+      <button class="lang-btn" data-lang="de">DE</button>
+
+      <button class="lang-btn" data-lang="fr">FR</button>
+
+    </div>
+
+  </div>
+
+  <div class="stage0">
+
+    <h1 data-t="welcomeTitle">Sello del Peregrino</h1>
+
+    <p class="sub" data-t="welcomeSub">Hazte una foto y llévate tu sello en la credencial.</p>
+
+    <div class="samples">
+
+      <canvas id="sample1" width="300" height="300"></canvas>
+
+      <canvas id="sample2" width="300" height="300"></canvas>
+
+      <canvas id="sample3" width="300" height="300"></canvas>
+
+    </div>
+
+    <button class="btn big" id="btnStart" data-t="start">Comenzar</button>
+
+    <div class="hint" data-t="startHint">Toca la pantalla para empezar</div>
+
+  </div>
+
+</section>
+
+ 
+
+<!-- ================= SCREEN 1 : SELFIE ================= -->
+
+<section id="s1" class="screen">
+
+  <div class="fall" id="fall1"></div>
+
+  <div class="topbar">
+
+    <div class="brand" data-t="step1">Paso 1 · Foto</div>
+
+    <button class="btn ghost sm" id="btnBack1" data-t="back">Volver</button>
+
+  </div>
+
+  <h2 class="scr-title" data-t="lookCamera">Mira a la cámara</h2>
+
+  <div class="stagewrap">
+
+    <div class="stage" id="stage1">
+
+      <video id="liveVideo" autoplay playsinline muted></video>
+
+      <canvas id="frameOverlay" width="600" height="600"></canvas>
+
+      <div class="cd pulse" id="cd1">10</div>
+
+    </div>
+
+  </div>
+
+  <div class="ctlblock">
+
+    <div id="camError" class="panel" style="display:none">
+
+      <h3 data-t="camErrTitle">No se puede abrir la cámara</h3>
+
+      <p id="camErrMsg"></p>
+
+      <div class="row">
+
+        <button class="btn sm" id="btnRetryCam" data-t="retry">Reintentar</button>
+
+        <button class="btn sm ghost" id="btnUpload" data-t="uploadPhoto">Subir foto</button>
+
+        <button class="btn sm ghost" id="btnBack1b" data-t="back">Volver</button>
+
+      </div>
+
+    </div>
+
+    <button class="btn" id="btnShoot" data-t="shootNow">Hacer la foto ahora</button>
+
+  </div>
+
+  <input type="file" id="fileInput" accept="image/*" style="display:none">
+
+</section>
+
+ 
+
+<!-- ================= SCREEN 2 : DESIGN + DATE ================= -->
+
+<section id="s2" class="screen">
+
+  <div class="topbar">
+
+    <div class="brand" data-t="step2">Paso 2 · Tu sello</div>
+
+    <button class="btn ghost sm" id="btnCancel2" data-t="cancel">Cancelar</button>
+
+  </div>
+
+  <div class="stagewrap">
+
+    <div class="stage" id="stage2">
+
+      <canvas id="stampCanvas" width="600" height="600"></canvas>
+
+      <div class="badge" id="aiBadge" style="display:none"><span class="spin"></span><span id="aiBadgeTxt"></span></div>
+
+      <div class="cd" id="cd2">20</div>
+
+    </div>
+
+  </div>
+
+  <div class="ctlblock">
+
+    <div id="aiError" class="panel" style="display:none">
+
+      <h3 data-t="aiErrTitle">No hemos podido crear el dibujo</h3>
+
+      <p data-t="aiErrMsg">El servicio no responde. Inténtalo de nuevo.</p>
+
+      <div class="row">
+
+        <button class="btn sm" id="btnRetryAi" data-t="retry">Reintentar</button>
+
+        <button class="btn sm ghost" id="btnRestartAi" data-t="startAgain">Empezar de nuevo</button>
+
+      </div>
+
+    </div>
+
+    <div class="cards" id="designCards"></div>
+
+    <div class="datebox">
+
+      <label for="dateInput" data-t="dateLabel">Fecha:</label>
+
+      <input type="date" id="dateInput">
+
+    </div>
+
+    <button class="btn ok" id="btnPrint" disabled data-t="print">Imprimir sello</button>
+
+  </div>
+
+</section>
+
+ 
+
+<!-- ================= SCREEN 3 : DONE ================= -->
+
+<section id="s3" class="screen">
+
+  <div class="fall" id="fall3"></div>
+
+  <div class="stage0">
+
+    <div class="done-ico">🐚</div>
+
+    <h1 data-t="doneTitle">¡Buen Camino!</h1>
+
+    <p class="sub" data-t="doneSub">Tu sello se está imprimiendo. Retíralo de la impresora.</p>
+
+    <button class="btn ghost" id="btnDoneNow" data-t="finish">Finalizar</button>
+
+  </div>
+
+</section>
+
+ 
+
+<!-- ================= MODAL : timeout choice ================= -->
+
+<div class="modal" id="modalTimeout">
+
+  <div class="box">
+
+    <h3 data-t="tmTitle">¿Imprimimos tu sello?</h3>
+
+    <p data-t="tmMsg">Se ha acabado el tiempo de edición.</p>
+
+    <div class="row">
+
+      <button class="btn ok" id="btnModalPrint" data-t="print">Imprimir sello</button>
+
+      <button class="btn ghost" id="btnModalRestart" data-t="startAgain">Empezar de nuevo</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+ 
+
+<div class="warnstrip" id="warnstrip"></div>
+
+ 
+
+<script>
+
+/* ============================================================================
+
+   1) CONFIG  —  ONLY THE OPERATOR EDITS THIS BLOCK
+
+   ============================================================================ */
+
+const CONFIG = {
+
+  /* --- services --- */
+
+  AI_WEBHOOK_URL   : https://hook.eu1.make.com/lqq9d91pvhkkssmte4ukt8cik4ulgj9v,
+
+  PRINT_WEBHOOK_URL: "",          // optional: POST {image,filename} to TIJ print service. "" = download only
+
+  DOWNLOAD_ON_PRINT: true,        // also save the JPG locally
+
+ 
+
+  /* --- fixed stamp content --- */
+
+  TOP_TEXT   : "CAMINO DE SANTIAGO",
+
+  PLACE_NAME : "RONCESVALLES",
+
+  INK_COLOR  : "#8a2222",
+
+ 
+
+  /* --- artwork (kept as external files, exactly as before) --- */
+
+  FRAMES: [
+
+    { file:"marco1.jpg", key:"opt1" },
+
+    { file:"marco2.jpg", key:"opt2" },
+
+    { file:"marco3.jpg", key:"opt3" },
+
+    { file:"marco4.jpg", key:"opt4" }
+
+  ],
+
+  DEFAULT_FRAME_INDEX: 0,
+
+ 
+
+  /* --- geometry (in 600-unit stamp space, scales to any resolution) --- */
+
+  PHOTO_RADIUS     : 170,   // inner circle the photo/video lives in
+
+  PHOTO_SCALE      : 1.00,  // 1.0 = photo exactly fills the inner circle
+
+  PHOTO_OFFSET_Y   : -6,    // small lift so faces sit nicely
+
+  LINE_THRESHOLD   : 110,   // 10..240 – lower = fewer/darker lines
+
+  FRAME_THRESHOLD  : 120,
+
+  FONT_TOP         : 22,
+
+  FONT_PLACE       : 20,
+
+  FONT_DATE        : 20,
+
+  RADIUS_TOP       : 268,
+
+  RADIUS_PLACE     : 295,
+
+  RADIUS_DATE      : 275,
+
+ 
+
+  /* --- timings (seconds) --- */
+
+  SELFIE_COUNTDOWN : 10,
+
+  EDIT_COUNTDOWN   : 20,
+
+  MODAL_TIMEOUT    : 25,   // no answer in the popup -> back to start
+
+  DONE_TIMEOUT     : 6,
+
+  IDLE_TIMEOUT     : 90,   // no touch anywhere -> back to start
+
+  AI_TIMEOUT       : 30,
+
+  AI_MAX_ATTEMPTS  : 3,
+
+ 
+
+  /* --- output --- */
+
+  EXPORT_SIZE   : 1800,   // px, square JPG
+
+  JPEG_QUALITY  : 0.95,
+
+  CAPTURE_SIZE  : 1024,   // px, square selfie sent to the AI
+
+  MIRROR_SELFIE : true,   // show & capture the selfie mirrored (natural for the user)
+
+ 
+
+  DEFAULT_LANG  : "es"
+
+};
+
+/* ========================= END OF OPERATOR CONFIG ========================== */
+
+ 
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   2) i18n
+
+   --------------------------------------------------------------------------- */
+
+const I18N = {
+
+es:{welcomeTitle:"Sello del Peregrino",welcomeSub:"Hazte una foto y llévate tu sello en la credencial.",start:"Comenzar",startHint:"Toca la pantalla para empezar",
+
+step1:"Paso 1 · Foto",lookCamera:"Mira a la cámara",shootNow:"Hacer la foto ahora",back:"Volver",cancel:"Cancelar",retry:"Reintentar",uploadPhoto:"Subir foto",
+
+camErrTitle:"No se puede abrir la cámara",
+
+errFile:"La página se ha abierto como archivo local. Los navegadores bloquean la cámara así. Ábrela desde un servidor web (http/https).",
+
+errPerm:"Permiso denegado. Acepta el acceso a la cámara en el navegador.",
+
+errNone:"No se ha encontrado ninguna cámara conectada.",
+
+errBusy:"La cámara está siendo usada por otra aplicación.",
+
+errOther:"Error desconocido de cámara.",
+
+step2:"Paso 2 · Tu sello",dateLabel:"Fecha:",print:"Imprimir sello",startAgain:"Empezar de nuevo",
+
+aiLoading:"Creando tu sello…",aiRetrying:"Reintentando…",
+
+aiErrTitle:"No hemos podido crear el dibujo",aiErrMsg:"El servicio no responde. Inténtalo de nuevo.",
+
+tmTitle:"¿Imprimimos tu sello?",tmMsg:"Se ha acabado el tiempo de edición.",
+
+doneTitle:"¡Buen Camino!",doneSub:"Tu sello se está imprimiendo. Retíralo de la impresora.",finish:"Finalizar",
+
+opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Escudo",
+
+taint:"Aviso del operador: abre la app desde un servidor web (http/https), no como archivo local, o no se podrá exportar el sello."},
+
+en:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in your credential.",start:"Start",startHint:"Touch the screen to begin",
+
+step1:"Step 1 · Photo",lookCamera:"Look at the camera",shootNow:"Take the photo now",back:"Back",cancel:"Cancel",retry:"Retry",uploadPhoto:"Upload photo",
+
+camErrTitle:"Cannot open the camera",
+
+errFile:"The page was opened as a local file. Browsers block the camera in that case. Open it from a web server (http/https).",
+
+errPerm:"Permission denied. Please allow camera access in the browser.",
+
+errNone:"No camera device was found.",
+
+errBusy:"The camera is already in use by another application.",
+
+errOther:"Unknown camera error.",
+
+step2:"Step 2 · Your stamp",dateLabel:"Date:",print:"Print stamp",startAgain:"Start again",
+
+aiLoading:"Creating your stamp…",aiRetrying:"Retrying…",
+
+aiErrTitle:"We could not create the drawing",aiErrMsg:"The service is not responding. Please try again.",
+
+tmTitle:"Shall we print your stamp?",tmMsg:"Editing time is over.",
+
+doneTitle:"Buen Camino!",doneSub:"Your stamp is being printed. Please take it from the printer.",finish:"Finish",
+
+opt1:"French Way",opt2:"Ultreia",opt3:"Credential",opt4:"Shield",
+
+taint:"Operator notice: serve this app over http/https, not as a local file, otherwise the stamp cannot be exported."},
+
+de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie und erhalte deinen Stempel im Pilgerpass.",start:"Starten",startHint:"Bildschirm berühren zum Starten",
+
+step1:"Schritt 1 · Foto",lookCamera:"Schau in die Kamera",shootNow:"Jetzt fotografieren",back:"Zurück",cancel:"Abbrechen",retry:"Erneut versuchen",uploadPhoto:"Foto hochladen",
+
+camErrTitle:"Kamera kann nicht geöffnet werden",
+
+errFile:"Die Seite wurde als lokale Datei geöffnet. Browser blockieren dann die Kamera. Bitte über einen Webserver (http/https) öffnen.",
+
+errPerm:"Zugriff verweigert. Bitte den Kamerazugriff im Browser erlauben.",
+
+errNone:"Es wurde keine Kamera gefunden.",
+
+errBusy:"Die Kamera wird bereits von einer anderen Anwendung benutzt.",
+
+errOther:"Unbekannter Kamerafehler.",
+
+step2:"Schritt 2 · Dein Stempel",dateLabel:"Datum:",print:"Stempel drucken",startAgain:"Neu starten",
+
+aiLoading:"Dein Stempel wird erstellt…",aiRetrying:"Neuer Versuch…",
+
+aiErrTitle:"Die Zeichnung konnte nicht erstellt werden",aiErrMsg:"Der Dienst antwortet nicht. Bitte erneut versuchen.",
+
+tmTitle:"Sollen wir deinen Stempel drucken?",tmMsg:"Die Bearbeitungszeit ist abgelaufen.",
+
+doneTitle:"Buen Camino!",doneSub:"Dein Stempel wird gedruckt. Bitte am Drucker entnehmen.",finish:"Beenden",
+
+opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Wappen",
+
+taint:"Hinweis für den Betreiber: App über http/https bereitstellen, nicht als lokale Datei – sonst ist kein Export möglich."},
+
+fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie et repars avec ton tampon sur ta crédentiale.",start:"Commencer",startHint:"Touchez l'écran pour commencer",
+
+step1:"Étape 1 · Photo",lookCamera:"Regardez l'objectif",shootNow:"Prendre la photo maintenant",back:"Retour",cancel:"Annuler",retry:"Réessayer",uploadPhoto:"Envoyer une photo",
+
+camErrTitle:"Impossible d'ouvrir la caméra",
+
+errFile:"La page a été ouverte en fichier local. Les navigateurs bloquent alors la caméra. Ouvrez-la depuis un serveur web (http/https).",
+
+errPerm:"Autorisation refusée. Merci d'autoriser la caméra dans le navigateur.",
+
+errNone:"Aucune caméra détectée.",
+
+errBusy:"La caméra est déjà utilisée par une autre application.",
+
+errOther:"Erreur caméra inconnue.",
+
+step2:"Étape 2 · Votre tampon",dateLabel:"Date :",print:"Imprimer le tampon",startAgain:"Recommencer",
+
+aiLoading:"Création de votre tampon…",aiRetrying:"Nouvel essai…",
+
+aiErrTitle:"Impossible de créer le dessin",aiErrMsg:"Le service ne répond pas. Merci de réessayer.",
+
+tmTitle:"On imprime votre tampon ?",tmMsg:"Le temps d'édition est écoulé.",
+
+doneTitle:"Buen Camino !",doneSub:"Votre tampon s'imprime. Récupérez-le sur l'imprimante.",finish:"Terminer",
+
+opt1:"Chemin Français",opt2:"Ultreia",opt3:"Credential",opt4:"Blason",
+
+taint:"Avis opérateur : servez l'application en http/https, pas en fichier local, sinon l'export est impossible."}
+
+};
+
+let LANG = CONFIG.DEFAULT_LANG;
+
+const T = k => (I18N[LANG] && I18N[LANG][k]) || I18N.es[k] || k;
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   3) state + helpers
+
+   --------------------------------------------------------------------------- */
+
+const $  = id => document.getElementById(id);
+
+const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null,
+
+             rawPhoto: null, aiAttempt: 0, screen: null, printing:false };
+
+const timers = { selfie:null, edit:null, idle:null, modal:null, done:null, fall:[] };
+
+ 
+
+function todayISO(){ const d=new Date(), p=n=>String(n).padStart(2,'0');
+
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+
+function isoToPretty(iso){ if(!iso) return ''; const [y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; }
+
+function clearTimer(k){ if(timers[k]){ clearInterval(timers[k]); clearTimeout(timers[k]); timers[k]=null; } }
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   4) frame artwork: load the four JPGs, recolour them to the ink colour
+
+   --------------------------------------------------------------------------- */
+
+const FRAME_CACHE = [];   // index -> {canvas|null, ok:boolean, tainted:boolean, img}
+
+let CANVAS_TAINTED = false;
+
+ 
+
+function loadImage(src){
+
+  return new Promise(res=>{
+
+    const im = new Image(); im.crossOrigin = "anonymous";
+
+    im.onload  = () => res(im.naturalWidth ? im : null);
+
+    im.onerror = () => res(null);
+
+    im.src = src;
+
+  });
+
+}
+
+ 
+
+/* Turn the JPG into ink-coloured line art on transparent background. */
+
+function recolourFrame(img){
+
+  const N = 1200, c = document.createElement('canvas'); c.width=c.height=N;
+
+  const x = c.getContext('2d', {willReadFrequently:true});
+
+  x.drawImage(img,0,0,N,N);
+
+  const ink = hexToRgb(CONFIG.INK_COLOR);
+
+  try{
+
+    const d = x.getImageData(0,0,N,N), px = d.data;
+
+    for(let i=0;i<px.length;i+=4){
+
+      const avg = px[i]*0.299 + px[i+1]*0.587 + px[i+2]*0.114;
+
+      if(avg < CONFIG.FRAME_THRESHOLD && px[i+3] > 50){
+
+        px[i]=ink.r; px[i+1]=ink.g; px[i+2]=ink.b; px[i+3]=255;
+
+      } else px[i+3]=0;
+
+    }
+
+    x.putImageData(d,0,0);
+
+    return {canvas:c, tainted:false};
+
+  }catch(e){
+
+    CANVAS_TAINTED = true;              // file:// – pixels not readable
+
+    return {canvas:c, tainted:true};    // raw frame, drawn with multiply blend
+
+  }
+
+}
+
+ 
+
+async function preloadFrames(){
+
+  for(let i=0;i<CONFIG.FRAMES.length;i++){
+
+    const img = await loadImage(CONFIG.FRAMES[i].file);
+
+    if(img){ const r = recolourFrame(img); FRAME_CACHE[i] = {canvas:r.canvas, ok:true, tainted:r.tainted}; }
+
+    else   { FRAME_CACHE[i] = {canvas:null, ok:false, tainted:false}; }
+
+  }
+
+  if(CANVAS_TAINTED || location.protocol === 'file:'){
+
+    const w = $('warnstrip'); w.textContent = T('taint'); w.style.display='block';
+
+  }
+
+}
+
+function hexToRgb(h){ return {r:parseInt(h.slice(1,3),16), g:parseInt(h.slice(3,5),16), b:parseInt(h.slice(5,7),16)}; }
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   5) THE ONE renderer — same geometry for preview, overlay and export
+
+       All coordinates are in a 600x600 "stamp space"; k scales to canvas size.
+
+   --------------------------------------------------------------------------- */
+
+function renderStamp(ctx, size, opts){
+
+  const o = Object.assign({photo:null, frame:S.frame, date:S.date,
+
+                           background:true, drawPhoto:true, sample:false}, opts||{});
+
+  const k = size/600, cx = size/2, cy = size/2;
+
+ 
+
+  ctx.clearRect(0,0,size,size);
+
+  if(o.background){ ctx.fillStyle="#ffffff"; ctx.fillRect(0,0,size,size); }
+
+ 
+
+  /* -- photo as ink line art inside the inner circle -- */
+
+  if(o.drawPhoto && o.photo) drawPhotoInk(ctx, size, o.photo);
+
+ 
+
+  /* -- frame -- */
+
+  const F = FRAME_CACHE[o.frame];
+
+  if(F && F.ok){
+
+    if(F.tainted){ ctx.save(); ctx.globalCompositeOperation='multiply';
+
+      ctx.drawImage(F.canvas,0,0,size,size); ctx.restore(); }
+
+    else ctx.drawImage(F.canvas,0,0,size,size);
+
+  } else {
+
+    drawVectorBorder(ctx,size);
+
+  }
+
+ 
+
+  /* -- texts -- */
+
+  ctx.fillStyle = CONFIG.INK_COLOR;
+
+  curvedText(ctx, CONFIG.TOP_TEXT, cx, cy, CONFIG.RADIUS_TOP*k, -Math.PI/2, CONFIG.FONT_TOP*k, false);
+
+  curvedText(ctx, CONFIG.PLACE_NAME, cx, cy, CONFIG.RADIUS_PLACE*k, Math.PI*0.99, CONFIG.FONT_PLACE*k, true);
+
+  curvedText(ctx, isoToPretty(o.date), cx, cy, CONFIG.RADIUS_DATE*k, Math.PI*0.5, CONFIG.FONT_DATE*k, true);
+
+}
+
+ 
+
+function drawPhotoInk(ctx, size, img){
+
+  const k = size/600, cx=size/2, cy=size/2;
+
+  const R = CONFIG.PHOTO_RADIUS*k;
+
+  const t = document.createElement('canvas'); t.width=t.height=size;
+
+  const c = t.getContext('2d',{willReadFrequently:true});
+
+  c.save(); c.beginPath(); c.arc(cx, cy + CONFIG.PHOTO_OFFSET_Y*k, R, 0, Math.PI*2); c.clip();
+
+ 
+
+  /* cover-fit the source into the circle bounding box, scaled by PHOTO_SCALE */
+
+  const box = 2*R*CONFIG.PHOTO_SCALE;
+
+  const iw = img.naturalWidth||img.width, ih = img.naturalHeight||img.height;
+
+  const sc = Math.max(box/iw, box/ih);
+
+  const dw = iw*sc, dh = ih*sc;
+
+  c.drawImage(img, cx-dw/2, cy + CONFIG.PHOTO_OFFSET_Y*k - dh/2, dw, dh);
+
+  c.restore();
+
+ 
+
+  try{
+
+    const d = c.getImageData(0,0,size,size), px=d.data, ink=hexToRgb(CONFIG.INK_COLOR);
+
+    for(let i=0;i<px.length;i+=4){
+
+      const avg = px[i]*0.299+px[i+1]*0.587+px[i+2]*0.114;
+
+      if(avg < CONFIG.LINE_THRESHOLD && px[i+3] > 50){
+
+        px[i]=ink.r; px[i+1]=ink.g; px[i+2]=ink.b; px[i+3]=255;
+
+      } else px[i+3]=0;
+
+    }
+
+    c.putImageData(d,0,0);
+
+    ctx.drawImage(t,0,0);
+
+  }catch(e){
+
+    CANVAS_TAINTED = true;
+
+    ctx.save(); ctx.globalCompositeOperation='multiply'; ctx.drawImage(t,0,0); ctx.restore();
+
+  }
+
+}
+
+ 
+
+function drawVectorBorder(ctx,size){
+
+  const k=size/600, cx=size/2, cy=size/2;
+
+  ctx.save(); ctx.strokeStyle=CONFIG.INK_COLOR; ctx.fillStyle=CONFIG.INK_COLOR;
+
+  [[282,6],[274,2],[CONFIG.PHOTO_RADIUS+2,4]].forEach(([r,w])=>{
+
+    ctx.lineWidth=w*k; ctx.beginPath(); ctx.arc(cx,cy,r*k,0,Math.PI*2); ctx.stroke();
+
+  });
+
+  star(ctx,cx-220*k,cy+140*k,5,10*k,5*k); star(ctx,cx+220*k,cy+140*k,5,10*k,5*k);
+
+  ctx.restore();
+
+}
+
+function star(ctx,cx,cy,sp,ro,ri){
+
+  let rot=Math.PI/2*3, step=Math.PI/sp;
+
+  ctx.beginPath(); ctx.moveTo(cx,cy-ro);
+
+  for(let i=0;i<sp;i++){
+
+    ctx.lineTo(cx+Math.cos(rot)*ro, cy+Math.sin(rot)*ro); rot+=step;
+
+    ctx.lineTo(cx+Math.cos(rot)*ri, cy+Math.sin(rot)*ri); rot+=step;
+
+  }
+
+  ctx.closePath(); ctx.fill();
+
+}
+
+function curvedText(ctx,text,cx,cy,radius,centerAngle,fontSize,reverse){
+
+  if(!text || !text.trim()) return;
+
+  ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+
+  ctx.font = "bold "+fontSize+"px 'Courier New',monospace";
+
+  const len=text.length, arc=(fontSize*0.62)/radius, start=centerAngle-(len*arc)/2;
+
+  for(let i=0;i<len;i++){
+
+    ctx.save();
+
+    const ci = reverse ? (len-1-i) : i;
+
+    const a  = start + (i+0.5)*arc;
+
+    ctx.translate(cx+Math.cos(a)*radius, cy+Math.sin(a)*radius);
+
+    ctx.rotate(reverse ? a-Math.PI/2 : a+Math.PI/2);
+
+    ctx.fillText(text[ci],0,0);
+
+    ctx.restore();
+
+  }
+
+  ctx.restore();
+
+}
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   6) screen routing
+
+   --------------------------------------------------------------------------- */
+
+function go(id){
+
+  ['s0','s1','s2','s3'].forEach(s=>{ const el=$(s); el.classList.remove('visible'); el.classList.remove('show'); });
+
+  const el=$(id); el.classList.add('show');
+
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('visible')));
+
+  S.screen=id;
+
+  closeModal();
+
+  if(id!=='s1') stopCamera();
+
+  clearTimer('selfie'); clearTimer('edit'); clearTimer('modal'); clearTimer('done');
+
+  stopFalling();
+
+  if(id==='s0'){ resetSession(); startFalling('fall0'); drawSamples(); armIdle(false); }
+
+  if(id==='s1'){ startFalling('fall1'); enterSelfie(); armIdle(true); }
+
+  if(id==='s2'){ enterEdit(); armIdle(true); }
+
+  if(id==='s3'){ startFalling('fall3'); timers.done=setTimeout(()=>go('s0'), CONFIG.DONE_TIMEOUT*1000); armIdle(false); }
+
+  sizeStages();
+
+}
+
+function resetSession(){
+
+  S.aiImage=null; S.rawPhoto=null; S.aiAttempt=0; S.printing=false;
+
+  S.frame=CONFIG.DEFAULT_FRAME_INDEX; S.date=todayISO();
+
+  $('dateInput').value=S.date; $('btnPrint').disabled=true;
+
+  $('aiError').style.display='none'; $('camError').style.display='none';
+
+  updateCards();
+
+}
+
+/* global inactivity guard */
+
+function armIdle(on){
+
+  clearTimer('idle');
+
+  if(on) timers.idle = setTimeout(()=>go('s0'), CONFIG.IDLE_TIMEOUT*1000);
+
+}
+
+function bumpIdle(){ if(S.screen==='s1'||S.screen==='s2') armIdle(true); }
+
+['pointerdown','keydown'].forEach(e=>document.addEventListener(e,bumpIdle,{passive:true}));
+
+ 
+
+/* keep the round stage as large as it can be without scrolling */
+
+function sizeStages(){
+
+  const el = $(S.screen==='s1' ? 's1' : 's2'); if(!el) return;
+
+  document.documentElement.style.setProperty('--stagemax', Math.min(window.innerWidth-28, 560)+'px');
+
+}
+
+window.addEventListener('resize', sizeStages);
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   7) falling hearts / stars / smileys
+
+   --------------------------------------------------------------------------- */
+
+const GLYPHS = ['❤️','⭐','🙂','🐚','✨','💛','😊','⭐'];
+
+function startFalling(containerId){
+
+  const box=$(containerId); box.innerHTML='';
+
+  const spawn = ()=>{
+
+    if(box.childElementCount>34) box.removeChild(box.firstChild);
+
+    const s=document.createElement('span');
+
+    s.textContent = GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
+
+    s.style.left = (Math.random()*100)+'vw';
+
+    s.style.fontSize = (14+Math.random()*24)+'px';
+
+    s.style.animationDuration = (5+Math.random()*5)+'s';
+
+    s.style.setProperty('--spin',(Math.random()*720-360)+'deg');
+
+    s.addEventListener('animationend',()=>s.remove());
+
+    box.appendChild(s);
+
+  };
+
+  for(let i=0;i<10;i++) spawn();
+
+  timers.fall.push(setInterval(spawn,520));
+
+}
+
+function stopFalling(){
+
+  timers.fall.forEach(clearInterval); timers.fall=[];
+
+  ['fall0','fall1','fall3'].forEach(id=>{ const b=$(id); if(b) b.innerHTML=''; });
+
+}
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   8) SCREEN 0 – sample stamps with the real frames
+
+   --------------------------------------------------------------------------- */
+
+function drawSamples(){
+
+  const pool=[0,1,2,3].sort(()=>Math.random()-0.5);
+
+  ['sample1','sample2','sample3'].forEach((id,i)=>{
+
+    const c=$(id), x=c.getContext('2d');
+
+    renderStamp(x, c.width, {frame:pool[i%pool.length], photo:null, date:S.date, sample:true});
+
+  });
+
+}
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   9) SCREEN 1 – camera inside the frame, matching the final crop exactly
+
+   --------------------------------------------------------------------------- */
+
+let stream=null;
+
+const video=$('liveVideo');
+
+ 
+
+function layoutVideo(){
+
+  const stage=$('stage1'), w=stage.clientWidth||1;
+
+  const d = w * (2*CONFIG.PHOTO_RADIUS*CONFIG.PHOTO_SCALE)/600;   // same circle as the render
+
+  video.style.width=d+'px'; video.style.height=d+'px';
+
+  video.style.marginTop = (CONFIG.PHOTO_OFFSET_Y*(w/600))+'px';
+
+  video.classList.toggle('nomirror', !CONFIG.MIRROR_SELFIE);
+
+}
+
+function drawOverlay(){
+
+  const c=$('frameOverlay'), x=c.getContext('2d');
+
+  renderStamp(x, c.width, {drawPhoto:false, background:false, frame:S.frame, date:S.date});
+
+}
+
+ 
+
+async function enterSelfie(){
+
+  $('camError').style.display='none';
+
+  $('btnShoot').style.display='';
+
+  drawOverlay(); layoutVideo();
+
+  await startCamera();
+
+}
+
+async function startCamera(){
+
+  stopCamera();
+
+  if(location.protocol==='file:'){ showCamError(T('errFile')); return; }
+
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ showCamError(T('errOther')); return; }
+
+  try{
+
+    stream = await navigator.mediaDevices.getUserMedia({
+
+      video:{ facingMode:'user', width:{ideal:1280}, height:{ideal:1280} }, audio:false });
+
+    video.srcObject = stream;
+
+    await video.play().catch(()=>{});
+
+    $('camError').style.display='none';
+
+    layoutVideo();
+
+    startSelfieCountdown();
+
+  }catch(err){
+
+    const n = err && err.name;
+
+    if(n==='NotAllowedError'||n==='SecurityError') showCamError(T('errPerm'));
+
+    else if(n==='NotFoundError'||n==='OverconstrainedError') showCamError(T('errNone'));
+
+    else if(n==='NotReadableError'||n==='AbortError') showCamError(T('errBusy'));
+
+    else showCamError(T('errOther')+' ('+(n||'?')+')');
+
+  }
+
+}
+
+function showCamError(msg){
+
+  clearTimer('selfie');
+
+  $('cd1').style.display='none';
+
+  $('btnShoot').style.display='none';
+
+  $('camErrMsg').textContent=msg;
+
+  $('camError').style.display='';
+
+}
+
+function stopCamera(){
+
+  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+
+  video.srcObject=null;
+
+}
+
+function startSelfieCountdown(){
+
+  clearTimer('selfie');
+
+  let n=CONFIG.SELFIE_COUNTDOWN;
+
+  const badge=$('cd1'); badge.style.display=''; badge.textContent=n;
+
+  timers.selfie=setInterval(()=>{
+
+    n--; badge.textContent=Math.max(n,0);
+
+    if(n<=0){ clearTimer('selfie'); shoot(); }
+
+  },1000);
+
+}
+
+ 
+
+/* capture EXACTLY the centre square the circle shows -> identical framing */
+
+function shoot(){
+
+  clearTimer('selfie');
+
+  if(!stream || !video.videoWidth){ showCamError(T('errOther')); return; }
+
+  const N=CONFIG.CAPTURE_SIZE, side=Math.min(video.videoWidth, video.videoHeight);
+
+  const sx=(video.videoWidth-side)/2, sy=(video.videoHeight-side)/2;
+
+  const c=document.createElement('canvas'); c.width=c.height=N;
+
+  const x=c.getContext('2d');
+
+  if(CONFIG.MIRROR_SELFIE){ x.translate(N,0); x.scale(-1,1); }
+
+  x.drawImage(video, sx, sy, side, side, 0, 0, N, N);
+
+  const dataUrl = c.toDataURL('image/jpeg',0.92);
+
+  stopCamera();
+
+  S.rawPhoto = dataUrl;
+
+  S.aiAttempt = 0;
+
+  go('s2');
+
+  requestAI();
+
+}
+
+ 
+
+/* upload fallback (operator/assist path) */
+
+$('fileInput').addEventListener('change', e=>{
+
+  const f=e.target.files && e.target.files[0]; if(!f) return;
+
+  const r=new FileReader();
+
+  r.onload=ev=>{ S.rawPhoto=ev.target.result; S.aiAttempt=0; go('s2'); requestAI(); };
+
+  r.readAsDataURL(f);
+
+  e.target.value='';
+
+});
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   10) AI call – mandatory, 30 s timeout, 3 automatic attempts
+
+   --------------------------------------------------------------------------- */
+
+function showAiBadge(txt){ $('aiBadgeTxt').textContent=txt; $('aiBadge').style.display=''; }
+
+function hideAiBadge(){ $('aiBadge').style.display='none'; }
+
+ 
+
+async function requestAI(){
+
+  S.aiAttempt++;
+
+  S.aiImage=null; $('btnPrint').disabled=true; $('aiError').style.display='none';
+
+  showAiBadge(S.aiAttempt>1 ? T('aiRetrying')+' '+S.aiAttempt+'/'+CONFIG.AI_MAX_ATTEMPTS : T('aiLoading'));
+
+  drawPreview();
+
+ 
+
+  const ctrl=new AbortController();
+
+  const to=setTimeout(()=>ctrl.abort(), CONFIG.AI_TIMEOUT*1000);
+
+  try{
+
+    const res = await fetch(CONFIG.AI_WEBHOOK_URL,{
+
+      method:'POST', headers:{'Content-Type':'application/json'},
+
+      body: JSON.stringify({ image:S.rawPhoto, design:CONFIG.FRAMES[S.frame].file, lang:LANG }),
+
+      signal: ctrl.signal
+
+    });
+
+    clearTimeout(to);
+
+    const txt = await res.text();
+
+    const url = extractUrl(txt);
+
+    if(!url) throw new Error('no image in response');
+
+    const img = await loadImageTimed(url, CONFIG.AI_TIMEOUT*1000);
+
+    if(!img) throw new Error('image did not load');
+
+    S.aiImage = img;
+
+    hideAiBadge();
+
+    $('btnPrint').disabled=false;
+
+    drawPreview();
+
+  }catch(err){
+
+    clearTimeout(to);
+
+    console.warn('AI attempt '+S.aiAttempt+' failed:', err);
+
+    if(S.aiAttempt < CONFIG.AI_MAX_ATTEMPTS && S.screen==='s2'){ requestAI(); }
+
+    else { hideAiBadge(); $('aiError').style.display=''; }
+
+  }
+
+}
+
+function extractUrl(text){
+
+  let u='';
+
+  try{
+
+    const d=JSON.parse(text);
+
+    u = (typeof d==='string') ? d : (d.url||d.image||d.data||'');
+
+    if(typeof u==='string' && (u.startsWith('{')||u.startsWith('"'))){
+
+      const cl=JSON.parse(u); u = cl.url||cl.image||cl;
+
+    }
+
+  }catch(e){ u = String(text).trim().replace(/^["']|["']$/g,''); }
+
+  u = String(u||'').trim();
+
+  return (u.startsWith('http')||u.startsWith('data:')) ? u : '';
+
+}
+
+function loadImageTimed(src, ms){
+
+  return new Promise(res=>{
+
+    const im=new Image(); im.crossOrigin='anonymous';
+
+    const t=setTimeout(()=>res(null), ms);
+
+    im.onload =()=>{clearTimeout(t); res(im);};
+
+    im.onerror=()=>{clearTimeout(t); res(null);};
+
+    im.src=src;
+
+  });
+
+}
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   11) SCREEN 2 – design cards, date, fixed 20 s countdown
+
+   --------------------------------------------------------------------------- */
+
+function buildCards(){
+
+  const box=$('designCards'); box.innerHTML='';
+
+  CONFIG.FRAMES.forEach((f,i)=>{
+
+    const d=document.createElement('div'); d.className='card'; d.dataset.i=i;
+
+    const c=document.createElement('canvas'); c.width=c.height=240;
+
+    const nm=document.createElement('div'); nm.className='nm'; nm.dataset.t=f.key; nm.textContent=T(f.key);
+
+    d.appendChild(c); d.appendChild(nm);
+
+    d.addEventListener('click',()=>{ S.frame=i; updateCards(); drawPreview(); /* countdown NOT reset */ });
+
+    box.appendChild(d);
+
+  });
+
+}
+
+function updateCards(){
+
+  document.querySelectorAll('#designCards .card').forEach((d,i)=>{
+
+    d.classList.toggle('sel', i===S.frame);
+
+    const c=d.querySelector('canvas');
+
+    renderStamp(c.getContext('2d'), c.width, {frame:i, photo:S.aiImage, date:S.date});
+
+  });
+
+}
+
+function drawPreview(){
+
+  const c=$('stampCanvas');
+
+  renderStamp(c.getContext('2d'), c.width, {frame:S.frame, photo:S.aiImage, date:S.date});
+
+  updateCards();
+
+}
+
+$('dateInput').addEventListener('change', e=>{
+
+  S.date = e.target.value || todayISO();
+
+  drawPreview();                      /* countdown NOT reset */
+
+});
+
+ 
+
+function enterEdit(){
+
+  $('dateInput').value = S.date;
+
+  drawPreview();
+
+  startEditCountdown();
+
+}
+
+function startEditCountdown(){
+
+  clearTimer('edit');
+
+  let n=CONFIG.EDIT_COUNTDOWN;
+
+  const b=$('cd2'); b.style.display=''; b.textContent=n; b.classList.remove('pulse');
+
+  timers.edit=setInterval(()=>{
+
+    n--; b.textContent=Math.max(n,0);
+
+    if(n<=5) b.classList.add('pulse');
+
+    if(n<=0){ clearTimer('edit'); openModal(); }
+
+  },1000);
+
+}
+
+function openModal(){
+
+  $('modalTimeout').classList.add('show');
+
+  clearTimer('modal');
+
+  timers.modal=setTimeout(()=>go('s0'), CONFIG.MODAL_TIMEOUT*1000);
+
+}
+
+function closeModal(){ $('modalTimeout').classList.remove('show'); clearTimer('modal'); }
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   12) Export + print
+
+   --------------------------------------------------------------------------- */
+
+function exportJpeg(){
+
+  const N=CONFIG.EXPORT_SIZE;
+
+  const c=document.createElement('canvas'); c.width=c.height=N;
+
+  const x=c.getContext('2d');
+
+  x.fillStyle='#ffffff'; x.fillRect(0,0,N,N);
+
+  renderStamp(x, N, {frame:S.frame, photo:S.aiImage, date:S.date, background:true});
+
+  return c.toDataURL('image/jpeg', CONFIG.JPEG_QUALITY);
+
+}
+
+function stampFilename(){
+
+  const d=new Date(), p=n=>String(n).padStart(2,'0');
+
+  return `sello-peregrino_${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}.jpg`;
+
+}
+
+async function doPrint(){
+
+  if(S.printing || !S.aiImage) return;
+
+  S.printing=true;
+
+  clearTimer('edit'); closeModal();
+
+  let dataUrl='';
+
+  try{ dataUrl = exportJpeg(); }
+
+  catch(e){
+
+    console.error('export failed (tainted canvas?)', e);
+
+    S.printing=false; $('aiError').style.display=''; $('aiError').querySelector('p').textContent=T('taint');
+
+    return;
+
+  }
+
+  const filename = stampFilename();
+
+  if(CONFIG.DOWNLOAD_ON_PRINT){
+
+    const a=document.createElement('a'); a.download=filename; a.href=dataUrl; a.click();
+
+  }
+
+  if(CONFIG.PRINT_WEBHOOK_URL){
+
+    try{
+
+      const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(),15000);
+
+      await fetch(CONFIG.PRINT_WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+
+        body:JSON.stringify({image:dataUrl, filename, place:CONFIG.PLACE_NAME, date:S.date}), signal:ctrl.signal});
+
+      clearTimeout(to);
+
+    }catch(e){ console.warn('print service failed', e); }
+
+  }
+
+  go('s3');
+
+}
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   13) language switching
+
+   --------------------------------------------------------------------------- */
+
+function setLang(l){
+
+  LANG=l;
+
+  document.documentElement.lang=l;
+
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+
+  document.querySelectorAll('[data-t]').forEach(el=>{ el.textContent=T(el.dataset.t); });
+
+  if($('warnstrip').style.display==='block') $('warnstrip').textContent=T('taint');
+
+}
+
+document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+
+ 
+
+/* ---------------------------------------------------------------------------
+
+   14) wiring
+
+   --------------------------------------------------------------------------- */
+
+$('btnStart').addEventListener('click', ()=>go('s1'));
+
+$('s0').addEventListener('click', e=>{ if(e.target.closest('.lang-btn')) return; go('s1'); });
+
+$('btnBack1').addEventListener('click', ()=>go('s0'));
+
+$('btnBack1b').addEventListener('click', ()=>go('s0'));
+
+$('btnShoot').addEventListener('click', shoot);
+
+$('btnRetryCam').addEventListener('click', ()=>{ $('cd1').style.display=''; $('btnShoot').style.display=''; startCamera(); });
+
+$('btnUpload').addEventListener('click', ()=>$('fileInput').click());
+
+$('btnCancel2').addEventListener('click', ()=>go('s0'));
+
+$('btnRetryAi').addEventListener('click', ()=>{ S.aiAttempt=0; requestAI(); });
+
+$('btnRestartAi').addEventListener('click', ()=>go('s0'));
+
+$('btnPrint').addEventListener('click', doPrint);
+
+$('btnModalPrint').addEventListener('click', doPrint);
+
+$('btnModalRestart').addEventListener('click', ()=>go('s0'));
+
+$('btnDoneNow').addEventListener('click', ()=>go('s0'));
+
+window.addEventListener('resize', ()=>{ layoutVideo(); sizeStages(); });
+
+document.addEventListener('visibilitychange', ()=>{ if(document.hidden && S.screen==='s1') stopCamera(); });
+
+ 
+
+/* boot */
+
+(async function boot(){
+
+  document.documentElement.style.setProperty('--ink', CONFIG.INK_COLOR);
+
+  $('dateInput').value = S.date;
+
+  $('dateInput').min   = S.date;                    // kiosk: no back-dating by default
+
+  buildCards();
+
+  setLang(CONFIG.DEFAULT_LANG);
+
+  await preloadFrames();
+
+  go('s0');
+
+})();
+
+</script>
+
+</body>
+
+</html>
+
+ 
+
+
+General Business
+
+From: Jens Natterodt <jens.natterodt@gmail.com>
+Sent: Thursday, September 24, 2026 11:08 PM
+To: Natterodt, Jens Christoph (J) <JNatterodt@dow.com>
+Subject: html old
+
+ 
+
+ CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.
+
+ 
+
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -225,7 +2129,7 @@
     <!-- Opción B: Cámara en directo -->
     <div class="form-group">
         <button type="button" class="btn-action" style="background-color: #374151; font-size: 0.9rem; padding: 10px;" onclick="toggleCamera()">📷 Tomar Foto en Directo</button>
-        
+       
         <div id="cameraContainer" class="camera-box">
             <video id="cameraFeed" autoplay playsinline></video>
             <div class="camera-actions">
@@ -341,7 +2245,7 @@
     async function toggleCamera() {
         const box = document.getElementById('cameraContainer');
         const video = document.getElementById('cameraFeed');
-        
+       
         if (box.style.display === 'block') {
             closeCamera();
             return;
@@ -375,7 +2279,7 @@
 
         snapCanvas.width = video.videoWidth || 600;
         snapCanvas.height = video.videoHeight || 600;
-        
+       
         sCtx.drawImage(video, 0, 0, snapCanvas.width, snapCanvas.height);
         const base64Data = snapCanvas.toDataURL('image/jpeg');
 
@@ -485,7 +2389,7 @@
             } catch (e) {
                 imageUrl = textResponse.trim().replace(/^["']|["']$/g, '');
             }
-            
+           
             if (imageUrl && (imageUrl.startsWith("http") || imageUrl.startsWith("data:"))) {
                 let aiImg = new Image();
                 aiImg.crossOrigin = "anonymous";
@@ -519,7 +2423,7 @@
         const centerX = 300, centerY = 300;
         const innerCropRadius = 170;
         let threshold = parseInt(document.getElementById('thresholdRange').value);
-        
+       
         // Obtener valores de posición X e Y
         let offsetX = parseInt(document.getElementById('posXRange').value);
         let offsetY = parseInt(document.getElementById('posYRange').value);
@@ -538,13 +2442,13 @@
 
             const baseSize = innerCropRadius * 2.2;
             const size = baseSize * currentZoom;
-            
+           
             // Dibuja la foto aplicando offsetX e offsetY
             iCtx.drawImage(
-                userImage, 
-                centerX - size/2 + offsetX, 
-                centerY - size/2 - 10 + offsetY, 
-                size, 
+                userImage,
+                centerX - size/2 + offsetX,
+                centerY - size/2 - 10 + offsetY,
+                size,
                 size
             );
             iCtx.restore();
@@ -680,18 +2584,18 @@
     // 3. TEXTOS CON RADIOS Y ÁNGULOS INDEPENDIENTES
     function drawTexts() {
         const centerX = 300, centerY = 300;
-        
-        const radiusTop = 268;         
+       
+        const radiusTop = 268;        
         const radiusBottomLeft = 295;  // Radio Roncesvalles
         const radiusBottomRight = 275; // Radio Fecha
-        
+       
         ctx.fillStyle = currentColor;
 
         drawCurvedText(document.getElementById('textTop').value, centerX, centerY, radiusTop, -Math.PI / 2, fontSizes.Top, false);
-        
+       
         let leftVal = document.getElementById('textBottomLeft').value;
         let rawDate = document.getElementById('textBottomRight').value;
-        let rightVal = rawDate ? rawDate.split('-').reverse().join('/') : ''; 
+        let rightVal = rawDate ? rawDate.split('-').reverse().join('/') : '';
 
         drawCurvedText(leftVal, centerX, centerY, radiusBottomLeft, Math.PI * 0.99, fontSizes.BottomLeft, true);
         drawCurvedText(rightVal, centerX, centerY, radiusBottomRight, Math.PI * 0.5, fontSizes.BottomRight, true);
@@ -702,9 +2606,9 @@
         ctx.save();
         ctx.textAlign = 'center';
         ctx.font = "bold " + fontSize + "px Courier New";
-        
+       
         let len = text.length;
-        let arcPerChar = (fontSize * 0.62) / radius; 
+        let arcPerChar = (fontSize * 0.62) / radius;
         let totalArc = len * arcPerChar;
         let startAngle = centerAngle - (totalArc / 2);
 
@@ -712,15 +2616,15 @@
             ctx.save();
             let charIndex = reverse ? (len - 1 - i) : i;
             let angle = startAngle + (i + 0.5) * arcPerChar;
-            
+           
             ctx.translate(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
-            
+           
             if (reverse) {
                 ctx.rotate(angle - Math.PI / 2);
             } else {
                 ctx.rotate(angle + Math.PI / 2);
             }
-            
+           
             ctx.fillText(text[charIndex], 0, 0);
             ctx.restore();
         }
