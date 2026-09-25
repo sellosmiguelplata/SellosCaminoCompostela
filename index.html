@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK v3.1</title>
+<title>Sello del Peregrino · Camino de Santiago · KIOSK v3.2</title>
 <style>
 /* ============================================================
-   SELLO DEL PEREGRINO - KIOSK  (BUILD v3.1)
+   SELLO DEL PEREGRINO - KIOSK  (BUILD v3.2)
    Single file. No build tools. Operator settings = CONFIG block in the script.
    ============================================================ */
 :root{
@@ -161,9 +161,12 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
 
 .datebox{display:flex;align-items:center;gap:10px;justify-content:center;width:100%;max-width:520px;margin-top:6px;}
 .datebox label{font-size:.8rem;color:var(--txt-dim);font-weight:600;white-space:nowrap}
-input[type="date"]{
+input[type="date"], select {
   background:var(--card);border:1px solid var(--line);color:var(--txt);
   padding:11px 14px;border-radius:12px;font-size:1rem;min-height:48px;flex:1;max-width:230px;
+}
+input[type="range"] {
+  flex: 1; max-width: 230px;
 }
 .ctlblock{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
   gap:clamp(6px,1.4vh,12px);width:100%;z-index:2}
@@ -196,7 +199,7 @@ input[type="date"]{
 </head>
 <body>
 
-<div id="buildTag">KIOSK v3.1</div>
+<div id="buildTag">KIOSK v3.2</div>
 
 <!-- ================= SCREEN 0 : START ================= -->
 <section id="s0" class="screen">
@@ -294,10 +297,56 @@ input[type="date"]{
     </div>
 
     <div class="cards" id="designCards"></div>
+    
     <div class="datebox">
-      <label for="dateInput" data-t="dateLabel">Fecha:</label>
+      <label data-t="locationLabel">Lugar:</label>
+      <select id="locationSelect">
+        <option value="SAINT-JEAN-PIED-DE-PORT">Saint-Jean-Pied-de-Port</option>
+        <option value="RONCESVALLES">Roncesvalles</option>
+        <option value="ZUBIRI">Zubiri</option>
+        <option value="PAMPLONA">Pamplona</option>
+        <option value="PUENTE LA REINA">Puente la Reina</option>
+        <option value="ESTELLA">Estella</option>
+        <option value="LOS ARCOS">Los Arcos</option>
+        <option value="LOGROÑO">Logroño</option>
+        <option value="NÁJERA">Nájera</option>
+        <option value="STO. DOMINGO DE LA CALZADA">Santo Domingo de la Calzada</option>
+        <option value="BELORADO">Belorado</option>
+        <option value="SAN JUAN DE ORTEGA">San Juan de Ortega</option>
+        <option value="BURGOS">Burgos</option>
+        <option value="HORNILLOS DEL CAMINO">Hornillos del Camino</option>
+        <option value="CASTROJERIZ">Castrojeriz</option>
+        <option value="FRÓMISTA">Frómista</option>
+        <option value="CARRIÓN DE LOS CONDES">Carrión de los Condes</option>
+        <option value="SAHAGÚN">Sahagún</option>
+        <option value="EL BURGO RANERO">El Burgo Ranero</option>
+        <option value="MANSILLA DE LAS MULAS">Mansilla de las Mulas</option>
+        <option value="LEÓN">León</option>
+        <option value="SAN MARTÍN DEL CAMINO">San Martín del Camino</option>
+        <option value="ASTORGA">Astorga</option>
+        <option value="RABANAL DEL CAMINO">Rabanal del Camino</option>
+        <option value="PONFERRADA">Ponferrada</option>
+        <option value="VILLAFRANCA DEL BIERZO">Villafranca del Bierzo</option>
+        <option value="O CEBREIRO">O Cebreiro</option>
+        <option value="TRIACASTELA">Triacastela</option>
+        <option value="SARRIA">Sarria</option>
+        <option value="PORTOMARÍN">Portomarín</option>
+        <option value="PALAS DE REI">Palas de Rei</option>
+        <option value="ARZÚA">Arzúa</option>
+        <option value="O PEDROUZO">O Pedrouzo</option>
+        <option value="LAVACOLLA">Lavacolla</option>
+        <option value="SANTIAGO DE COMPOSTELA">Santiago de Compostela</option>
+      </select>
+      
       <input type="date" id="dateInput">
     </div>
+
+    <!-- Nuevo control de Trazos -->
+    <div class="datebox" style="margin-top:0;">
+      <label data-t="thresholdLabel">Detalle:</label>
+      <input type="range" id="thresholdRange" min="10" max="240" step="5" value="110">
+    </div>
+
     <button class="btn ok" id="btnPrint" disabled data-t="print">Imprimir sello</button>
   </div>
 </section>
@@ -339,8 +388,6 @@ const CONFIG = {
   DOWNLOAD_ON_PRINT: true,
 
   /* --- fixed stamp content --- */
-  TOP_TEXT   : "CAMINO DE SANTIAGO",
-  PLACE_NAME : "RONCESVALLES",
   INK_COLOR  : "#8a2222",
 
   /* --- artwork (external files) --- */
@@ -359,10 +406,8 @@ const CONFIG = {
   LINE_THRESHOLD   : 110,
   FRAME_THRESHOLD  : 120,
   FONT_TOP         : 22,
-  FONT_PLACE       : 20,
   FONT_DATE        : 20,
   RADIUS_TOP       : 268,
-  RADIUS_PLACE     : 295,
   RADIUS_DATE      : 275,
 
   /* --- timings (seconds, wall-clock) --- */
@@ -399,7 +444,7 @@ es:{welcomeTitle:"Sello del Peregrino",welcomeSub:"Hazte una foto y llévate tu 
  errNone:"No se ha encontrado ninguna cámara conectada.",
  errBusy:"La cámara está siendo usada por otra aplicación.",
  errOther:"Error desconocido de cámara.",
- step2:"Paso 2 · Tu sello",dateLabel:"Fecha:",print:"Imprimir sello",startAgain:"Empezar de nuevo",
+ step2:"Paso 2 · Tu sello",dateLabel:"Fecha:",locationLabel:"Lugar:",thresholdLabel:"Trazos:",print:"Imprimir sello",startAgain:"Empezar de nuevo",
  aiLoading:"Creando tu sello…",aiRetrying:"Reintentando…",
  aiErrTitle:"No hemos podido crear el dibujo",aiErrMsg:"El servicio no responde. Inténtalo de nuevo.",
  tmTitle:"¿Imprimimos tu sello?",tmMsg:"Se ha acabado el tiempo de edición.",
@@ -415,7 +460,7 @@ en:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in
  errNone:"No camera device was found.",
  errBusy:"The camera is already in use by another application.",
  errOther:"Unknown camera error.",
- step2:"Step 2 · Your stamp",dateLabel:"Date:",print:"Print stamp",startAgain:"Start again",
+ step2:"Step 2 · Your stamp",dateLabel:"Date:",locationLabel:"Location:",thresholdLabel:"Details:",print:"Print stamp",startAgain:"Start again",
  aiLoading:"Creating your stamp…",aiRetrying:"Retrying…",
  aiErrTitle:"We could not create the drawing",aiErrMsg:"The service is not responding. Please try again.",
  tmTitle:"Shall we print your stamp?",tmMsg:"Editing time is over.",
@@ -431,7 +476,7 @@ de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie und erhalte deinen 
  errNone:"Es wurde keine Kamera gefunden.",
  errBusy:"Die Kamera wird bereits von einer anderen Anwendung benutzt.",
  errOther:"Unbekannter Kamerafehler.",
- step2:"Schritt 2 · Dein Stempel",dateLabel:"Datum:",print:"Stempel drucken",startAgain:"Neu starten",
+ step2:"Schritt 2 · Dein Stempel",dateLabel:"Datum:",locationLabel:"Ort:",thresholdLabel:"Details:",print:"Stempel drucken",startAgain:"Neu starten",
  aiLoading:"Dein Stempel wird erstellt…",aiRetrying:"Neuer Versuch…",
  aiErrTitle:"Die Zeichnung konnte nicht erstellt werden",aiErrMsg:"Der Dienst antwortet nicht. Bitte erneut versuchen.",
  tmTitle:"Sollen wir deinen Stempel drucken?",tmMsg:"Die Bearbeitungszeit ist abgelaufen.",
@@ -447,7 +492,7 @@ fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie et repars ave
  errNone:"Aucune caméra détectée.",
  errBusy:"La caméra est déjà utilisée par une autre application.",
  errOther:"Erreur caméra inconnue.",
- step2:"Étape 2 · Votre tampon",dateLabel:"Date :",print:"Imprimer le tampon",startAgain:"Recommencer",
+ step2:"Étape 2 · Votre tampon",dateLabel:"Date :",locationLabel:"Lieu :",thresholdLabel:"Détails :",print:"Imprimer le tampon",startAgain:"Recommencer",
  aiLoading:"Création de votre tampon…",aiRetrying:"Nouvel essai…",
  aiErrTitle:"Impossible de créer le dessin",aiErrMsg:"Le service ne répond pas. Merci de réessayer.",
  tmTitle:"On imprime votre tampon ?",tmMsg:"Le temps d'édition est écoulé.",
@@ -463,6 +508,7 @@ const T = k => (I18N[LANG] && I18N[LANG][k]) || I18N.es[k] || k;
    --------------------------------------------------------------------------- */
 const $  = id => document.getElementById(id);
 const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null, color: CONFIG.INK_COLOR,
+             location: "SANTIAGO DE COMPOSTELA", threshold: CONFIG.LINE_THRESHOLD,
              rawPhoto: null, aiAttempt: 0, screen: null, printing:false, editStarted:false };
 const timers = { selfie:null, edit:null, idle:null, modal:null, done:null, fall:[] };
 
@@ -577,9 +623,9 @@ function renderStamp(ctx, size, opts){
   }
 
   ctx.fillStyle = S.color;
-  curvedText(ctx, CONFIG.TOP_TEXT,     cx, cy, CONFIG.RADIUS_TOP*k,   -Math.PI/2,    CONFIG.FONT_TOP*k,   false);
-  curvedText(ctx, CONFIG.PLACE_NAME,   cx, cy, CONFIG.RADIUS_PLACE*k,  Math.PI*0.99, CONFIG.FONT_PLACE*k, true);
-  curvedText(ctx, isoToPretty(o.date), cx, cy, CONFIG.RADIUS_DATE*k,   Math.PI*0.5,  CONFIG.FONT_DATE*k,  true);
+  // Lugar arriba (-90 grados) y Fecha abajo (90 grados)
+  curvedText(ctx, S.location, cx, cy, CONFIG.RADIUS_TOP*k,   -Math.PI/2,  CONFIG.FONT_TOP*k,   false);
+  curvedText(ctx, isoToPretty(o.date), cx, cy, CONFIG.RADIUS_DATE*k,  Math.PI/2,   CONFIG.FONT_DATE*k,  true);
 }
 function drawPhotoInk(ctx, size, img){
   const k = size/600, cx=size/2, cy=size/2;
@@ -599,7 +645,7 @@ function drawPhotoInk(ctx, size, img){
     const d = c.getImageData(0,0,size,size), px=d.data, ink=hexToRgb(S.color);
     for(let i=0;i<px.length;i+=4){
       const avg = px[i]*0.299+px[i+1]*0.587+px[i+2]*0.114;
-      if(avg < CONFIG.LINE_THRESHOLD && px[i+3] > 50){
+      if(avg < S.threshold && px[i+3] > 50){
         px[i]=ink.r; px[i+1]=ink.g; px[i+2]=ink.b; px[i+3]=255;
       } else px[i+3]=0;
     }
@@ -692,10 +738,13 @@ function resetSession(){
   S.aiImage=null; S.rawPhoto=null; S.aiAttempt=0; S.printing=false; S.editStarted=false;
   S.frame=CONFIG.DEFAULT_FRAME_INDEX; S.date=todayISO();
   
-  // Reset Color
   S.color = CONFIG.INK_COLOR;
   document.querySelectorAll('.color-btn').forEach(b => b.classList.toggle('sel', b.dataset.color === S.color));
   applyColor(S.color);
+
+  // Restore defaults for dropdown and threshold
+  S.location = $('locationSelect').value = "SANTIAGO DE COMPOSTELA";
+  S.threshold = $('thresholdRange').value = CONFIG.LINE_THRESHOLD;
 
   $('dateInput').value=S.date; $('btnPrint').disabled=true;
   $('aiError').style.display='none'; $('camError').style.display='none';
@@ -893,7 +942,7 @@ function loadImageTimed(src, ms){
 }
 
 /* ---------------------------------------------------------------------------
-   12) SCREEN 2 – colors, cards, date, fixed countdown
+   12) SCREEN 2 – colors, cards, date, threshold, countdown
    --------------------------------------------------------------------------- */
 function buildCards(){
   const box=$('designCards'); box.innerHTML='';
@@ -930,13 +979,14 @@ colorBtns.forEach(b => b.addEventListener('click', function(e){
   applyColor(hex);
 }));
 
-$('dateInput').addEventListener('change', function(e){
-  S.date = e.target.value || todayISO();
-  drawPreview();                     
-});
+$('dateInput').addEventListener('change', function(e){ S.date = e.target.value || todayISO(); drawPreview(); });
+$('locationSelect').addEventListener('change', function(e){ S.location = e.target.value; drawPreview(); });
+$('thresholdRange').addEventListener('input', function(e){ S.threshold = parseInt(e.target.value); drawPreview(); });
 
 function enterEdit(){
   $('dateInput').value = S.date;
+  $('locationSelect').value = S.location;
+  $('thresholdRange').value = S.threshold;
   drawPreview();
   if(!S.editStarted){                 
     S.editStarted = true;
@@ -985,7 +1035,7 @@ async function doPrint(){
     try{
       const ctrl=new AbortController(); const to=setTimeout(function(){ctrl.abort();},15000);
       await fetch(CONFIG.PRINT_WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({image:dataUrl, filename:filename, place:CONFIG.PLACE_NAME, date:S.date}), signal:ctrl.signal});
+        body:JSON.stringify({image:dataUrl, filename:filename, place:S.location, date:S.date}), signal:ctrl.signal});
       clearTimeout(to);
     }catch(e){ console.warn('print service failed', e); }
   }
