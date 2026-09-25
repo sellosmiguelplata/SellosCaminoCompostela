@@ -3,17 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK v3</title>
+<title>Sello del Peregrino · Camino de Santiago · KIOSK v3.1</title>
 <style>
 /* ============================================================
-   SELLO DEL PEREGRINO - KIOSK  (BUILD v3)
+   SELLO DEL PEREGRINO - KIOSK  (BUILD v3.1)
    Single file. No build tools. Operator settings = CONFIG block in the script.
-
-   v3 fixes:
-   - Timer is now OUTSIDE the circular stage (it was being clipped away by
-     border-radius:50% + overflow:hidden), and is always visible.
-   - Countdowns are deadline-based wall-clock, so 20 s really is 20 s.
-   - The stage is sized to a true square in JS, so the stamp is never oval.
    ============================================================ */
 :root{
   --ink:#8a2222;
@@ -60,10 +54,10 @@ button{font-family:inherit}
 .langs{display:flex;gap:6px}
 .lang-btn{
   background:var(--card);border:1px solid var(--line);color:var(--txt-dim);
-  padding:8px 12px;border-radius:10px;font-weight:700;font-size:.78rem;cursor:pointer;
+  padding:6px 8px;border-radius:10px;font-size:1.1rem;cursor:pointer;
   min-width:44px;min-height:38px;transition:.2s;
 }
-.lang-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.lang-btn.active{background:var(--ink);border-color:var(--ink);}
 
 h1{font-size:clamp(1.6rem,5.2vw,2.5rem);margin:.2em 0 .1em;text-align:center;font-weight:800}
 .sub{color:var(--txt-dim);text-align:center;font-size:clamp(.85rem,2.6vw,1rem);margin:0 0 4px;max-width:34ch}
@@ -103,15 +97,13 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
 @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-9px) rotate(2deg)}}
 .hint{color:var(--txt-dim);font-size:.82rem;text-align:center}
 
-/* ---------- stamp stage (screens 1 & 2) ----------
-   FIX (oval): the stage gets an explicit square px size from JS.
-   No aspect-ratio / percentage mixing any more.                      */
+/* ---------- stamp stage (screens 1 & 2) ---------- */
 .stagewrap{position:relative;z-index:2;flex:1 1 auto;display:flex;
   align-items:center;justify-content:center;width:100%;min-height:0}
 .stage{
   position:relative;border-radius:50%;background:#fff;
   box-shadow:0 12px 40px rgba(0,0,0,.55);overflow:hidden;
-  width:10px;height:10px;           /* replaced by JS with a real square */
+  width:10px;height:10px;
   flex:0 0 auto;
 }
 .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -122,8 +114,7 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
 #liveVideo.nomirror{transform:translate(-50%,-50%)}
 #frameOverlay{z-index:2}
 
-/* ---------- TIMER ----------
-   FIX (invisible timer): lives in .stagewrap, NOT inside the clipped circle. */
+/* ---------- TIMER ---------- */
 .timer{
   position:absolute;z-index:8;top:0;right:0;
   display:flex;flex-direction:column;align-items:center;gap:2px;
@@ -136,7 +127,6 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
 .timer.warn{border-color:var(--err);animation:pulse 1s ease-in-out infinite}
 .timer.warn .num{color:#ff8b82}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
-/* thin progress bar under the number */
 .timer .bar{width:100%;height:4px;border-radius:3px;background:rgba(255,255,255,.15);overflow:hidden}
 .timer .bar i{display:block;height:100%;width:100%;background:var(--gold);transition:width .2s linear}
 .timer.warn .bar i{background:var(--err)}
@@ -152,8 +142,13 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
   animation:sp .9s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 
+/* ---------- color pickers ---------- */
+.color-pickers{display:flex;gap:10px;justify-content:center;width:100%;max-width:520px;}
+.color-btn{flex:1;height:38px;border:2px solid var(--line);border-radius:10px;cursor:pointer;transition:.2s;}
+.color-btn.sel{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,178,95,.2);}
+
 /* ---------- design cards ---------- */
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:520px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:520px;margin-top:6px;}
 .card{
   background:var(--card);border:2px solid var(--line);border-radius:14px;
   padding:6px 4px 5px;cursor:pointer;text-align:center;transition:.18s;
@@ -164,7 +159,7 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card.sel .nm{color:var(--gold);font-weight:700}
 
-.datebox{display:flex;align-items:center;gap:10px;justify-content:center;width:100%;max-width:520px}
+.datebox{display:flex;align-items:center;gap:10px;justify-content:center;width:100%;max-width:520px;margin-top:6px;}
 .datebox label{font-size:.8rem;color:var(--txt-dim);font-weight:600;white-space:nowrap}
 input[type="date"]{
   background:var(--card);border:1px solid var(--line);color:var(--txt);
@@ -201,7 +196,7 @@ input[type="date"]{
 </head>
 <body>
 
-<div id="buildTag">KIOSK v3</div>
+<div id="buildTag">KIOSK v3.1</div>
 
 <!-- ================= SCREEN 0 : START ================= -->
 <section id="s0" class="screen">
@@ -209,10 +204,10 @@ input[type="date"]{
   <div class="topbar">
     <div class="brand">Ultreia et Suseia</div>
     <div class="langs">
-      <button class="lang-btn active" data-lang="es">ES</button>
-      <button class="lang-btn" data-lang="en">EN</button>
-      <button class="lang-btn" data-lang="de">DE</button>
-      <button class="lang-btn" data-lang="fr">FR</button>
+      <button class="lang-btn active" data-lang="es">🇪🇸</button>
+      <button class="lang-btn" data-lang="en">🇬🇧</button>
+      <button class="lang-btn" data-lang="de">🇩🇪</button>
+      <button class="lang-btn" data-lang="fr">🇫🇷</button>
     </div>
   </div>
   <div class="stage0">
@@ -253,11 +248,13 @@ input[type="date"]{
       <p id="camErrMsg"></p>
       <div class="row">
         <button class="btn sm" id="btnRetryCam" data-t="retry">Reintentar</button>
-        <button class="btn sm ghost" id="btnUpload" data-t="uploadPhoto">Subir foto</button>
         <button class="btn sm ghost" id="btnBack1b" data-t="back">Volver</button>
       </div>
     </div>
-    <button class="btn" id="btnShoot" data-t="shootNow">Hacer la foto ahora</button>
+    <div class="row" id="camControls">
+      <button class="btn" id="btnShoot" data-t="shootNow">Hacer la foto ahora</button>
+      <button class="btn ghost" id="btnUploadMain" data-t="uploadPhoto">Subir foto</button>
+    </div>
   </div>
   <input type="file" id="fileInput" accept="image/*" style="display:none">
 </section>
@@ -288,6 +285,14 @@ input[type="date"]{
         <button class="btn sm ghost" id="btnRestartAi" data-t="startAgain">Empezar de nuevo</button>
       </div>
     </div>
+    
+    <div class="color-pickers" id="colorPickers">
+      <button class="color-btn sel" data-color="#8a2222" style="background: #8a2222;"></button>
+      <button class="color-btn" data-color="#1e3a8a" style="background: #1e3a8a;"></button>
+      <button class="color-btn" data-color="#065f46" style="background: #065f46;"></button>
+      <button class="color-btn" data-color="#111827" style="background: #111827;"></button>
+    </div>
+
     <div class="cards" id="designCards"></div>
     <div class="datebox">
       <label for="dateInput" data-t="dateLabel">Fecha:</label>
@@ -457,7 +462,7 @@ const T = k => (I18N[LANG] && I18N[LANG][k]) || I18N.es[k] || k;
    3) state + helpers
    --------------------------------------------------------------------------- */
 const $  = id => document.getElementById(id);
-const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null,
+const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null, color: CONFIG.INK_COLOR,
              rawPhoto: null, aiAttempt: 0, screen: null, printing:false, editStarted:false };
 const timers = { selfie:null, edit:null, idle:null, modal:null, done:null, fall:[] };
 
@@ -469,8 +474,6 @@ function hexToRgb(h){ return {r:parseInt(h.slice(1,3),16), g:parseInt(h.slice(3,
 
 /* ---------------------------------------------------------------------------
    3b) DEADLINE-BASED COUNTDOWN
-   Ticks every 200 ms and reads the wall clock, so N seconds is exactly
-   N seconds even if the browser throttles timers. Never restarts by itself.
    --------------------------------------------------------------------------- */
 function runCountdown(key, seconds, numEl, barEl, boxEl, onEnd){
   clearTimer(key);
@@ -490,7 +493,7 @@ function runCountdown(key, seconds, numEl, barEl, boxEl, onEnd){
 }
 
 /* ---------------------------------------------------------------------------
-   4) frame artwork
+   4) frame artwork with dynamic colors
    --------------------------------------------------------------------------- */
 const FRAME_CACHE = [];
 let CANVAS_TAINTED = false;
@@ -503,11 +506,11 @@ function loadImage(src){
     im.src = src;
   });
 }
-function recolourFrame(img){
+function recolourFrame(img, colorHex){
   const N = 1200, c = document.createElement('canvas'); c.width=c.height=N;
   const x = c.getContext('2d', {willReadFrequently:true});
   x.drawImage(img,0,0,N,N);
-  const ink = hexToRgb(CONFIG.INK_COLOR);
+  const ink = hexToRgb(colorHex);
   try{
     const d = x.getImageData(0,0,N,N), px = d.data;
     for(let i=0;i<px.length;i+=4){
@@ -526,11 +529,29 @@ function recolourFrame(img){
 async function preloadFrames(){
   for(let i=0;i<CONFIG.FRAMES.length;i++){
     const img = await loadImage(CONFIG.FRAMES[i].file);
-    if(img){ const r = recolourFrame(img); FRAME_CACHE[i] = {canvas:r.canvas, ok:true, tainted:r.tainted}; }
-    else   { FRAME_CACHE[i] = {canvas:null, ok:false, tainted:false}; }
+    if(img){ 
+      FRAME_CACHE[i] = { rawImage: img, ok: true };
+      rebuildFrameCacheColor(i);
+    }
+    else { FRAME_CACHE[i] = { canvas:null, rawImage:null, ok:false, tainted:false }; }
   }
   if(CANVAS_TAINTED || location.protocol === 'file:'){
     const w = $('warnstrip'); w.textContent = T('taint'); w.style.display='block';
+  }
+}
+function rebuildFrameCacheColor(i) {
+  if(!FRAME_CACHE[i] || !FRAME_CACHE[i].rawImage) return;
+  const r = recolourFrame(FRAME_CACHE[i].rawImage, S.color);
+  FRAME_CACHE[i].canvas = r.canvas;
+  FRAME_CACHE[i].tainted = r.tainted;
+}
+function applyColor(hex) {
+  S.color = hex;
+  document.documentElement.style.setProperty('--ink', hex);
+  for(let i=0; i<CONFIG.FRAMES.length; i++) rebuildFrameCacheColor(i);
+  if (S.screen === 's2') {
+    updateCards();
+    drawPreview();
   }
 }
 
@@ -547,7 +568,7 @@ function renderStamp(ctx, size, opts){
   if(o.drawPhoto && o.photo) drawPhotoInk(ctx, size, o.photo);
 
   const F = FRAME_CACHE[o.frame];
-  if(F && F.ok){
+  if(F && F.ok && F.canvas){
     if(F.tainted){ ctx.save(); ctx.globalCompositeOperation='multiply';
       ctx.drawImage(F.canvas,0,0,size,size); ctx.restore(); }
     else ctx.drawImage(F.canvas,0,0,size,size);
@@ -555,7 +576,7 @@ function renderStamp(ctx, size, opts){
     drawVectorBorder(ctx,size);
   }
 
-  ctx.fillStyle = CONFIG.INK_COLOR;
+  ctx.fillStyle = S.color;
   curvedText(ctx, CONFIG.TOP_TEXT,     cx, cy, CONFIG.RADIUS_TOP*k,   -Math.PI/2,    CONFIG.FONT_TOP*k,   false);
   curvedText(ctx, CONFIG.PLACE_NAME,   cx, cy, CONFIG.RADIUS_PLACE*k,  Math.PI*0.99, CONFIG.FONT_PLACE*k, true);
   curvedText(ctx, isoToPretty(o.date), cx, cy, CONFIG.RADIUS_DATE*k,   Math.PI*0.5,  CONFIG.FONT_DATE*k,  true);
@@ -575,7 +596,7 @@ function drawPhotoInk(ctx, size, img){
   c.restore();
 
   try{
-    const d = c.getImageData(0,0,size,size), px=d.data, ink=hexToRgb(CONFIG.INK_COLOR);
+    const d = c.getImageData(0,0,size,size), px=d.data, ink=hexToRgb(S.color);
     for(let i=0;i<px.length;i+=4){
       const avg = px[i]*0.299+px[i+1]*0.587+px[i+2]*0.114;
       if(avg < CONFIG.LINE_THRESHOLD && px[i+3] > 50){
@@ -591,7 +612,7 @@ function drawPhotoInk(ctx, size, img){
 }
 function drawVectorBorder(ctx,size){
   const k=size/600, cx=size/2, cy=size/2;
-  ctx.save(); ctx.strokeStyle=CONFIG.INK_COLOR; ctx.fillStyle=CONFIG.INK_COLOR;
+  ctx.save(); ctx.strokeStyle=S.color; ctx.fillStyle=S.color;
   [[282,6],[274,2],[CONFIG.PHOTO_RADIUS+2,4]].forEach(function(p){
     ctx.lineWidth=p[1]*k; ctx.beginPath(); ctx.arc(cx,cy,p[0]*k,0,Math.PI*2); ctx.stroke();
   });
@@ -625,7 +646,7 @@ function curvedText(ctx,text,cx,cy,radius,centerAngle,fontSize,reverse){
 }
 
 /* ---------------------------------------------------------------------------
-   6) SQUARE STAGE SIZING  (fixes the oval stamp)
+   6) SQUARE STAGE SIZING
    --------------------------------------------------------------------------- */
 function sizeStage(wrapId, stageId){
   const wrap=$(wrapId), stage=$(stageId);
@@ -634,7 +655,7 @@ function sizeStage(wrapId, stageId){
   if(!w || !h) return 0;
   const side = Math.max(120, Math.floor(Math.min(w, h, CONFIG.MAX_STAGE_PX)));
   stage.style.width  = side+'px';
-  stage.style.height = side+'px';     // always an exact square -> perfect circle
+  stage.style.height = side+'px';
   return side;
 }
 function sizeStages(){
@@ -670,6 +691,12 @@ function go(id){
 function resetSession(){
   S.aiImage=null; S.rawPhoto=null; S.aiAttempt=0; S.printing=false; S.editStarted=false;
   S.frame=CONFIG.DEFAULT_FRAME_INDEX; S.date=todayISO();
+  
+  // Reset Color
+  S.color = CONFIG.INK_COLOR;
+  document.querySelectorAll('.color-btn').forEach(b => b.classList.toggle('sel', b.dataset.color === S.color));
+  applyColor(S.color);
+
   $('dateInput').value=S.date; $('btnPrint').disabled=true;
   $('aiError').style.display='none'; $('camError').style.display='none';
   $('aiErrMsg').textContent=T('aiErrMsg');
@@ -677,7 +704,8 @@ function resetSession(){
   $('bar2').style.width='100%'; $('timer2').classList.remove('warn');
   $('cd1').textContent=CONFIG.SELFIE_COUNTDOWN;
   $('bar1').style.width='100%'; $('timer1').classList.remove('warn');
-  updateCards();
+  
+  if (FRAME_CACHE.length > 0) updateCards();
 }
 function armIdle(on){
   clearTimer('idle');
@@ -742,7 +770,7 @@ function drawOverlay(){
 }
 async function enterSelfie(){
   $('camError').style.display='none';
-  $('btnShoot').style.display='';
+  $('camControls').style.display='';
   $('timer1').style.display='';
   drawOverlay();
   requestAnimationFrame(function(){ sizeStages(); });
@@ -771,7 +799,7 @@ async function startCamera(){
 function showCamError(msg){
   clearTimer('selfie');
   $('timer1').style.display='none';
-  $('btnShoot').style.display='none';
+  $('camControls').style.display='none';
   $('camErrMsg').textContent=msg;
   $('camError').style.display='';
 }
@@ -865,7 +893,7 @@ function loadImageTimed(src, ms){
 }
 
 /* ---------------------------------------------------------------------------
-   12) SCREEN 2 – cards, date, fixed countdown
+   12) SCREEN 2 – colors, cards, date, fixed countdown
    --------------------------------------------------------------------------- */
 function buildCards(){
   const box=$('designCards'); box.innerHTML='';
@@ -891,14 +919,26 @@ function drawPreview(){
   renderStamp(c.getContext('2d'), c.width, {frame:S.frame, photo:S.aiImage, date:S.date});
   updateCards();
 }
+
+// Color Pickers Logic
+const colorBtns = document.querySelectorAll('.color-btn');
+colorBtns.forEach(b => b.addEventListener('click', function(e){
+  e.stopPropagation();
+  const hex = this.getAttribute('data-color');
+  colorBtns.forEach(btn => btn.classList.remove('sel'));
+  this.classList.add('sel');
+  applyColor(hex);
+}));
+
 $('dateInput').addEventListener('change', function(e){
   S.date = e.target.value || todayISO();
-  drawPreview();                      /* countdown untouched */
+  drawPreview();                     
 });
+
 function enterEdit(){
   $('dateInput').value = S.date;
   drawPreview();
-  if(!S.editStarted){                 /* start once per session only */
+  if(!S.editStarted){                 
     S.editStarted = true;
     runCountdown('edit', CONFIG.EDIT_COUNTDOWN, $('cd2'), $('bar2'), $('timer2'), openModal);
   }
@@ -979,8 +1019,8 @@ $('s0').addEventListener('click', function(e){ if(e.target.closest('.lang-btn'))
 $('btnBack1').addEventListener('click', function(){ go('s0'); });
 $('btnBack1b').addEventListener('click', function(){ go('s0'); });
 $('btnShoot').addEventListener('click', shoot);
-$('btnRetryCam').addEventListener('click', function(){ $('timer1').style.display=''; $('btnShoot').style.display=''; startCamera(); });
-$('btnUpload').addEventListener('click', function(){ $('fileInput').click(); });
+$('btnUploadMain').addEventListener('click', function(){ $('fileInput').click(); });
+$('btnRetryCam').addEventListener('click', function(){ $('timer1').style.display=''; $('camControls').style.display=''; startCamera(); });
 $('btnCancel2').addEventListener('click', function(){ go('s0'); });
 $('btnRetryAi').addEventListener('click', function(){ S.aiAttempt=0; requestAI(); });
 $('btnRestartAi').addEventListener('click', function(){ go('s0'); });
@@ -994,7 +1034,7 @@ document.addEventListener('visibilitychange', function(){ if(document.hidden && 
 (async function boot(){
   document.documentElement.style.setProperty('--ink', CONFIG.INK_COLOR);
   $('dateInput').value = S.date;
-  $('dateInput').min   = S.date;   // kiosk: no back-dating (delete to allow past dates)
+  $('dateInput').min   = S.date;   
   $('cd1').textContent = CONFIG.SELFIE_COUNTDOWN;
   $('cd2').textContent = CONFIG.EDIT_COUNTDOWN;
   $('modalCd').textContent = CONFIG.MODAL_TIMEOUT;
