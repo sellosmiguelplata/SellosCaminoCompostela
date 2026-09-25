@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK v3.2</title>
+<title>Sello del Peregrino · Camino de Santiago · KIOSK v3.3</title>
 <style>
 /* ============================================================
-   SELLO DEL PEREGRINO - KIOSK  (BUILD v3.2)
+   SELLO DEL PEREGRINO - KIOSK  (BUILD v3.3)
    Single file. No build tools. Operator settings = CONFIG block in the script.
    ============================================================ */
 :root{
@@ -199,7 +199,7 @@ input[type="range"] {
 </head>
 <body>
 
-<div id="buildTag">KIOSK v3.2</div>
+<div id="buildTag">KIOSK v3.3</div>
 
 <!-- ================= SCREEN 0 : START ================= -->
 <section id="s0" class="screen">
@@ -274,7 +274,7 @@ input[type="range"] {
       <div class="badge" id="aiBadge" style="display:none"><span class="spin"></span><span id="aiBadgeTxt"></span></div>
     </div>
     <div class="timer" id="timer2">
-      <div class="num" id="cd2">20</div>
+      <div class="num" id="cd2">35</div>
       <div class="bar"><i id="bar2"></i></div>
       <div class="lab" data-t="tmrEdit">Tiempo</div>
     </div>
@@ -341,7 +341,6 @@ input[type="range"] {
       <input type="date" id="dateInput">
     </div>
 
-    <!-- Nuevo control de Trazos -->
     <div class="datebox" style="margin-top:0;">
       <label data-t="thresholdLabel">Detalle:</label>
       <input type="range" id="thresholdRange" min="10" max="240" step="5" value="110">
@@ -405,14 +404,17 @@ const CONFIG = {
   PHOTO_OFFSET_Y   : -6,
   LINE_THRESHOLD   : 110,
   FRAME_THRESHOLD  : 120,
-  FONT_TOP         : 22,
-  FONT_DATE        : 20,
+  
+  /* Incremento considerable del tamaño de letra */
+  FONT_TOP         : 40,
+  FONT_DATE        : 36,
+  
   RADIUS_TOP       : 268,
   RADIUS_DATE      : 275,
 
   /* --- timings (seconds, wall-clock) --- */
   SELFIE_COUNTDOWN : 10,
-  EDIT_COUNTDOWN   : 20,
+  EDIT_COUNTDOWN   : 35, /* <- Edit phase extended to 35 seconds */
   MODAL_TIMEOUT    : 25,
   DONE_TIMEOUT     : 6,
   IDLE_TIMEOUT     : 90,
