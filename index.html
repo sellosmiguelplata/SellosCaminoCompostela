@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK v3.4</title>
+<title>Sello del Peregrino · Camino de Santiago · KIOSK v3.5</title>
 <style>
 /* ============================================================
-   SELLO DEL PEREGRINO - KIOSK  (BUILD v3.4)
+   SELLO DEL PEREGRINO - KIOSK  (BUILD v3.5)
    Single file. No build tools. Operator settings = CONFIG block in the script.
    ============================================================ */
 :root{
@@ -44,7 +44,7 @@ button{font-family:inherit}
   opacity:0;transform:scale(.985);
   transition:opacity .35s ease,transform .35s ease;
   overflow:hidden;
-  overflow-y:auto; /* Permite scroll si la pantalla es pequeña y los videos ocupan espacio */
+  overflow-y:auto;
 }
 .screen.show{display:flex}
 .screen.visible{opacity:1;transform:scale(1)}
@@ -81,14 +81,12 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
 
 /* ---------- tutorial boxes (accessibility) ---------- */
 .tutorial-box {
-  width: 100%; max-width: 320px; margin: 10px auto;
-  background: rgba(0,0,0,0.5); border: 2px dashed var(--line);
-  border-radius: 14px; overflow: hidden; text-align: center;
+  width: 100%; max-width: 280px; margin: 4px auto;
+  border-radius: 12px; overflow: hidden; text-align: center;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  min-height: 120px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
 }
-.tutorial-box video { width: 100%; height: auto; display: none; /* se activará al añadir el src */ }
-.tutorial-box .tut-label { padding: 10px; font-size: 0.9rem; color: var(--gold); font-weight: bold; }
+.tutorial-box video { width: 100%; height: auto; display: block; }
 
 /* ---------- falling decorations ---------- */
 .fall{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
@@ -97,7 +95,7 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
 
 /* ---------- screen 0 ---------- */
 .stage0{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;flex:1 1 auto;gap:clamp(10px,2.4vh,22px);width:100%}
+  justify-content:center;flex:1 1 auto;gap:clamp(6px,1.8vh,16px);width:100%}
 .samples{display:flex;gap:clamp(8px,2.4vw,20px);justify-content:center;align-items:center;flex-wrap:nowrap}
 .samples canvas{
   width:clamp(74px,19vw,140px);height:clamp(74px,19vw,140px);border-radius:50%;
@@ -222,7 +220,7 @@ if (accessPassword !== "peregrino123") {
 }
 </script>
 
-<div id="buildTag">KIOSK v3.4</div>
+<div id="buildTag">KIOSK v3.5</div>
 
 <!-- ================= SCREEN 0 : START ================= -->
 <section id="s0" class="screen">
@@ -243,10 +241,9 @@ if (accessPassword !== "peregrino123") {
     <h1 data-t="welcomeTitle">Sello del Peregrino</h1>
     <p class="sub" data-t="welcomeSub">Hazte una foto y llévate tu sello en la credencial.</p>
     
-    <!-- Espacio para Video Tutorial: Cómo empezar -->
+    <!-- Video Demostrativo del Kiosco -->
     <div class="tutorial-box">
-      <!-- <video src="tu-video-inicio.mp4" autoplay loop muted playsinline></video> -->
-      <div class="tut-label" data-t="tutVideoStart">[Espacio para Video: Toca para empezar]</div>
+      <video src="tutorial.mp4" autoplay loop muted playsinline></video>
     </div>
 
     <button class="btn big" id="btnStart" data-t="start">Comenzar</button>
@@ -281,13 +278,6 @@ if (accessPassword !== "peregrino123") {
         <button class="btn sm ghost" id="btnBack1b" data-t="back">Volver</button>
       </div>
     </div>
-    
-    <!-- Espacio para Video Tutorial: Cómo posar -->
-    <div class="tutorial-box" style="min-height: 60px;">
-      <!-- <video src="tu-video-foto.mp4" autoplay loop muted playsinline></video> -->
-      <div class="tut-label" data-t="tutVideoPhoto">[Video: Mira de frente y encuadra tu cara]</div>
-    </div>
-
     <div class="row" id="camControls">
       <button class="btn" id="btnShoot" data-t="shootNow">Hacer la foto ahora</button>
       <button class="btn ghost" id="btnUploadMain" data-t="uploadPhoto">Subir foto</button>
@@ -485,7 +475,6 @@ es:{welcomeTitle:"Sello del Peregrino",welcomeSub:"Hazte una foto y llévate tu 
  tmTitle:"¿Imprimimos tu sello?",tmMsg:"Se ha acabado el tiempo de edición.",
  doneTitle:"¡Buen Camino!",doneSub:"Tu sello se está imprimiendo. Retíralo de la impresora.",finish:"Finalizar",
  opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Escudo",
- tutVideoStart:"[Espacio para Video: Toca para empezar]", tutVideoPhoto:"[Video: Mira de frente y encuadra tu cara]",
  taint:"Aviso del operador: abre la app desde un servidor web (http/https)."},
 en:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in your credential.",start:"Start",startHint:"Touch the screen to begin",
  step1:"Step 1 · Photo",lookCamera:"Look at the camera",shootNow:"Take the photo now",back:"Back",cancel:"Cancel",retry:"Retry",uploadPhoto:"Upload photo",
@@ -502,7 +491,6 @@ en:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in
  tmTitle:"Shall we print your stamp?",tmMsg:"Editing time is over.",
  doneTitle:"Buen Camino!",doneSub:"Your stamp is being printed. Please take it from the printer.",finish:"Finish",
  opt1:"French Way",opt2:"Ultreia",opt3:"Credential",opt4:"Shield",
- tutVideoStart:"[Video Space: Tap to start]", tutVideoPhoto:"[Video Space: Frame your face]",
  taint:"Operator notice: serve this app over http/https."},
 de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie und erhalte deinen Stempel im Pilgerpass.",start:"Starten",startHint:"Bildschirm berühren zum Starten",
  step1:"Schritt 1 · Foto",lookCamera:"Schau in die Kamera",shootNow:"Jetzt fotografieren",back:"Zurück",cancel:"Abbrechen",retry:"Erneut versuchen",uploadPhoto:"Foto hochladen",
@@ -519,7 +507,6 @@ de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie und erhalte deinen 
  tmTitle:"Sollen wir deinen Stempel drucken?",tmMsg:"Die Bearbeitungszeit ist abgelaufen.",
  doneTitle:"Buen Camino!",doneSub:"Dein Stempel wird gedruckt. Bitte am Drucker entnehmen.",finish:"Beenden",
  opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Wappen",
- tutVideoStart:"[Video: Tippen zum Starten]", tutVideoPhoto:"[Video: Gesicht im Rahmen]",
  taint:"Hinweis für den Betreiber: App über http/https bereitstellen."},
 fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie et repars avec ton tampon sur ta crédentiale.",start:"Commencer",startHint:"Touchez l'écran pour commencer",
  step1:"Étape 1 · Photo",lookCamera:"Regardez l'objectif",shootNow:"Prendre la photo maintenant",back:"Retour",cancel:"Annuler",retry:"Réessayer",uploadPhoto:"Envoyer une photo",
@@ -536,7 +523,6 @@ fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie et repars ave
  tmTitle:"On imprime votre tampon ?",tmMsg:"Le temps d'édition est écoulé.",
  doneTitle:"Buen Camino !",doneSub:"Votre tampon s'imprime. Récupérez-le.",finish:"Terminer",
  opt1:"Chemin Français",opt2:"Ultreia",opt3:"Credential",opt4:"Blason",
- tutVideoStart:"[Vidéo : Touchez pour commencer]", tutVideoPhoto:"[Vidéo : Cadrez votre visage]",
  taint:"Avis opérateur : servez l'application en http/https."},
 pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma foto e leve seu carimbo na credencial.",start:"Começar",startHint:"Toque na tela para começar",
  step1:"Passo 1 · Foto",lookCamera:"Olhe para a câmera",shootNow:"Tirar foto agora",back:"Voltar",cancel:"Cancelar",retry:"Tentar novamente",uploadPhoto:"Enviar foto",
@@ -553,7 +539,6 @@ pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma foto e leve seu car
  tmTitle:"Vamos imprimir seu carimbo?",tmMsg:"O tempo de edição acabou.",
  doneTitle:"Buen Camino!",doneSub:"Seu carimbo está sendo impresso. Retire-o da impressora.",finish:"Finalizar",
  opt1:"Caminho Francês",opt2:"Ultreia",opt3:"Credencial",opt4:"Escudo",
- tutVideoStart:"[Vídeo: Toque para começar]", tutVideoPhoto:"[Vídeo: Enquadre seu rosto]",
  taint:"Aviso do operador: abra o aplicativo de um servidor web (http/https)."},
 zh:{welcomeTitle:"朝圣者印章",welcomeSub:"拍张照片，在您的朝圣者护照上盖章。",start:"开始",startHint:"触摸屏幕开始",
  step1:"第一步 · 拍照",lookCamera:"看着相机",shootNow:"现在拍照",back:"返回",cancel:"取消",retry:"重试",uploadPhoto:"上传照片",
@@ -570,7 +555,6 @@ zh:{welcomeTitle:"朝圣者印章",welcomeSub:"拍张照片，在您的朝圣者
  tmTitle:"要打印印章吗？",tmMsg:"编辑时间已结束。",
  doneTitle:"一路平安 (Buen Camino)!",doneSub:"您的印章正在打印。请从打印机中取出。",finish:"完成",
  opt1:"法国之路",opt2:"Ultreia",opt3:"朝圣者护照",opt4:"盾牌",
- tutVideoStart:"[视频：点击开始]", tutVideoPhoto:"[视频：对准您的脸]",
  taint:"操作员提示: 请通过 http/https 运行此应用。"},
 uk:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть фото та отримайте печатку у свій паспорт паломника.",start:"Почати",startHint:"Торкніться екрана, щоб почати",
  step1:"Крок 1 · Фото",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото зараз",back:"Назад",cancel:"Скасувати",retry:"Повторити",uploadPhoto:"Завантажити фото",
@@ -587,7 +571,6 @@ uk:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть 
  tmTitle:"Друкувати печатку?",tmMsg:"Час на редагування минув.",
  doneTitle:"Buen Camino!",doneSub:"Ваша печатка друкується. Візьміть її з принтера.",finish:"Завершити",
  opt1:"Французький шлях",opt2:"Ultreia",opt3:"Креденсіаль",opt4:"Щит",
- tutVideoStart:"[Відео: Торкніться, щоб почати]", tutVideoPhoto:"[Відео: Подивіться в камеру]",
  taint:"Примітка: відкрийте додаток через http/https."}
 };
 let LANG = CONFIG.DEFAULT_LANG;
