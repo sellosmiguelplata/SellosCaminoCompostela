@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK v3.6</title>
+<title>Sello del Peregrino · Camino de Santiago · KIOSK v3.7</title>
 <style>
 /* ============================================================
-   SELLO DEL PEREGRINO - KIOSK  (BUILD v3.6)
+   SELLO DEL PEREGRINO - KIOSK  (BUILD v3.7)
    ============================================================ */
 :root{
   --ink:#8a2222;
@@ -39,7 +39,7 @@ button{font-family:inherit}
 .screen{
   position:fixed;inset:0;display:none;flex-direction:column;
   align-items:center;justify-content:flex-start;
-  padding:calc(env(safe-area-inset-top) + 10px) 14px calc(env(safe-area-inset-bottom) + 10px);
+  padding:calc(env(safe-area-inset-top) + 8px) 14px calc(env(safe-area-inset-bottom) + 8px);
   opacity:0;transform:scale(.985);
   transition:opacity .35s ease,transform .35s ease;
   overflow:hidden;
@@ -52,43 +52,43 @@ button{font-family:inherit}
 .topbar{width:100%;max-width:760px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto;z-index:5}
 .brand{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
 
-/* Idiomas grandes y centrados arriba */
+/* Banderas de idiomas grandes y atractivas arriba */
 .langs-hero {
-  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
-  width: 100%; max-width: 600px; margin: 4px 0 10px 0; z-index: 10;
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  width: 100%; max-width: 650px; margin: 2px 0 6px 0; z-index: 10;
 }
 .lang-btn{
-  background:var(--card);border:2px solid var(--line);color:var(--txt-dim);
-  padding:10px 14px;border-radius:14px;font-size:1.3rem;cursor:pointer;
-  min-width:54px;min-height:48px;transition:.2s; font-weight: bold;
+  background:var(--card);border:2px solid var(--line);color:var(--txt);
+  padding:8px 12px;border-radius:14px;font-size:1.8rem;cursor:pointer;
+  min-width:60px;min-height:50px;transition:.2s; display:inline-flex;align-items:center;justify-content:center;
 }
-.lang-btn.active{background:var(--ink);border-color:var(--gold);color:#fff;box-shadow:0 0 12px rgba(216,178,95,.3);}
+.lang-btn.active{background:var(--ink);border-color:var(--gold);box-shadow:0 0 14px rgba(216,178,95,.4);}
 
-h1{font-size:clamp(1.5rem,4.8vw,2.3rem);margin:.1em 0 .05em;text-align:center;font-weight:800}
-.sub{color:var(--txt-dim);text-align:center;font-size:clamp(.8rem,2.4vw,0.95rem);margin:0 0 2px;max-width:34ch}
+h1{font-size:clamp(1.4rem,4.2vw,2.1rem);margin:.05em 0;text-align:center;font-weight:800}
+.sub{color:var(--txt-dim);text-align:center;font-size:clamp(.78rem,2.2vw,0.9rem);margin:0 0 2px;max-width:36ch}
 h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:center;font-weight:700}
 
 .btn{
   border:none;border-radius:14px;cursor:pointer;font-weight:800;
-  padding:15px 24px;font-size:1rem;min-height:54px;
+  padding:14px 22px;font-size:1rem;min-height:50px;
   background:var(--ink);color:#fff;transition:transform .12s ease,opacity .2s;
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
 }
 .btn:active{transform:scale(.97)}
 .btn[disabled]{opacity:.42;cursor:not-allowed}
 .btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--txt)}
-.btn.big{padding:20px 48px;font-size:1.2rem;border-radius:20px;min-height:68px;
+.btn.big{padding:18px 44px;font-size:1.2rem;border-radius:18px;min-height:64px;
   box-shadow:0 10px 34px rgba(138,34,34,.45)}
 .btn.ok{background:var(--ok)}
 .btn.sm{padding:11px 15px;font-size:.88rem;min-height:46px;border-radius:12px}
 .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:760px}
 
-/* ---------- tutorial box ---------- */
+/* ---------- tutorial box principal ---------- */
 .tutorial-box {
-  width: 100%; max-width: 260px; margin: 2px auto;
+  width: 100%; max-width: 240px; margin: 2px auto;
   border-radius: 12px; overflow: hidden; text-align: center;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6); background: #000; min-height: 130px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6); background: #000; min-height: 120px;
 }
 .tutorial-box video { width: 100%; height: auto; display: block; }
 
@@ -99,7 +99,7 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
 
 /* ---------- screen 0 ---------- */
 .stage0{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;flex:1 1 auto;gap:clamp(4px,1.2vh,12px);width:100%}
+  justify-content:center;flex:1 1 auto;gap:clamp(4px,1vh,10px);width:100%}
 
 /* ---------- stamp stage (screens 1 & 2) ---------- */
 .stagewrap{position:relative;z-index:2;flex:1 1 auto;display:flex;
@@ -146,22 +146,36 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
   animation:sp .9s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 
-/* ---------- guide labels & selectors ---------- */
-.guide-row{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:520px;margin-top:4px;}
-.guide-label{color:var(--gold);font-size:.82rem;font-weight:700;display:flex;align-items:center;gap:4px;}
+/* ---------- layout lateral para etiquetas de selección (Estilo solicitado) ---------- */
+.section-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 520px;
+  gap: 12px;
+  margin-top: 4px;
+}
+.side-label {
+  min-width: 130px;
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-align: left;
+}
 
-.color-pickers{display:flex;gap:10px;justify-content:center;width:100%;max-width:520px;}
+.color-pickers{display:flex;gap:8px;flex:1;}
 .color-btn{flex:1;height:38px;border:2px solid var(--line);border-radius:10px;cursor:pointer;transition:.2s;}
 .color-btn.sel{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,178,95,.2);}
 
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:520px;margin-top:2px;}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex:1;}
 .card{
-  background:var(--card);border:2px solid var(--line);border-radius:14px;
-  padding:6px 4px 5px;cursor:pointer;text-align:center;transition:.18s;
+  background:var(--card);border:2px solid var(--line);border-radius:12px;
+  padding:4px 3px 4px;cursor:pointer;text-align:center;transition:.18s;
 }
 .card.sel{border-color:var(--gold);background:var(--card2);box-shadow:0 0 0 3px rgba(216,178,95,.18)}
 .card canvas{width:100%;aspect-ratio:1/1;border-radius:50%;background:#fff;display:block}
-.card .nm{font-size:.62rem;color:var(--txt-dim);margin-top:4px;line-height:1.15;
+.card .nm{font-size:.58rem;color:var(--txt-dim);margin-top:3px;line-height:1.15;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card.sel .nm{color:var(--gold);font-weight:700}
 
@@ -169,13 +183,13 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:6px 0 2px;text-align:cen
 .datebox label{font-size:.8rem;color:var(--txt-dim);font-weight:600;white-space:nowrap}
 input[type="date"], select {
   background:var(--card);border:1px solid var(--line);color:var(--txt);
-  padding:10px 14px;border-radius:12px;font-size:1rem;min-height:44px;flex:1;max-width:230px;
+  padding:9px 12px;border-radius:12px;font-size:.95rem;min-height:42px;flex:1;max-width:230px;
 }
 input[type="range"] { flex: 1; max-width: 230px; }
 .ctlblock{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
-  gap:clamp(4px,1vh,10px);width:100%;z-index:2}
+  gap:clamp(4px,1vh,8px);width:100%;z-index:2}
 
-/* ---------- inline error panel ---------- */
+/* ---------- panel de error ---------- */
 .panel{
   background:var(--card);border:1px solid var(--line);border-left:4px solid var(--err);
   border-radius:14px;padding:14px 16px;max-width:520px;width:100%;
@@ -213,7 +227,7 @@ if (accessPassword !== "peregrino123") {
 }
 </script>
 
-<div id="buildTag">KIOSK v3.6</div>
+<div id="buildTag">KIOSK v3.7</div>
 
 <!-- ================= SCREEN 0 : START ================= -->
 <section id="s0" class="screen">
@@ -223,22 +237,22 @@ if (accessPassword !== "peregrino123") {
     <div class="brand">Ultreia et Suseia</div>
   </div>
 
-  <!-- Idiomas Grandes y Centrados Arriba -->
+  <!-- Banderas de Idiomas Grandes y Centradas -->
   <div class="langs-hero">
-    <button class="lang-btn active" data-lang="es">ES</button>
-    <button class="lang-btn" data-lang="gb">GB</button>
-    <button class="lang-btn" data-lang="de">DE</button>
-    <button class="lang-btn" data-lang="fr">FR</button>
-    <button class="lang-btn" data-lang="pt">PT</button>
-    <button class="lang-btn" data-lang="cn">CN</button>
-    <button class="lang-btn" data-lang="ua">UA</button>
+    <button class="lang-btn active" data-lang="es">🇪🇸</button>
+    <button class="lang-btn" data-lang="gb">🇬🇧</button>
+    <button class="lang-btn" data-lang="de">🇩🇪</button>
+    <button class="lang-btn" data-lang="fr">🇫🇷</button>
+    <button class="lang-btn" data-lang="pt">🇵🇹</button>
+    <button class="lang-btn" data-lang="cn">🇨🇳</button>
+    <button class="lang-btn" data-lang="ua">🇺🇦</button>
   </div>
 
   <div class="stage0">
     <h1 data-t="welcomeTitle">Sello del Peregrino</h1>
     <p class="sub" data-t="welcomeSub">Hazte una foto y llévate tu sello en la credencial.</p>
     
-    <!-- Video Demostrativo -->
+    <!-- Video Demostrativo Protagonista -->
     <div class="tutorial-box">
       <video src="Tutorial.mp4" autoplay loop muted playsinline></video>
     </div>
@@ -310,22 +324,22 @@ if (accessPassword !== "peregrino123") {
       </div>
     </div>
     
-    <!-- Guía: Elige tu color -->
-    <div class="guide-row">
-      <span class="guide-label" data-t="lblChooseColor">👉 Elige tu color:</span>
-    </div>
-    <div class="color-pickers" id="colorPickers">
-      <button class="color-btn sel" data-color="#8a2222" style="background: #8a2222;"></button>
-      <button class="color-btn" data-color="#1e3a8a" style="background: #1e3a8a;"></button>
-      <button class="color-btn" data-color="#065f46" style="background: #065f46;"></button>
-      <button class="color-btn" data-color="#111827" style="background: #111827;"></button>
+    <!-- Fila lateral: Elige tu color -->
+    <div class="section-row">
+      <div class="side-label" data-t="lblChooseColor">👉 Elige tu color:</div>
+      <div class="color-pickers" id="colorPickers">
+        <button class="color-btn sel" data-color="#8a2222" style="background: #8a2222;"></button>
+        <button class="color-btn" data-color="#1e3a8a" style="background: #1e3a8a;"></button>
+        <button class="color-btn" data-color="#065f46" style="background: #065f46;"></button>
+        <button class="color-btn" data-color="#111827" style="background: #111827;"></button>
+      </div>
     </div>
 
-    <!-- Guía: Elige tu sello -->
-    <div class="guide-row">
-      <span class="guide-label" data-t="lblChooseStamp">👉 Elige tu sello:</span>
+    <!-- Fila lateral: Elige tu sello -->
+    <div class="section-row">
+      <div class="side-label" data-t="lblChooseStamp">👉 Elige tu sello:</div>
+      <div class="cards" id="designCards"></div>
     </div>
-    <div class="cards" id="designCards"></div>
     
     <div class="datebox">
       <label data-t="locationLabel">Lugar:</label>
@@ -367,6 +381,7 @@ if (accessPassword !== "peregrino123") {
         <option value="SANTIAGO DE COMPOSTELA">Santiago de Compostela</option>
       </select>
       
+      <!-- Fecha libre (permite pasado y futuro) -->
       <input type="date" id="dateInput">
     </div>
 
@@ -407,7 +422,7 @@ if (accessPassword !== "peregrino123") {
 
 <script>
 /* ============================================================================
-   1) CONFIG  —  ONLY THE OPERATOR EDITS THIS BLOCK
+   1) CONFIG
    ============================================================================ */
 const CONFIG = {
   AI_WEBHOOK_URL   : "https://hook.eu1.make.com/lqq9d91pvhkkssmte4ukt8cik4ulgj9v",
@@ -454,17 +469,14 @@ es:{welcomeTitle:"Sello del Peregrino",welcomeSub:"Hazte una foto y llévate tu 
  tmrPhoto:"Foto en",tmrEdit:"Tiempo",tmAuto:"Volvemos al inicio en",
  camErrTitle:"No se puede abrir la cámara",
  errFile:"La página se ha abierto como archivo local. Los navegadores bloquean la cámara así.",
- errPerm:"Permiso denegado. Acepta el acceso à la cámara.",
- errNone:"No se ha encontrado ninguna cámara conectada.",
- errBusy:"La cámara está siendo usada por otra aplicación.",
- errOther:"Error desconocido de cámara.",
+ errPerm:"Permiso denegado.",errNone:"Sin cámara.",errBusy:"En uso.",errOther:"Error de cámara.",
  step2:"Paso 2 · Tu sello",dateLabel:"Fecha:",locationLabel:"Lugar:",thresholdLabel:"Detalle:",print:"Imprimir sello",startAgain:"Empezar de nuevo",
  aiLoading:"Creando tu sello…",aiRetrying:"Reintentando…",
  aiErrTitle:"No hemos podido crear el dibujo",aiErrMsg:"El servicio no responde. Inténtalo de nuevo.",
  tmTitle:"¿Imprimimos tu sello?",tmMsg:"Se ha acabado el tiempo de edición.",
  doneTitle:"¡Buen Camino!",doneSub:"Tu sello se está imprimiendo. Retíralo de la impresora.",finish:"Finalizar",
  opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Escudo",
- lblChooseColor:"👉 Elige tu color:", lblChooseStamp:"👉 Elige tu sello:",
+ lblChooseColor:"Elige tu color:", lblChooseStamp:"Elige tu sello:",
  taint:"Aviso del operador: abre la app desde un servidor web (http/https)."},
 gb:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in your credential.",start:"Start",
  step1:"Step 1 · Photo",lookCamera:"Look at the camera",shootNow:"Take the photo now",back:"Back",cancel:"Cancel",retry:"Retry",uploadPhoto:"Upload photo",
@@ -477,7 +489,7 @@ gb:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in
  tmTitle:"Shall we print your stamp?",tmMsg:"Editing time is over.",
  doneTitle:"Buen Camino!",doneSub:"Your stamp is being printed.",finish:"Finish",
  opt1:"French Way",opt2:"Ultreia",opt3:"Credential",opt4:"Shield",
- lblChooseColor:"👉 Choose your color:", lblChooseStamp:"👉 Choose your stamp:",
+ lblChooseColor:"Choose your color:", lblChooseStamp:"Choose your stamp:",
  taint:"Operator notice: serve over http/https."},
 de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie und erhalte deinen Stempel im Pilgerpass.",start:"Starten",
  step1:"Schritt 1 · Foto",lookCamera:"Schau in die Kamera",shootNow:"Jetzt fotografieren",back:"Zurück",cancel:"Abbrechen",retry:"Erneut",uploadPhoto:"Foto hochladen",
@@ -490,7 +502,7 @@ de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie und erhalte deinen 
  tmTitle:"Sollen wir drucken?",tmMsg:"Zeit abgelaufen.",
  doneTitle:"Buen Camino!",doneSub:"Stempel wird gedruckt.",finish:"Beenden",
  opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Wappen",
- lblChooseColor:"👉 Wähle deine Farbe:", lblChooseStamp:"👉 Wähle deinen Stempel:",
+ lblChooseColor:"Wähle deine Farbe:", lblChooseStamp:"Wähle deinen Stempel:",
  taint:"Hinweis: App über http/https bereitstellen."},
 fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie et repars avec ton tampon sur ta crédentiale.",start:"Commencer",
  step1:"Étape 1 · Photo",lookCamera:"Regardez l'objectif",shootNow:"Prendre la photo maintenant",back:"Retour",cancel:"Annuler",retry:"Réessayer",uploadPhoto:"Envoyer",
@@ -503,7 +515,7 @@ fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie et repars ave
  tmTitle:"On imprime ?",tmMsg:"Temps écoulé.",
  doneTitle:"Buen Camino !",doneSub:"Impression en cours.",finish:"Terminer",
  opt1:"Chemin Français",opt2:"Ultreia",opt3:"Credential",opt4:"Blason",
- lblChooseColor:"👉 Choisissez votre couleur :", lblChooseStamp:"👉 Choisissez votre tampon :",
+ lblChooseColor:"Choisissez votre couleur :", lblChooseStamp:"Choisissez votre tampon :",
  taint:"Avis opérateur : http/https requis."},
 pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma foto e leve seu carimbo na credencial.",start:"Começar",
  step1:"Passo 1 · Foto",lookCamera:"Olhe para a câmera",shootNow:"Tirar foto agora",back:"Voltar",cancel:"Cancelar",retry:"Tentar",uploadPhoto:"Enviar",
@@ -516,7 +528,7 @@ pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma foto e leve seu car
  tmTitle:"Imprimir?",tmMsg:"Tempo esgotado.",
  doneTitle:"Buen Camino!",doneSub:"Imprimindo.",finish:"Finalizar",
  opt1:"Caminho Francés",opt2:"Ultreia",opt3:"Credencial",opt4:"Escudo",
- lblChooseColor:"👉 Escolha sua cor:", lblChooseStamp:"👉 Escolha seu carimbo:",
+ lblChooseColor:"Escolha sua cor:", lblChooseStamp:"Escolha seu carimbo:",
  taint:"Aviso: use http/https."},
 cn:{welcomeTitle:"朝圣者印章",welcomeSub:"拍张照片，在您的朝圣者护照上盖章。",start:"开始",
  step1:"第一步 · 拍照",lookCamera:"看着相机",shootNow:"现在拍照",back:"返回",cancel:"取消",retry:"重试",uploadPhoto:"上传",
@@ -529,7 +541,7 @@ cn:{welcomeTitle:"朝圣者印章",welcomeSub:"拍张照片，在您的朝圣者
  tmTitle:"打印印章？",tmMsg:"时间到",
  doneTitle:"一路平安!",doneSub:"正在打印",finish:"完成",
  opt1:"法国之路",opt2:"Ultreia",opt3:"护照",opt4:"盾牌",
- lblChooseColor:"👉 选择您的颜色:", lblChooseStamp:"👉 选择您的印章:",
+ lblChooseColor:"选择您的颜色:", lblChooseStamp:"选择您的印章:",
  taint:"提示: 请通过 http/https 运行"},
 uk:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть фото та отримайте печатку у свій паспорт.",start:"Почати",
  step1:"Крок 1 · Фото",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото",back:"Назад",cancel:"Скасувати",retry:"Повторити",uploadPhoto:"Фото",
@@ -542,7 +554,7 @@ uk:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть 
  tmTitle:"Друкувати печатку?",tmMsg:"Час вийшов.",
  doneTitle:"Buen Camino!",doneSub:"Друкується.",finish:"Завершити",
  opt1:"Французький шлях",opt2:"Ultreia",opt3:"Креденсіаль",opt4:"Щит",
- lblChooseColor:"👉 Виберіть колір:", lblChooseStamp:"👉 Виберіть печатку:",
+ lblChooseColor:"Виберіть колір:", lblChooseStamp:"Виберіть печатку:",
  taint:"Примітка: потрібен http/https."}
 };
 let LANG = CONFIG.DEFAULT_LANG;
@@ -1111,7 +1123,7 @@ document.addEventListener('visibilitychange', function(){ if(document.hidden && 
 (async function boot(){
   document.documentElement.style.setProperty('--ink', CONFIG.INK_COLOR);
   $('dateInput').value = S.date;
-  $('dateInput').min   = S.date;   
+  // Nota: Eliminado el límite min para permitir fechas en el pasado y futuro
   $('cd1').textContent = CONFIG.SELFIE_COUNTDOWN;
   $('cd2').textContent = CONFIG.EDIT_COUNTDOWN;
   $('modalCd').textContent = CONFIG.MODAL_TIMEOUT;
