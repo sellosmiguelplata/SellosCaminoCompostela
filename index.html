@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK v4.0</title>
+<title>Sello del Peregrino · Camino de Santiago · KIOSK v4.1</title>
 <style>
 /* ============================================================
-   SELLO DEL PEREGRINO - KIOSK  (BUILD v4.0)
+   SELLO DEL PEREGRINO - KIOSK  (BUILD v4.1)
    ============================================================ */
 :root{
   --ink:#8a2222;
@@ -264,7 +264,7 @@ if (accessPassword !== "peregrino123") {
 }
 </script>
 
-<div id="buildTag">KIOSK v4.0</div>
+<div id="buildTag">KIOSK v4.1</div>
 
 <!-- ================= SCREEN 0 : START ================= -->
 <section id="s0" class="screen">
@@ -489,7 +489,7 @@ const CONFIG = {
   RADIUS_TOP       : 268,
   RADIUS_DATE      : 275,
   SELFIE_COUNTDOWN : 10,
-  EDIT_COUNTDOWN   : 90, /* Ampliado a 90 segundos */
+  EDIT_COUNTDOWN   : 90, /* Ampliado a 60 segundos */
   MODAL_TIMEOUT    : 25,
   DONE_TIMEOUT     : 6,
   IDLE_TIMEOUT     : 90,
@@ -585,7 +585,7 @@ cn:{welcomeTitle:"朝圣者印章",welcomeSub:"拍张照片，在您的朝圣者
  opt1:"法国之路",opt2:"Ultreia",opt3:"护照",opt4:"盾牌",
  lblChooseColor:"👉 选择您的颜色:", lblChooseStamp:"👉 选择您的印章:", lblChoosePlaceDate:"📍 选择地点和日期:",
  taint:"提示: 请通过 http/https 运行"},
-uk:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть фото та отримайте печатку у свій паспорт.",start:"Почати",
+ua:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть фото та отримайте печатку у свій паспорт.",start:"Почати",
  step1:"Крок 1 · Фото",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото",back:"Назад",cancel:"Скасувати",retry:"Повторити",uploadPhoto:"Фото",
  tmrPhoto:"Фото через",tmrEdit:"Час",tmAuto:"Повернення",
  camErrTitle:"Помилка камери",
@@ -956,10 +956,36 @@ function shoot(){
   go('s2');
   requestAI();
 }
+
+/* ---------------------------------------------------------------------------
+   OPTIMIZACIÓN DE SUBIDA DE FOTOS (CLIENT-SIDE CROP & COMPRESS)
+   --------------------------------------------------------------------------- */
 $('fileInput').addEventListener('change', function(e){
   const f=e.target.files && e.target.files[0]; if(!f) return;
   const r=new FileReader();
-  r.onload=function(ev){ S.rawPhoto=ev.target.result; S.aiAttempt=0; S.editStarted=false; go('s2'); requestAI(); };
+  r.onload=function(ev){ 
+    const img = new Image();
+    img.onload = function(){
+      /* Recortamos la imagen de la galería para que sea un cuadrado perfecto centrado,
+         y la reducimos a 1024x1024px para evitar saturar la IA con fotos de 10MB */
+      const N = CONFIG.CAPTURE_SIZE;
+      const minDim = Math.min(img.width, img.height);
+      const sx = (img.width - minDim) / 2;
+      const sy = (img.height - minDim) / 2;
+      
+      const c = document.createElement('canvas');
+      c.width = N; c.height = N;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, N, N);
+      
+      S.rawPhoto = c.toDataURL('image/jpeg', 0.92); /* Compresión ligera lista para web */
+      S.aiAttempt = 0; 
+      S.editStarted = false; 
+      go('s2'); 
+      requestAI(); 
+    };
+    img.src = ev.target.result;
+  };
   r.readAsDataURL(f);
   e.target.value='';
 });
