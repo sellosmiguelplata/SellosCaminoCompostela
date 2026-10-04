@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK v4.4</title>
+<title>Sello del Peregrino · Camino de Santiago · KIOSK v4.5</title>
 <style>
 /* ============================================================
-   SELLO DEL PEREGRINO - KIOSK  (BUILD v4.4)
+   SELLO DEL PEREGRINO - KIOSK  (BUILD v4.5)
    ============================================================ */
 :root{
   --ink:#8a2222;
@@ -282,7 +282,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
 </head>
 <body>
 
-<!-- PANTALLA DE BLOQUEO SEGURA (Candado real que impide ver la app sin clave) -->
+<!-- PANTALLA DE BLOQUEO SEGURA -->
 <div id="lockScreen">
   <div class="lock-box">
     <h2>🔒 Kiosco Protegido</h2>
@@ -293,7 +293,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </div>
 
-<div id="buildTag">KIOSK v4.4</div>
+<div id="buildTag">KIOSK v4.5</div>
 
 <!-- ================= SCREEN 0 : START ================= -->
 <section id="s0" class="screen">
@@ -324,7 +324,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </section>
 
-<!-- ================= SCREEN 1 : DUAL CHOICE (Selfie o WhatsApp) ================= -->
+<!-- ================= SCREEN 1 : DUAL CHOICE ================= -->
 <section id="s1" class="screen">
   <div class="fall" id="fall1"></div>
   <div class="topbar">
@@ -569,11 +569,11 @@ const CONFIG = {
 
 const $ = id => document.getElementById(id);
 
-// Lógica de desbloqueo seguro
+// Lógica de desbloqueo seguro con contraseña "peregrino123"
 $('btnUnlock').addEventListener('click', function(){
   const pass = $('lockInput').value;
   if (pass === "peregrino123") {
-    $('lockScreen.style.display = 'none';
+    $('lockScreen').style.display = 'none';
     go('s0');
   } else {
     $('lockError').style.display = 'block';
@@ -698,7 +698,7 @@ ua:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть 
  tmrPhoto:"Фото через",tmrEdit:"Час",tmAuto:"Повернення",
  camErrTitle:"Помилка камери",
  errFile:"Локальний файл.",errPerm:"Заборонено.",errNone:"Немає камери.",errBusy:"Зайнято.",errOther:"Помилка.",
- step2:"Крок 2 · Печатка",locationLabel:"Місце:",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
+ step2:"Kрок 2 · Печатка",locationLabel:"Місце:",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
  aiLoading:"Створення…",aiRetrying:"Повтор…",
  aiErrTitle:"Помилка малювання",aiErrMsg:"Немає відповіді.",
  tmTitle:"Друкувати печатку?",tmMsg:"Час вийшов.",
@@ -1321,7 +1321,6 @@ document.addEventListener('visibilitychange', function(){ if(document.hidden && 
   buildCards();
   setLang(CONFIG.DEFAULT_LANG);
   try{ await preloadFrames(); }catch(e){}
-  // No arranca go('s0') hasta desbloquear
   setTimeout(sizeStages, 60);
 })();
 </script>
