@@ -5,77 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sube tu foto</title>
   <style>
-    body {
-      background-color: #161a22; /* Fondo oscuro igual que la tablet */
-      color: white;
-      font-family: sans-serif;
-      text-align: center;
-      padding: 50px 20px;
-    }
-    h1 { 
-      color: #d8b25f; /* Color dorado */ 
-    }
-    .boton {
-      background-color: #2f9e6b; /* Color verde */
-      color: white;
-      border: none;
-      padding: 20px 40px;
-      font-size: 20px;
-      font-weight: bold;
-      border-radius: 15px;
-      margin-top: 30px;
-      cursor: pointer;
-    }
-    #mensaje { 
-      margin-top: 20px; 
-      font-size: 18px; 
-      color: #9aa4b8; 
-    }
-    #miniatura { 
-      max-width: 250px; 
-      border-radius: 15px; 
-      margin-top: 20px; 
-      border: 3px solid #d8b25f;
-      display: none; 
-    }
+    body { background-color: #161a22; color: white; font-family: sans-serif; text-align: center; padding: 50px 20px; }
+    h1 { color: #d8b25f; }
+    .boton { background-color: #2f9e6b; color: white; border: none; padding: 20px 40px; font-size: 20px; font-weight: bold; border-radius: 15px; margin-top: 30px; cursor: pointer; }
+    #mensaje { margin-top: 20px; font-size: 18px; color: #9aa4b8; font-weight: bold; }
+    #miniatura { max-width: 250px; border-radius: 15px; margin-top: 20px; border: 3px solid #d8b25f; display: none; }
   </style>
 </head>
 <body>
 
   <h1>Sello del Peregrino</h1>
-  <p>Selecciona desde tu móvil la foto de la persona que quieres poner en el sello.</p>
+  <p>Selecciona la foto desde tu galería personal.</p>
 
-  <!-- Este es el mecanismo real que pide la foto (lo ocultamos porque es feo) -->
   <input type="file" id="selectorFoto" accept="image/*" style="display: none;">
-  
-  <!-- Este es el botón bonito que pulsa la gente -->
-  <button class="boton" onclick="document.getElementById('selectorFoto').click()">
-    📸 Elegir Foto
-  </button>
+  <button class="boton" onclick="document.getElementById('selectorFoto').click()">📸 Elegir Foto</button>
 
-  <!-- Aquí mostraremos la foto en pequeñito cuando la elijan -->
-  <br>
-  <img id="miniatura">
-  
-  <!-- Aquí pondremos avisos como "Enviando..." -->
+  <br><img id="miniatura">
   <p id="mensaje"></p>
 
   <script>
-    // Esto se ejecuta cuando el usuario elige una foto de su galería
+    // Leemos un código secreto para saber de qué tablet viene (luego la tablet lo generará sola)
+    const parametros = new URLSearchParams(window.location.search);
+    const idSesion = parametros.get('sesion') || 'sesion_prueba';
+
+    // AQUÍ ESTÁ TU BUZÓN DE MAKE
+    const URL_MAKE = "https://hook.eu1.make.com/5k5pbmm8hm86kd02veu5gv4xo581jiy9";
+
     document.getElementById('selectorFoto').addEventListener('change', function(evento) {
       const archivo = evento.target.files[0];
       if (!archivo) return;
 
-      document.getElementById('mensaje').innerText = "Cargando foto...";
+      document.getElementById('mensaje').innerText = "Enviando foto de forma segura...";
+      document.getElementById('mensaje').style.color = "#d8b25f";
 
-      // Leemos la foto del móvil
       const lector = new FileReader();
       lector.onload = function(e) {
-        // Mostramos la miniatura en la pantalla del móvil
         document.getElementById('miniatura').src = e.target.result;
         document.getElementById('miniatura').style.display = 'inline-block';
         
-        document.getElementById('mensaje').innerText = "¡Foto seleccionada! (En el próximo paso conectaremos esto con la tablet).";
+        // Disparamos la foto hacia Make
+        fetch(URL_MAKE, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sesion: idSesion, imagen: e.target.result })
+        })
+        .then(respuesta => {
+          document.getElementById('mensaje').innerText = "✅ ¡Foto enviada! Ya puedes mirar la pantalla de la tablet.";
+          document.getElementById('mensaje').style.color = "#2f9e6b";
+        })
+        .catch(error => {
+          document.getElementById('mensaje').innerText = "❌ Hubo un error al enviar. Revisa tu internet.";
+          document.getElementById('mensaje').style.color = "#d0534a";
+        });
       };
       lector.readAsDataURL(archivo);
     });
