@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK v4.5</title>
+<title>Sello del Peregrino · Camino de Santiago · KIOSK v4.6</title>
 <style>
 /* ============================================================
-   SELLO DEL PEREGRINO - KIOSK  (BUILD v4.5)
+   SELLO DEL PEREGRINO - KIOSK  (BUILD v4.6)
    ============================================================ */
 :root{
   --ink:#8a2222;
@@ -50,8 +50,8 @@ button{font-family:inherit}
 
 /* ---------- Pantalla de Bloqueo / Candado Real ---------- */
 #lockScreen {
-  position: fixed; inset: 0; z-index: 999; background: var(--bg0);
-  display: flex; align-items: center; justify-content: center; flex-direction: column;
+  position: fixed; inset: 0; z-index: 99999; background: var(--bg0);
+  display: flex !important; align-items: center; justify-content: center; flex-direction: column;
 }
 .lock-box {
   background: var(--card); border: 3px solid var(--gold); border-radius: 24px;
@@ -62,15 +62,15 @@ button{font-family:inherit}
 .lock-box input {
   width: 100%; padding: 14px; margin: 15px 0; border-radius: 12px;
   background: var(--bg0); border: 2px solid var(--line); color: #fff;
-  font-size: 1.2rem; text-align: center;
+  font-size: 1.2rem; text-align: center; outline: none;
 }
+.lock-box input:focus { border-color: var(--gold); }
 .lock-box button { width: 100%; padding: 14px; font-size: 1.1rem; }
 
 /* ---------- shared bits ---------- */
 .topbar{width:100%;max-width:850px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto;z-index:5}
 .brand{font-size:.85rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
 
-/* Banderas gigantes y muy visibles arriba */
 .langs-hero {
   display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
   width: 100%; max-width: 850px; margin: 8px 0 12px 0; z-index: 10;
@@ -101,7 +101,6 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 .btn.sm{padding:11px 15px;font-size:.88rem;min-height:46px;border-radius:12px}
 .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:850px}
 
-/* ---------- Video Gigante para aprovechar toda la pantalla de la tablet ---------- */
 .tutorial-box {
   width: 100%; max-width: 520px; margin: 6px auto;
   border-radius: 20px; overflow: hidden; text-align: center;
@@ -110,16 +109,13 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 }
 .tutorial-box video { width: 100%; height: auto; max-height: 340px; object-fit: cover; display: block; }
 
-/* ---------- falling decorations ---------- */
 .fall{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
 .fall span{position:absolute;top:-8vh;will-change:transform;opacity:.85;animation:drop linear forwards}
 @keyframes drop{to{transform:translateY(118vh) rotate(var(--spin))}}
 
-/* ---------- screen 0 ---------- */
 .stage0{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
   justify-content:center;flex:1 1 auto;gap:clamp(6px,1.2vh,12px);width:100%}
 
-/* ---------- Opciones Duales Paso 1 ---------- */
 .dual-container {
   display: flex; gap: 20px; width: 100%; max-width: 700px; justify-content: center; margin-top: 15px;
 }
@@ -136,7 +132,6 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 .dual-title { font-size: 1.25rem; font-weight: 800; color: var(--txt); }
 .dual-desc { font-size: 0.85rem; color: var(--txt-dim); line-height: 1.4; }
 
-/* ---------- Panel de Instrucciones WhatsApp ---------- */
 .whatsapp-box {
   background: var(--card); border: 2px solid var(--gold); border-radius: 20px;
   padding: 24px; max-width: 580px; width: 90%; text-align: center;
@@ -150,7 +145,6 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 }
 .whatsapp-box p { color: var(--txt-dim); font-size: 0.95rem; line-height: 1.5; }
 
-/* ---------- stamp stage ---------- */
 .stagewrap{position:relative;z-index:2;flex:1 1 auto;display:flex;
   align-items:center;justify-content:center;width:100%;min-height:0}
 .stage{
@@ -167,7 +161,6 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 #liveVideo.nomirror{transform:translate(-50%,-50%)}
 #frameOverlay{z-index:2}
 
-/* ---------- TIMER ---------- */
 .timer{
   position:absolute;z-index:8;top:0;right:0;
   display:flex;flex-direction:column;align-items:center;gap:2px;
@@ -287,13 +280,13 @@ input[type="range"] { flex: 1; max-width: 210px; }
   <div class="lock-box">
     <h2>🔒 Kiosco Protegido</h2>
     <p style="color:var(--txt-dim); font-size:0.9rem;">Introduce la contraseña para desbloquear:</p>
-    <input type="password" id="lockInput" placeholder="Contraseña...">
+    <input type="password" id="lockInput" placeholder="Contraseña..." autocomplete="current-password">
     <button class="btn ok" id="btnUnlock">Desbloquear</button>
     <p id="lockError" style="color:var(--err); font-size:0.8rem; margin-top:8px; display:none;">Contraseña incorrecta</p>
   </div>
 </div>
 
-<div id="buildTag">KIOSK v4.5</div>
+<div id="buildTag">KIOSK v4.6</div>
 
 <!-- ================= SCREEN 0 : START ================= -->
 <section id="s0" class="screen">
@@ -529,7 +522,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
 
 <script>
 /* ============================================================================
-   1) CONFIG & UNLOCK LOGIC
+   1) CONFIG & UNLOCK LOGIC (CORREGIDO Y DIRECTO)
    ============================================================================ */
 const CONFIG = {
   AI_WEBHOOK_URL   : "https://hook.eu1.make.com/lqq9d91pvhkkssmte4ukt8cik4ulgj9v",
@@ -569,18 +562,40 @@ const CONFIG = {
 
 const $ = id => document.getElementById(id);
 
-// Lógica de desbloqueo seguro con contraseña "peregrino123"
-$('btnUnlock').addEventListener('click', function(){
-  const pass = $('lockInput').value;
-  if (pass === "peregrino123") {
-    $('lockScreen').style.display = 'none';
+// Función de desbloqueo robusta y directa
+function intentarDesbloqueo() {
+  const inputEl = $('lockInput');
+  const errorEl = $('lockError');
+  const screenEl = $('lockScreen');
+  
+  if (!inputEl) return;
+  
+  if (inputEl.value.trim() === "peregrino123") {
+    if (screenEl) {
+      screenEl.style.cssText = "display: none !important;";
+    }
     go('s0');
   } else {
-    $('lockError').style.display = 'block';
+    if (errorEl) {
+      errorEl.style.display = 'block';
+    }
   }
-});
-$('lockInput').addEventListener('keydown', function(e){
-  if(e.key === 'Enter') $('btnUnlock').click();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  const btnUnlock = $('btnUnlock');
+  const lockInput = $('lockInput');
+  
+  if (btnUnlock) {
+    btnUnlock.addEventListener('click', intentarDesbloqueo);
+  }
+  if (lockInput) {
+    lockInput.addEventListener('keydown', function(e){
+      if(e.key === 'Enter') {
+        intentarDesbloqueo();
+      }
+    });
+  }
 });
 
 /* ---------------------------------------------------------------------------
@@ -698,7 +713,7 @@ ua:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть 
  tmrPhoto:"Фото через",tmrEdit:"Час",tmAuto:"Повернення",
  camErrTitle:"Помилка камери",
  errFile:"Локальний файл.",errPerm:"Заборонено.",errNone:"Немає камери.",errBusy:"Зайнято.",errOther:"Помилка.",
- step2:"Kрок 2 · Печатка",locationLabel:"Місце:",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
+ step2:"Крок 2 · Печатка",locationLabel:"Місце:",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
  aiLoading:"Створення…",aiRetrying:"Повтор…",
  aiErrTitle:"Помилка малювання",aiErrMsg:"Немає відповіді.",
  tmTitle:"Друкувати печатку?",tmMsg:"Час вийшов.",
