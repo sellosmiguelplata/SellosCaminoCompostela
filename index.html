@@ -335,9 +335,9 @@ input[type="range"] { flex: 1; max-width: 210px; }
         <div class="dual-desc" data-t="optCamDesc">Usa la cámara de la tablet con cuenta atrás.</div>
       </div>
       <div class="dual-card" id="btnChooseMemory">
-        <div class="dual-icon">💬</div>
-        <div class="dual-title" data-t="optMemTitle">Enviar por WhatsApp</div>
-        <div class="dual-desc" data-t="optMemDesc">Manda la foto de tu ser querido desde un móvil.</div>
+        <div class="dual-icon">📱</div>
+        <div class="dual-title">Escanear QR</div>
+        <div class="dual-desc">Sube la foto escaneando un código con tu propio móvil.</div>
       </div>
     </div>
   </div>
@@ -377,25 +377,22 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </section>
 
-<!-- ================= SCREEN 1B : WHATSAPP INSTRUCTIONS ================= -->
+<!-- ================= SCREEN 1B : QR INSTRUCTIONS ================= -->
 <section id="s1b" class="screen">
   <div class="fall" id="fall1b"></div>
   <div class="topbar">
-    <div class="brand" data-t="step1mem">Paso 1 · WhatsApp</div>
-    <button class="btn ghost sm" id="btnBackMem" data-t="back">Volver</button>
+    <div class="brand">Paso 1 · Escanea el QR</div>
+    <button class="btn ghost sm" id="btnBackMem">Volver</button>
   </div>
   <div class="stage0" style="justify-content: center;">
-    <div class="whatsapp-box">
-      <h3 data-t="waBoxTitle">💬 Envía la foto por WhatsApp</h3>
-      <p data-t="waBoxSub">Manda la foto de tu ser querido desde un teléfono móvil al siguiente número del kiosco:</p>
-      <div class="whatsapp-number">+34 600 000 000</div>
-      <p data-t="waBoxWait">Una vez enviada, pulsa el botón verde para verla y seleccionarla al instante.</p>
-      <button class="btn ok" id="btnSelectWaPhoto" style="margin-top: 10px; background:#25d366;" data-t="waSelectBtn">📂 Elegir foto enviada por WhatsApp</button>
+    <div class="whatsapp-box" style="text-align: center;">
+      <h3 style="color: var(--gold);">📱 Sube la foto desde tu móvil</h3>
+      <p>Escanea este código con tu cámara y elige la foto. Aparecerá aquí mágicamente.</p>
+      <img id="qrImage" src="" alt="Código QR" style="width: 220px; height: 220px; margin: 15px auto; border-radius: 10px; display: block; border: 4px solid white;">
+      <p id="qrStatus" style="color: var(--ok); font-weight: bold;">Esperando foto...</p>
     </div>
   </div>
 </section>
-
-<input type="file" id="whatsappFileInput" accept="image/*" style="display:none">
 
 <!-- ================= SCREEN 2 : DESIGN + DATE ================= -->
 <section id="s2" class="screen">
@@ -1312,13 +1309,45 @@ $('btnStart').addEventListener('click', function(e){ e.stopPropagation(); go('s1
 $('s0').addEventListener('click', function(e){ if(e.target.closest('.lang-btn')) return; go('s1'); });
 
 $('btnChooseCamera').addEventListener('click', function(){ go('s1a'); });
-$('btnChooseMemory').addEventListener('click', function(){ go('s1b'); });
-$('btnSelectWaPhoto').addEventListener('click', function(){ $('whatsappFileInput').click(); });
+let pollingInterval = null;
+const URL_APP_MOVIL = "https://sellosmiguelplata.github.io/SellosCaminoCompostela/subir.html";
+const WEBHOOK_CONSULTA = "AQUI_PONDREMOS_EL_SEGUNDO_WEBHOOK"; // Lo rellenaremos en el siguiente paso
+
+$('btnChooseMemory').addEventListener('click', function(){ 
+  go('s1b'); 
+  const sessionId = Math.random().toString(36).substring(2, 10);
+  const qrUrl = `${URL_APP_MOVIL}?sesion=${sessionId}`;
+  
+  $('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrUrl)}`;
+  $('qrStatus').textContent = "Esperando foto...";
+
+  clearInterval(pollingInterval);
+  pollingInterval = setInterval(async () => {
+    if(!WEBHOOK_CONSULTA.startsWith("http")) return; 
+    try {
+      const res = await fetch(`${WEBHOOK_CONSULTA}?sesion=${sessionId}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.image) {
+          clearInterval(pollingInterval);
+          S.rawPhoto = data.image;
+          S.aiAttempt = 0; S.editStarted = false;
+          go('s2'); requestAI();
+        }
+      }
+    } catch(e){}
+  }, 3000);
+});
+
+$('btnBackMem').addEventListener('click', function(){ 
+  clearInterval(pollingInterval);
+  go('s1'); 
+});
 
 $('btnBack1').addEventListener('click', function(){ go('s0'); });
 $('btnBackCam').addEventListener('click', function(){ go('s1'); });
 $('btnBackCamErr').addEventListener('click', function(){ go('s1'); });
-$('btnBackMem').addEventListener('click', function(){ go('s1'); });
+
 
 $('btnShoot').addEventListener('click', shoot);
 $('btnRetryCam').addEventListener('click', function(){ $('timer1').style.display=''; $('camControls').style.display=''; startCamera(); });
