@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK v4.2</title>
+<title>Sello del Peregrino · Camino de Santiago · KIOSK v4.4</title>
 <style>
 /* ============================================================
-   SELLO DEL PEREGRINO - KIOSK  (BUILD v4.2)
+   SELLO DEL PEREGRINO - KIOSK  (BUILD v4.4)
    ============================================================ */
 :root{
   --ink:#8a2222;
@@ -47,6 +47,24 @@ button{font-family:inherit}
 }
 .screen.show{display:flex}
 .screen.visible{opacity:1;transform:scale(1)}
+
+/* ---------- Pantalla de Bloqueo / Candado Real ---------- */
+#lockScreen {
+  position: fixed; inset: 0; z-index: 999; background: var(--bg0);
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+}
+.lock-box {
+  background: var(--card); border: 3px solid var(--gold); border-radius: 24px;
+  padding: 30px; max-width: 400px; width: 90%; text-align: center;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.8);
+}
+.lock-box h2 { color: var(--gold); margin-top: 0; font-size: 1.5rem; }
+.lock-box input {
+  width: 100%; padding: 14px; margin: 15px 0; border-radius: 12px;
+  background: var(--bg0); border: 2px solid var(--line); color: #fff;
+  font-size: 1.2rem; text-align: center;
+}
+.lock-box button { width: 100%; padding: 14px; font-size: 1.1rem; }
 
 /* ---------- shared bits ---------- */
 .topbar{width:100%;max-width:850px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto;z-index:5}
@@ -101,7 +119,7 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 .stage0{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
   justify-content:center;flex:1 1 auto;gap:clamp(6px,1.2vh,12px);width:100%}
 
-/* ---------- Opciones Duales Paso 1 (Selección principal) ---------- */
+/* ---------- Opciones Duales Paso 1 ---------- */
 .dual-container {
   display: flex; gap: 20px; width: 100%; max-width: 700px; justify-content: center; margin-top: 15px;
 }
@@ -118,21 +136,21 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 .dual-title { font-size: 1.25rem; font-weight: 800; color: var(--txt); }
 .dual-desc { font-size: 0.85rem; color: var(--txt-dim); line-height: 1.4; }
 
-/* ---------- Panel de Instrucciones por Correo (Para Recuerdo) ---------- */
-.email-instruction-box {
+/* ---------- Panel de Instrucciones WhatsApp ---------- */
+.whatsapp-box {
   background: var(--card); border: 2px solid var(--gold); border-radius: 20px;
   padding: 24px; max-width: 580px; width: 90%; text-align: center;
   box-shadow: 0 12px 35px rgba(0,0,0,0.6); margin: auto;
 }
-.email-instruction-box h3 { color: var(--gold); margin-top: 0; font-size: 1.4rem; }
-.email-highlight {
-  background: var(--bg0); border: 2px dashed var(--gold); padding: 14px;
-  border-radius: 12px; font-size: 1.3rem; font-weight: 800; color: #fff;
+.whatsapp-box h3 { color: #25d366; margin-top: 0; font-size: 1.4rem; }
+.whatsapp-number {
+  background: var(--bg0); border: 2px dashed #25d366; padding: 14px;
+  border-radius: 12px; font-size: 1.4rem; font-weight: 800; color: #fff;
   letter-spacing: 0.05em; margin: 16px 0; user-select: text;
 }
-.email-instruction-box p { color: var(--txt-dim); font-size: 0.95rem; line-height: 1.5; }
+.whatsapp-box p { color: var(--txt-dim); font-size: 0.95rem; line-height: 1.5; }
 
-/* ---------- stamp stage (screens 1 & 2) ---------- */
+/* ---------- stamp stage ---------- */
 .stagewrap{position:relative;z-index:2;flex:1 1 auto;display:flex;
   align-items:center;justify-content:center;width:100%;min-height:0}
 .stage{
@@ -177,7 +195,6 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
   animation:sp .9s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 
-/* ---------- Efecto Blink y Parpadeo ---------- */
 @keyframes blinker {
   0% { opacity: 1; transform: scale(1); text-shadow: 0 0 10px rgba(216,178,95,0.8); }
   50% { opacity: 0.5; transform: scale(1.03); text-shadow: 0 0 2px rgba(216,178,95,0.2); }
@@ -191,21 +208,12 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 }
 
 .section-row {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  max-width: 520px;
-  gap: 12px;
-  margin-top: 4px;
+  display: flex; align-items: center; justify-content: flex-start;
+  width: 100%; max-width: 520px; gap: 12px; margin-top: 4px;
 }
 .side-label {
-  min-width: 135px;
-  color: var(--gold);
-  font-size: 0.9rem;
-  font-weight: 900;
-  text-align: left;
-  animation: blinker 1.8s infinite ease-in-out;
+  min-width: 135px; color: var(--gold); font-size: 0.9rem; font-weight: 900;
+  text-align: left; animation: blinker 1.8s infinite ease-in-out;
 }
 
 .color-pickers{display:flex;gap:8px;flex:1;}
@@ -240,24 +248,15 @@ input[type="range"] { flex: 1; max-width: 210px; }
 .ctlblock{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
   gap:clamp(3px,0.8vh,6px);width:100%;z-index:2}
 
-/* ---------- Botón de impresión con flechas pulsantes ---------- */
 .print-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
-  margin-top: 2px;
+  display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; margin-top: 2px;
 }
 .pulse-arrow {
-  font-size: 1.8rem;
-  color: var(--gold);
-  font-weight: 900;
+  font-size: 1.8rem; color: var(--gold); font-weight: 900;
   animation: pulseArrow 0.8s infinite ease-in-out;
 }
 .pulse-arrow.left { animation-direction: reverse; }
 
-/* ---------- panel de error ---------- */
 .panel{
   background:var(--card);border:1px solid var(--line);border-left:4px solid var(--err);
   border-radius:14px;padding:12px 14px;max-width:520px;width:100%;
@@ -265,7 +264,6 @@ input[type="range"] { flex: 1; max-width: 210px; }
 .panel h3{margin:0 0 4px;font-size:0.95rem}
 .panel p{margin:0 0 10px;color:var(--txt-dim);font-size:0.82rem;line-height:1.4}
 
-/* ---------- modal ---------- */
 .modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;
   background:rgba(6,8,12,.82);padding:18px}
 .modal.show{display:flex}
@@ -284,28 +282,26 @@ input[type="range"] { flex: 1; max-width: 210px; }
 </head>
 <body>
 
-<script>
-/* ============================================================================
-   0) CANDADO DE ACCESO BÁSICO
-   ============================================================================ */
-const accessPassword = prompt("Introduce la contraseña de acceso al kiosco:");
-if (accessPassword !== "peregrino123") {
-    document.body.innerHTML = "<h1 style='color:white; text-align:center; font-family:sans-serif; margin-top:20vh;'>🔒 Acceso Denegado</h1>";
-    throw new Error("Acceso denegado. Contraseña incorrecta.");
-}
-</script>
+<!-- PANTALLA DE BLOQUEO SEGURA (Candado real que impide ver la app sin clave) -->
+<div id="lockScreen">
+  <div class="lock-box">
+    <h2>🔒 Kiosco Protegido</h2>
+    <p style="color:var(--txt-dim); font-size:0.9rem;">Introduce la contraseña para desbloquear:</p>
+    <input type="password" id="lockInput" placeholder="Contraseña...">
+    <button class="btn ok" id="btnUnlock">Desbloquear</button>
+    <p id="lockError" style="color:var(--err); font-size:0.8rem; margin-top:8px; display:none;">Contraseña incorrecta</p>
+  </div>
+</div>
 
-<div id="buildTag">KIOSK v4.2</div>
+<div id="buildTag">KIOSK v4.4</div>
 
 <!-- ================= SCREEN 0 : START ================= -->
 <section id="s0" class="screen">
   <div class="fall" id="fall0"></div>
-  
   <div class="topbar" style="justify-content: center;">
     <div class="brand">Ultreia et Suseia</div>
   </div>
 
-  <!-- Banderas de Idiomas Gigantes -->
   <div class="langs-hero">
     <button class="lang-btn active" data-lang="es" title="Español">🇪🇸</button>
     <button class="lang-btn" data-lang="gb" title="English">🇬🇧</button>
@@ -320,7 +316,6 @@ if (accessPassword !== "peregrino123") {
     <h1 data-t="welcomeTitle">Sello del Peregrino</h1>
     <p class="sub" data-t="welcomeSub">Hazte una foto y llévate tu sello en la credencial.</p>
     
-    <!-- Video Demostrativo Gigante y Llamativo en Bucle -->
     <div class="tutorial-box">
       <video id="promoVideo" autoplay muted playsinline></video>
     </div>
@@ -329,7 +324,7 @@ if (accessPassword !== "peregrino123") {
   </div>
 </section>
 
-<!-- ================= SCREEN 1 : DUAL CHOICE (FOTO O RECUERDO) ================= -->
+<!-- ================= SCREEN 1 : DUAL CHOICE (Selfie o WhatsApp) ================= -->
 <section id="s1" class="screen">
   <div class="fall" id="fall1"></div>
   <div class="topbar">
@@ -347,9 +342,9 @@ if (accessPassword !== "peregrino123") {
         <div class="dual-desc" data-t="optCamDesc">Usa la cámara de la tablet con cuenta atrás.</div>
       </div>
       <div class="dual-card" id="btnChooseMemory">
-        <div class="dual-icon">🕯️</div>
-        <div class="dual-title" data-t="optMemTitle">Foto de Recuerdo</div>
-        <div class="dual-desc" data-t="optMemDesc">Envíala por correo o teléfono desde casa.</div>
+        <div class="dual-icon">💬</div>
+        <div class="dual-title" data-t="optMemTitle">Enviar por WhatsApp</div>
+        <div class="dual-desc" data-t="optMemDesc">Manda la foto de tu ser querido desde un móvil.</div>
       </div>
     </div>
   </div>
@@ -389,23 +384,25 @@ if (accessPassword !== "peregrino123") {
   </div>
 </section>
 
-<!-- ================= SCREEN 1B : MEMORY PHOTO INSTRUCTIONS ================= -->
+<!-- ================= SCREEN 1B : WHATSAPP INSTRUCTIONS ================= -->
 <section id="s1b" class="screen">
   <div class="fall" id="fall1b"></div>
   <div class="topbar">
-    <div class="brand" data-t="step1mem">Paso 1 · Recuerdo</div>
+    <div class="brand" data-t="step1mem">Paso 1 · WhatsApp</div>
     <button class="btn ghost sm" id="btnBackMem" data-t="back">Volver</button>
   </div>
   <div class="stage0" style="justify-content: center;">
-    <div class="email-instruction-box">
-      <h3 data-t="memBoxTitle">🕯️ Foto de un ser querido</h3>
-      <p data-t="memBoxSub">Para mayor comodidad, puedes enviar la foto desde cualquier móvil o correo electrónico a nuestra dirección automática:</p>
-      <div class="email-highlight">foto@sello-peregrino.com</div>
-      <p data-t="memBoxWait">La foto aparecerá automáticamente en esta pantalla en unos segundos tras enviarla.</p>
-      <button class="btn ok" id="btnSimulateMemoryDone" style="margin-top: 10px;" data-t="memSimulate">Simular foto recibida (Prueba)</button>
+    <div class="whatsapp-box">
+      <h3 data-t="waBoxTitle">💬 Envía la foto por WhatsApp</h3>
+      <p data-t="waBoxSub">Manda la foto de tu ser querido desde un teléfono móvil al siguiente número del kiosco:</p>
+      <div class="whatsapp-number">+34 600 000 000</div>
+      <p data-t="waBoxWait">Una vez enviada, pulsa el botón verde para verla y seleccionarla al instante.</p>
+      <button class="btn ok" id="btnSelectWaPhoto" style="margin-top: 10px; background:#25d366;" data-t="waSelectBtn">📂 Elegir foto enviada por WhatsApp</button>
     </div>
   </div>
 </section>
+
+<input type="file" id="whatsappFileInput" accept="image/*" style="display:none">
 
 <!-- ================= SCREEN 2 : DESIGN + DATE ================= -->
 <section id="s2" class="screen">
@@ -434,7 +431,6 @@ if (accessPassword !== "peregrino123") {
       </div>
     </div>
     
-    <!-- Fila lateral con parpadeo: Elige tu color -->
     <div class="section-row">
       <div class="side-label" data-t="lblChooseColor">👉 Elige tu color:</div>
       <div class="color-pickers" id="colorPickers">
@@ -445,13 +441,11 @@ if (accessPassword !== "peregrino123") {
       </div>
     </div>
 
-    <!-- Fila lateral con parpadeo: Elige tu sello -->
     <div class="section-row">
       <div class="side-label" data-t="lblChooseStamp">👉 Elige tu sello:</div>
       <div class="cards" id="designCards"></div>
     </div>
     
-    <!-- Caja enmarcada y parpadeante: Elige tu lugar y día -->
     <div class="datebox">
       <label data-t="lblChoosePlaceDate">📍 Elige tu lugar y día:</label>
       <select id="locationSelect">
@@ -491,8 +485,6 @@ if (accessPassword !== "peregrino123") {
         <option value="LAVACOLLA">Lavacolla</option>
         <option value="SANTIAGO DE COMPOSTELA">Santiago de Compostela</option>
       </select>
-      
-      <!-- Fecha libre (pasado y futuro) -->
       <input type="date" id="dateInput">
     </div>
 
@@ -501,7 +493,6 @@ if (accessPassword !== "peregrino123") {
       <input type="range" id="thresholdRange" min="10" max="240" step="5" value="110">
     </div>
 
-    <!-- Botón de imprimir rodeado de flechas llamativas y pulsantes -->
     <div class="print-container">
       <span class="pulse-arrow left">👉</span>
       <button class="btn ok big" id="btnPrint" disabled data-t="print">Imprimir sello</button>
@@ -538,7 +529,7 @@ if (accessPassword !== "peregrino123") {
 
 <script>
 /* ============================================================================
-   1) CONFIG
+   1) CONFIG & UNLOCK LOGIC
    ============================================================================ */
 const CONFIG = {
   AI_WEBHOOK_URL   : "https://hook.eu1.make.com/lqq9d91pvhkkssmte4ukt8cik4ulgj9v",
@@ -562,7 +553,7 @@ const CONFIG = {
   RADIUS_TOP       : 268,
   RADIUS_DATE      : 275,
   SELFIE_COUNTDOWN : 10,
-  EDIT_COUNTDOWN   : 90,
+  EDIT_COUNTDOWN   : 60,
   MODAL_TIMEOUT    : 25,
   DONE_TIMEOUT     : 6,
   IDLE_TIMEOUT     : 90,
@@ -576,6 +567,22 @@ const CONFIG = {
   DEFAULT_LANG  : "es"
 };
 
+const $ = id => document.getElementById(id);
+
+// Lógica de desbloqueo seguro
+$('btnUnlock').addEventListener('click', function(){
+  const pass = $('lockInput').value;
+  if (pass === "peregrino123") {
+    $('lockScreen.style.display = 'none';
+    go('s0');
+  } else {
+    $('lockError').style.display = 'block';
+  }
+});
+$('lockInput').addEventListener('keydown', function(e){
+  if(e.key === 'Enter') $('btnUnlock').click();
+});
+
 /* ---------------------------------------------------------------------------
    2) i18n
    --------------------------------------------------------------------------- */
@@ -583,9 +590,9 @@ const I18N = {
 es:{welcomeTitle:"Sello del Peregrino",welcomeSub:"Hazte una foto y llévate tu sello en la credencial.",start:"Comenzar",
  step1:"Paso 1 · Foto",choiceTitle:"¿Cómo quieres poner tu foto?",choiceSub:"Hazte un selfie ahora mismo o trae la foto de un ser querido.",
  optCamTitle:"Hacerse un Selfie",optCamDesc:"Usa la cámara de la tablet con cuenta atrás.",
- optMemTitle:"Foto de Recuerdo",optMemDesc:"Envíala por correo desde casa.",
+ optMemTitle:"Enviar por WhatsApp",optMemDesc:"Manda la foto de tu ser querido desde un móvil.",
  step1cam:"Paso 1 · Cámara",lookCamera:"Mira a la cámara",shootNow:"Hacer la foto ahora",back:"Volver",cancel:"Cancelar",retry:"Reintentar",
- step1mem:"Paso 1 · Recuerdo",memBoxTitle:"🕯️ Foto de un ser querido",memBoxSub:"Para mayor comodidad, puedes enviar la foto desde cualquier móvil o correo electrónico a nuestra dirección automática:",memBoxWait:"La foto aparecerá automáticamente en esta pantalla en unos segundos tras enviarla.",memSimulate:"Simular foto recibida (Prueba)",
+ step1mem:"Paso 1 · WhatsApp",waBoxTitle:"💬 Envía la foto por WhatsApp",waBoxSub:"Manda la foto de tu ser querido desde un teléfono móvil al siguiente número del kiosco:",waBoxWait:"Una vez enviada, pulsa el botón verde para verla y seleccionarla al instante.",waSelectBtn:"📂 Elegir foto enviada por WhatsApp",
  tmrPhoto:"Foto en",tmrEdit:"Tiempo",tmAuto:"Volvemos al inicio en",
  camErrTitle:"No se puede abrir la cámara",
  errFile:"La página se ha abierto como archivo local.",errPerm:"Permiso denegado.",errNone:"Sin cámara.",errBusy:"En uso.",errOther:"Error de cámara.",
@@ -600,9 +607,9 @@ es:{welcomeTitle:"Sello del Peregrino",welcomeSub:"Hazte una foto y llévate tu 
 gb:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in your credential.",start:"Start",
  step1:"Step 1 · Photo",choiceTitle:"How would you like your photo?",choiceSub:"Take a selfie right now or bring a photo of a loved one.",
  optCamTitle:"Take a Selfie",optCamDesc:"Use the tablet camera with countdown.",
- optMemTitle:"Memory Photo",optMemDesc:"Send it via email from home.",
+ optMemTitle:"Send via WhatsApp",optMemDesc:"Send a loved one's photo from a mobile.",
  step1cam:"Step 1 · Camera",lookCamera:"Look at the camera",shootNow:"Take the photo now",back:"Back",cancel:"Cancel",retry:"Retry",
- step1mem:"Step 1 · Memory",memBoxTitle:"🕯️️ Loved One Photo",memBoxSub:"For convenience, you can send the photo from any mobile or email to our automatic address:",memBoxWait:"The photo will automatically appear on this screen in a few seconds.",memSimulate:"Simulate photo received (Test)",
+ step1mem:"Step 1 · WhatsApp",waBoxTitle:"💬 Send photo via WhatsApp",waBoxSub:"Send your loved one's photo from a mobile to our kiosk number:",waBoxWait:"Once sent, tap the green button to select it instantly.",waSelectBtn:"📂 Choose WhatsApp photo",
  tmrPhoto:"Photo in",tmrEdit:"Time left",tmAuto:"Back to start in",
  camErrTitle:"Cannot open the camera",
  errFile:"Local file block.",errPerm:"Permission denied.",errNone:"No camera found.",errBusy:"Camera in use.",errOther:"Camera error.",
@@ -617,9 +624,9 @@ gb:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in
 de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie und erhalte deinen Stempel im Pilgerpass.",start:"Starten",
  step1:"Schritt 1 · Foto",choiceTitle:"Wie möchten Sie Ihr Foto hinzufügen?",choiceSub:"Machen Sie jetzt ein Selfie oder bringen Sie ein Foto eines lieben Menschen mit.",
  optCamTitle:"Selfie machen",optCamDesc:"Nutzen Sie die Tabletkamera.",
- optMemTitle:"Erinnerungsfoto",optMemDesc:"Per E-Mail von zu Hause senden.",
+ optMemTitle:"Per WhatsApp senden",optMemDesc:"Foto des Liebsten vom Handy senden.",
  step1cam:"Schritt 1 · Kamera",lookCamera:"Schau in die Kamera",shootNow:"Jetzt fotografieren",back:"Zurück",cancel:"Abbrechen",retry:"Erneut",
- step1mem:"Schritt 1 · Erinnerung",memBoxTitle:"🕯️ Foto eines Geliebten",memBoxSub:"Senden Sie das Foto ganz bequem von jedem Handy oder E-Mail-Konto an unsere automatische Adresse:",memBoxWait:"Das Foto erscheint kurz nach dem Senden automatisch hier.",memSimulate:"Foto-Empfang simulieren (Test)",
+ step1mem:"Schritt 1 · WhatsApp",waBoxTitle:"💬 Foto per WhatsApp senden",waBoxSub:"Senden Sie das Foto von einem Handy an unsere Kiosk-Nummer:",waBoxWait:"Tippen Sie nach dem Senden auf den grünen Button.",waSelectBtn:"📂 WhatsApp-Foto auswählen",
  tmrPhoto:"Foto in",tmrEdit:"Restzeit",tmAuto:"Zurück zum Start in",
  camErrTitle:"Kamera kann nicht geöffnet werden",
  errFile:"Lokale Datei.",errPerm:"Zugriff verweigert.",errNone:"Keine Kamera.",errBusy:"Kamera in Nutzung.",errOther:"Kamerafehler.",
@@ -634,9 +641,9 @@ de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie und erhalte deinen 
 fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie et repars avec ton tampon sur ta crédentiale.",start:"Commencer",
  step1:"Étape 1 · Photo",choiceTitle:"Comment souhaitez-vous ajouter votre photo ?",choiceSub:"Prenez un selfie ou apportez la photo d'un être cher.",
  optCamTitle:"Prendre un selfie",optCamDesc:"Utilisez la caméra de la tablette.",
- optMemTitle:"Photo souvenir",optMemDesc:"Envoyez-la par e-mail depuis chez vous.",
+ optMemTitle:"Envoyer par WhatsApp",optMemDesc:"Envoyez la photo depuis un mobile.",
  step1cam:"Étape 1 · Caméra",lookCamera:"Regardez l'objectif",shootNow:"Prendre la photo maintenant",back:"Retour",cancel:"Annuler",retry:"Réessayer",
- step1mem:"Étape 1 · Souvenir",memBoxTitle:"🕯️ Photo d'un être cher",memBoxSub:"Vous pouvez envoyer la photo depuis n'importe quel mobile ou e-mail à notre adresse automatique :",memBoxWait:"La photo apparaîtra automatiquement sur cet écran en quelques secondes.",memSimulate:"Simuler la photo reçue (Test)",
+ step1mem:"Étape 1 · WhatsApp",waBoxTitle:"💬 Envoyez la photo par WhatsApp",waBoxSub:"Envoyez la photo depuis un mobile vers le numéro du kiosque :",waBoxWait:"Une fois envoyée, appuyez sur le bouton vert.",waSelectBtn:"📂 Choisir la photo WhatsApp",
  tmrPhoto:"Photo dans",tmrEdit:"Temps",tmAuto:"Retour à l'accueil dans",
  camErrTitle:"Impossible d'ouvrir la caméra",
  errFile:"Fichier local.",errPerm:"Refusé.",errNone:"Aucune caméra.",errBusy:"Utilisée.",errOther:"Erreur.",
@@ -651,9 +658,9 @@ fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie et repars ave
 pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma foto e leve seu carimbo na credencial.",start:"Começar",
  step1:"Passo 1 · Foto",choiceTitle:"Como deseja colocar sua foto?",choiceSub:"Tire uma selfie agora mesmo ou traga a foto de um ente querido.",
  optCamTitle:"Tirar uma selfie",optCamDesc:"Use a câmera do tablet.",
- optMemTitle:"Foto de lembrança",optMemDesc:"Envie por e-mail de casa.",
+ optMemTitle:"Enviar por WhatsApp",optMemDesc:"Envie a foto de um ente querido.",
  step1cam:"Passo 1 · Câmera",lookCamera:"Olhe para a câmera",shootNow:"Tirar foto agora",back:"Voltar",cancel:"Cancelar",retry:"Tentar",
- step1mem:"Passo 1 · Lembrança",memBoxTitle:"🕯️ Foto de um ente querido",memBoxSub:"Para maior comodidade, você pode enviar a foto de qualquer celular ou e-mail para o nosso endereço automático:",memBoxWait:"A foto aparecerá automaticamente nesta tela em alguns segundos.",memSimulate:"Simular foto recebida (Teste)",
+ step1mem:"Passo 1 · WhatsApp",waBoxTitle:"💬 Envie a foto por WhatsApp",waBoxSub:"Mande a foto de um celular para o número do quiosque:",waBoxWait:"Após enviar, toque no botão verde para selecioná-la.",waSelectBtn:"📂 Escolher foto do WhatsApp",
  tmrPhoto:"Foto em",tmrEdit:"Tempo",tmAuto:"Voltando em",
  camErrTitle:"Erro na câmera",
  errFile:"Arquivo local.",errPerm:"Negado.",errNone:"Sem câmera.",errBusy:"Em uso.",errOther:"Erro.",
@@ -668,9 +675,9 @@ pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma foto e leve seu car
 cn:{welcomeTitle:"朝圣者印章",welcomeSub:"拍张照片，在您的朝圣者护照上盖章。",start:"开始",
  step1:"第一步 · 拍照",choiceTitle:"您想如何添加照片？",choiceSub:"现在自拍或带来您挚爱之人的照片。",
  optCamTitle:"拍摄自拍照",optCamDesc:"使用平板电脑摄像头",
- optMemTitle:"纪念照片",optMemDesc:"从家里通过电子邮件发送",
+ optMemTitle:"通过WhatsApp发送",optMemDesc:"从手机发送挚爱之人的照片",
  step1cam:"第一步 · 相机",lookCamera:"看着相机",shootNow:"现在拍照",back:"返回",cancel:"取消",retry:"重试",
- step1mem:"第一步 · 纪念",memBoxTitle:"🕯️ 挚爱之人的照片",memBoxSub:"您可以通过任何手机或电子邮件将照片发送至我们的自动地址：",memBoxWait:"发送后几秒钟，照片将自动显示在屏幕上。",memSimulate:"模拟接收照片（测试）",
+ step1mem:"第一步 · WhatsApp",waBoxTitle:"💬 通过WhatsApp发送照片",waBoxSub:"从手机将照片发送至我们的亭子号码：",waBoxWait:"发送后，点击绿色按钮即可直接选择。",waSelectBtn:"📂 选择WhatsApp照片",
  tmrPhoto:"倒计时",tmrEdit:"剩余",tmAuto:"返回",
  camErrTitle:"无法打开相机",
  errFile:"本地文件",errPerm:"拒绝权限",errNone:"无相机",errBusy:"忙碌",errOther:"错误",
@@ -685,9 +692,9 @@ cn:{welcomeTitle:"朝圣者印章",welcomeSub:"拍张照片，在您的朝圣者
 ua:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть фото та получите печатку у свій паспорт.",start:"Почати",
  step1:"Крок 1 · Фото",choiceTitle:"Як ви хочете додати фото?",choiceSub:"Зробіть селфі зараз або принесіть фото близької людини.",
  optCamTitle:"Зробити селфі",optCamDesc:"Використовуйте камеру планшета.",
- optMemTitle:"Фото на згадку",optMemDesc:"Надішліть його електронною поштою.",
+ optMemTitle:"Надіслати через WhatsApp",optMemDesc:"Надішліть фото з мобільного.",
  step1cam:"Крок 1 · Камера",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото",back:"Назад",cancel:"Скасувати",retry:"Повторити",
- step1mem:"Крок 1 · Згадка",memBoxTitle:"🕯️ Фото близької людини",memBoxSub:"Для зручності ви можете надіслати фото з будь-якого мобільного чи електронної пошти на нашу автоматичну адресу:",memBoxWait:"Фото з'явиться на цьому екрані за кілька секунд після надсилання.",memSimulate:"Симулювати отримання фото (Тест)",
+ step1mem:"Крок 1 · WhatsApp",waBoxTitle:"💬 Надішліть фото через WhatsApp",waBoxSub:"Надішліть фото близької людини на номер кіоску:",waBoxWait:"Після надсилання натисніть зелену кнопку нижче.",waSelectBtn:"📂 Вибрати фото з WhatsApp",
  tmrPhoto:"Фото через",tmrEdit:"Час",tmAuto:"Повернення",
  camErrTitle:"Помилка камери",
  errFile:"Локальний файл.",errPerm:"Заборонено.",errNone:"Немає камери.",errBusy:"Зайнято.",errOther:"Помилка.",
@@ -697,7 +704,7 @@ ua:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть 
  tmTitle:"Друкувати печатку?",tmMsg:"Час вийшов.",
  doneTitle:"Buen Camino!",doneSub:"Друкується.",finish:"Завершити",
  opt1:"Французький шлях",opt2:"Ultreia",opt3:"Креденсіаль",opt4:"Щит",
- lblChooseColor:"👉 Виберіть колір:", lblChooseStamp:"👉 Виберіть печатку:", lblChoosePlaceDate:"📍 Місце і дата:",
+ lblChooseColor:"👉 Виберіть колір:", lblChooseStamp:"👉 Виберіть печатку:", lblChoosePlaceDate:"📍 Місце і дату:",
  taint:"Примітка: потрібен http/https."}
 };
 let LANG = CONFIG.DEFAULT_LANG;
@@ -706,7 +713,6 @@ const T = k => (I18N[LANG] && I18N[LANG][k]) || I18N.es[k] || k;
 /* ---------------------------------------------------------------------------
    3) state + helpers
    --------------------------------------------------------------------------- */
-const $  = id => document.getElementById(id);
 const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null, color: CONFIG.INK_COLOR,
              location: "SANTIAGO DE COMPOSTELA", threshold: CONFIG.LINE_THRESHOLD,
              rawPhoto: null, aiAttempt: 0, screen: null, printing:false, editStarted:false };
@@ -913,7 +919,7 @@ if(window.ResizeObserver){
 }
 
 /* ---------------------------------------------------------------------------
-   7) Routing (Pantallas actualizadas con s1, s1a y s1b)
+   7) Routing
    --------------------------------------------------------------------------- */
 function go(id){
   ['s0','s1','s1a','s1b','s2','s3'].forEach(function(s){ const el=$(s); el.classList.remove('visible'); el.classList.remove('show'); });
@@ -1059,6 +1065,32 @@ function shoot(){
   go('s2');
   requestAI();
 }
+
+$('whatsappFileInput').addEventListener('change', function(e){
+  const f=e.target.files && e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=function(ev){ 
+    const img = new Image();
+    img.onload = function(){
+      const N = CONFIG.CAPTURE_SIZE;
+      const minDim = Math.min(img.width, img.height);
+      const sx = (img.width - minDim) / 2;
+      const sy = (img.height - minDim) / 2;
+      
+      const c = document.createElement('canvas');
+      c.width = N; c.height = N;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, N, N);
+      
+      S.rawPhoto = c.toDataURL('image/jpeg', 0.92);
+      S.aiAttempt = 0; S.editStarted = false; 
+      go('s2'); requestAI(); 
+    };
+    img.src = ev.target.result;
+  };
+  r.readAsDataURL(f);
+  e.target.value='';
+});
 
 /* ---------------------------------------------------------------------------
    11) AI
@@ -1259,27 +1291,14 @@ function setLang(l){
 $('btnStart').addEventListener('click', function(e){ e.stopPropagation(); go('s1'); });
 $('s0').addEventListener('click', function(e){ if(e.target.closest('.lang-btn')) return; go('s1'); });
 
-/* Navegación Dual del Paso 1 */
 $('btnChooseCamera').addEventListener('click', function(){ go('s1a'); });
 $('btnChooseMemory').addEventListener('click', function(){ go('s1b'); });
+$('btnSelectWaPhoto').addEventListener('click', function(){ $('whatsappFileInput').click(); });
 
 $('btnBack1').addEventListener('click', function(){ go('s0'); });
 $('btnBackCam').addEventListener('click', function(){ go('s1'); });
 $('btnBackCamErr').addEventListener('click', function(){ go('s1'); });
 $('btnBackMem').addEventListener('click', function(){ go('s1'); });
-
-/* Simulación de foto recibida por correo para pruebas (o cuando llegue del webhook) */
-$('btnSimulateMemoryDone').addEventListener('click', function(){
-  // Creamos un lienzo de prueba con un icono de recuerdo si no hay foto real todavía
-  const c = document.createElement('canvas'); c.width = c.height = 1024;
-  const x = c.getContext('2d');
-  x.fillStyle = '#8a2222'; x.fillRect(0,0,1024,1024);
-  x.fillStyle = '#ffffff'; x.font = 'bold 80px sans-serif'; x.textAlign = 'center';
-  x.fillText('RECUERDO', 512, 512);
-  S.rawPhoto = c.toDataURL('image/jpeg', 0.92);
-  S.aiAttempt = 0; S.editStarted = false;
-  go('s2'); requestAI();
-});
 
 $('btnShoot').addEventListener('click', shoot);
 $('btnRetryCam').addEventListener('click', function(){ $('timer1').style.display=''; $('camControls').style.display=''; startCamera(); });
@@ -1302,8 +1321,7 @@ document.addEventListener('visibilitychange', function(){ if(document.hidden && 
   buildCards();
   setLang(CONFIG.DEFAULT_LANG);
   try{ await preloadFrames(); }catch(e){}
-  go('s0');
-  playNextPromoVideo();
+  // No arranca go('s0') hasta desbloquear
   setTimeout(sizeStages, 60);
 })();
 </script>
