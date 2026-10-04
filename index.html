@@ -256,7 +256,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
 .modal .row{gap:12px}
 .modal .btn{flex:1 1 150px}
 
-.done-ico{font-size:4rem;animation:bob 2.4s ease-in-out infinite}
+.done-ico{font-size:4rem}
 </style>
 </head>
 <body>
@@ -271,7 +271,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </div>
 
-<div id="buildTag">KIOSK v5.0</div>
+<div id="buildTag">KIOSK v5.1</div>
 
 <!-- SCREEN 0 : START -->
 <section id="s0" class="screen">
@@ -366,13 +366,13 @@ input[type="range"] { flex: 1; max-width: 210px; }
 <section id="s1b" class="screen">
   <div class="fall" id="fall1b"></div>
   <div class="topbar">
-    <div class="brand">Paso 1 · Escanea el QR</div>
+    <div class="brand" data-t="step1mem">Paso 1 · Escanea el QR</div>
     <button class="btn ghost sm" id="btnBackMem" data-t="back">Volver</button>
   </div>
   <div class="stage0" style="justify-content: center;">
     <div class="whatsapp-box" style="text-align: center;">
-      <h3 style="color: var(--gold);">📱 Sube la foto desde tu móvil</h3>
-      <p>Escanea este código con tu cámara y elige la foto. Aparecerá aquí al instante.</p>
+      <h3 style="color: var(--gold);" data-t="qrBoxTitle">📱 Sube la foto desde tu móvil</h3>
+      <p data-t="qrBoxSub">Escanea este código con tu cámara y elige la foto. Aparecerá aquí al instante.</p>
       <img id="qrImage" src="" alt="Código QR" style="width: 220px; height: 220px; margin: 15px auto; border-radius: 10px; display: block; border: 4px solid white;">
       <p id="qrStatus" style="color: var(--ok); font-weight: bold;">Esperando foto...</p>
     </div>
@@ -539,7 +539,6 @@ const CONFIG = {
 
 const $ = id => document.getElementById(id);
 
-// Desbloqueo seguro
 function intentarDesbloqueo() {
   const inputEl = $('lockInput');
   const errorEl = $('lockError');
@@ -574,10 +573,100 @@ const I18N = {
    tmTitle:"¿Imprimimos tu sello?",tmMsg:"Se ha acabado el tiempo de edición.",
    doneTitle:"¡Buen Camino!",doneSub:"Tu sello se está imprimiendo. Retíralo de la impresora.",finish:"Finalizar",
    opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Escudo",
-   lblChooseColor:"👉 Elige tu color:", lblChooseStamp:"👉 Elige tu sello:", lblChoosePlaceDate:"📍 Elige tu lugar y día:"}
+   lblChooseColor:"👉 Elige tu color:", lblChooseStamp:"👉 Elige tu sello:", lblChoosePlaceDate:"📍 Elige tu lugar y día:"},
+  gb:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in your credential.",start:"Start",
+   step1:"Step 1 · Photo",choiceTitle:"How would you like your photo?",choiceSub:"Take a selfie or scan the QR.",
+   optCamTitle:"Take a Selfie",optCamDesc:"Use tablet camera with countdown.",
+   optMemTitle:"Scan QR",optMemDesc:"Upload photo by scanning code with mobile.",
+   step1cam:"Step 1 · Camera",lookCamera:"Look at the camera",shootNow:"Take photo now",back:"Back",cancel:"Cancel",retry:"Retry",
+   step1mem:"Step 1 · Scan QR",qrBoxTitle:"📱 Upload photo from mobile",qrBoxSub:"Scan code and choose photo.",
+   step2:"Step 2 · Your stamp",thresholdLabel:"Details:",print:"Print stamp",startAgain:"Start again",
+   aiLoading:"Creating your stamp…",aiRetrying:"Retrying…",
+   aiErrTitle:"We could not create the drawing",aiErrMsg:"Service not responding.",
+   tmTitle:"Shall we print?",tmMsg:"Time is over.",
+   doneTitle:"Buen Camino!",doneSub:"Printing stamp.",finish:"Finish",
+   opt1:"French Way",opt2:"Ultreia",opt3:"Credential",opt4:"Shield",
+   lblChooseColor:"👉 Choose color:", lblChooseStamp:"👉 Choose stamp:", lblChoosePlaceDate:"📍 Choose place & date:"},
+  de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie oder scanne den QR-Code.",start:"Starten",
+   step1:"Schritt 1 · Foto",choiceTitle:"Wie möchten Sie Ihr Foto hinzufügen?",choiceSub:"Machen Sie ein Selfie oder scannen Sie den QR-Code.",
+   optCamTitle:"Selfie machen",optCamDesc:"Tabletkamera nutzen.",
+   optMemTitle:"QR scannen",optMemDesc:"Foto mit dem Handy hochladen.",
+   step1cam:"Schritt 1 · Kamera",lookCamera:"Schau in die Kamera",shootNow:"Foto machen",back:"Zurück",cancel:"Abbrechen",retry:"Erneut",
+   step1mem:"Schritt 1 · QR scannen",qrBoxTitle:"📱 Foto vom Handy hochladen",qrBoxSub:"Code scannen und Foto wählen.",
+   step2:"Schritt 2 · Dein Stempel",thresholdLabel:"Details:",print:"Drucken",startAgain:"Neu starten",
+   aiLoading:"Erstelle Stempel…",aiRetrying:"Neuer Versuch…",
+   aiErrTitle:"Fehler",aiErrMsg:"Dienst antwortet nicht.",
+   tmTitle:"Drucken?",tmMsg:"Zeit abgelaufen.",
+   doneTitle:"Buen Camino!",doneSub:"Wird gedruckt.",finish:"Beenden",
+   opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Wappen",
+   lblChooseColor:"👉 Farbe wählen:", lblChooseStamp:"👉 Stempel wählen:", lblChoosePlaceDate:"📍 Ort & Datum wählen:"},
+  fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie ou scanne le QR code.",start:"Commencer",
+   step1:"Étape 1 · Photo",choiceTitle:"Comment ajouter votre photo ?",choiceSub:"Prenez un selfie ou scannez le QR code.",
+   optCamTitle:"Prendre un selfie",optCamDesc:"Utilisez la caméra.",
+   optMemTitle:"Scanner QR",optMemDesc:"Téléchargez la photo via mobile.",
+   step1cam:"Étape 1 · Caméra",lookCamera:"Regardez l'objectif",shootNow:"Prendre la photo",back:"Retour",cancel:"Annuler",retry:"Réessayer",
+   step1mem:"Étape 1 · Scanner QR",qrBoxTitle:"📱 Télécharger depuis le mobile",qrBoxSub:"Scannez le code et choisissez la photo.",
+   step2:"Étape 2 · Votre tampon",thresholdLabel:"Détails :",print:"Imprimer",startAgain:"Recommencer",
+   aiLoading:"Création…",aiRetrying:"Nouvel essai…",
+   aiErrTitle:"Erreur",aiErrMsg:"Pas de réponse.",
+   tmTitle:"On imprime ?",tmMsg:"Temps écoulé.",
+   doneTitle:"Buen Camino !",doneSub:"Impression...",finish:"Terminer",
+   opt1:"Chemin Français",opt2:"Ultreia",opt3:"Credential",opt4:"Blason",
+   lblChooseColor:"👉 Couleur :", lblChooseStamp:"👉 Tampon :", lblChoosePlaceDate:"📍 Lieu et date :"},
+  pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma selfie ou escaneie o QR.",start:"Começar",
+   step1:"Passo 1 · Foto",choiceTitle:"Como deseja colocar sua foto?",choiceSub:"Tire uma selfie ou escaneie o QR.",
+   optCamTitle:"Tirar selfie",optCamDesc:"Use a câmera.",
+   optMemTitle:"Escanear QR",optMemDesc:"Envie a foto pelo celular.",
+   step1cam:"Passo 1 · Câmera",lookCamera:"Olhe para a câmera",shootNow:"Tirar foto",back:"Voltar",cancel:"Cancelar",retry:"Tentar",
+   step1mem:"Passo 1 · Escanear QR",qrBoxTitle:"📱 Enviar pelo celular",qrBoxSub:"Escaneie o código e escolha a foto.",
+   step2:"Passo 2 · Seu carimbo",thresholdLabel:"Detalhe:",print:"Imprimir",startAgain:"Recomeçar",
+   aiLoading:"Criando…",aiRetrying:"Tentando…",
+   aiErrTitle:"Erro",aiErrMsg:"Sem resposta.",
+   tmTitle:"Imprimir?",tmMsg:"Tempo esgotado.",
+   doneTitle:"Buen Camino!",doneSub:"Imprimindo.",finish:"Finalizar",
+   opt1:"Caminho Francés",opt2:"Ultreia",opt3:"Credencial",opt4:"Escudo",
+   lblChooseColor:"👉 Cor:", lblChooseStamp:"👉 Carimbo:", lblChoosePlaceDate:"📍 Local e data:"},
+  cn:{welcomeTitle:"朝圣者印章",welcomeSub:"自拍或扫描二维码。",start:"开始",
+   step1:"第一步 · 拍照",choiceTitle:"您想如何添加照片？",choiceSub:"自拍或扫描二维码。",
+   optCamTitle:"自拍",optCamDesc:"使用相机",
+   optMemTitle:"扫描二维码",optMemDesc:"用手机上传",
+   step1cam:"第一步 · 相机",lookCamera:"看镜头",shootNow:"拍照",back:"返回",cancel:"取消",retry:"重试",
+   step1mem:"第一步 · 扫描二维码",qrBoxTitle:"📱 从手机上传",qrBoxSub:"扫描二维码并选择照片。",
+   step2:"第二步 · 印章",thresholdLabel:"细节:",print:"打印",startAgain:"重来",
+   aiLoading:"制作中…",aiRetrying:"重试…",
+   aiErrTitle:"错误",aiErrMsg:"无响应",
+   tmTitle:"打印？",tmMsg:"时间到",
+   doneTitle:"一路平安!",doneSub:"正在打印",finish:"完成",
+   opt1:"法国之路",opt2:"Ultreia",opt3:"护照",opt4:"盾牌",
+   lblChooseColor:"👉 颜色:", lblChooseStamp:"👉 印章:", lblChoosePlaceDate:"📍 地点和日期:"},
+  ua:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть селфі або скануйте QR.",start:"Почати",
+   step1:"Крок 1 · Фото",choiceTitle:"Як додати фото?",choiceSub:"Зробіть селфі або скануйте QR.",
+   optCamTitle:"Селфі",optCamDesc:"Камера планшета.",
+   optMemTitle:"Сканувати QR",optMemDesc:"Завантажити з мобільного.",
+   step1cam:"Крок 1 · Камера",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото",back:"Назад",cancel:"Скасувати",retry:"Повторити",
+   step1mem:"Крок 1 · Сканувати QR",qrBoxTitle:"📱 Завантажити з мобільного",qrBoxSub:"Скануйте код та оберіть фото.",
+   step2:"Kрок 2 · Печатка",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
+   aiLoading:"Створення…",aiRetrying:"Повтор…",
+   aiErrTitle:"Помилка",aiErrMsg:"Немає відповіді.",
+   tmTitle:"Друкувати?",tmMsg:"Час вийшов.",
+   doneTitle:"Buen Camino!",doneSub:"Друкується.",finish:"Завершити",
+   opt1:"Французький шлях",opt2:"Ultreia",opt3:"Креденсіаль",opt4:"Щит",
+   lblChooseColor:"👉 Колір:", lblChooseStamp:"👉 Печатка:", lblChoosePlaceDate:"📍 Місце і дата:"}
 };
 let LANG = CONFIG.DEFAULT_LANG;
 const T = k => (I18N[LANG] && I18N[LANG][k]) || I18N.es[k] || k;
+
+function setLang(l){
+  LANG=l;
+  document.documentElement.lang=l;
+  const btns=document.querySelectorAll('.lang-btn');
+  for(let i=0;i<btns.length;i++) btns[i].classList.toggle('active', btns[i].dataset.lang===l);
+  const els=document.querySelectorAll('[data-t]');
+  for(let i=0;i<els.length;i++) els[i].textContent=T(els[i].getAttribute('data-t'));
+}
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', function(ev){ ev.stopPropagation(); setLang(this.dataset.lang); });
+});
 
 const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null, color: CONFIG.INK_COLOR,
              location: "SANTIAGO DE COMPOSTELA", threshold: CONFIG.LINE_THRESHOLD,
@@ -883,7 +972,7 @@ if (promoVideoEl) {
   promoVideoEl.addEventListener('ended', playNextPromoVideo);
 }
 
-/* QR Code y Polling */
+/* QR Code y Polling con manejo limpio de respuesta */
 let pollingInterval = null;
 const URL_APP_MOVIL = "https://sellosmiguelplata.github.io/SellosCaminoCompostela/subir.html";
 const WEBHOOK_CONSULTA = "https://hook.eu1.make.com/cefuk6tab3wwawyvmjg36rg92jh9pnbd";
@@ -901,12 +990,17 @@ $('btnChooseMemory').addEventListener('click', function(){
     try {
       const res = await fetch(`${WEBHOOK_CONSULTA}?sesion=${sessionId}`);
       if (res.ok) {
-        const data = await res.json();
-        if (data && data.image) {
-          clearInterval(pollingInterval);
-          S.rawPhoto = data.image;
-          S.aiAttempt = 0; S.editStarted = false;
-          go('s2'); requestAI();
+        const textData = await res.text();
+        if (textData && textData.length > 10) {
+          let data;
+          try { data = JSON.parse(textData); } catch(err) { data = { image: textData }; }
+          
+          if (data && data.image) {
+            clearInterval(pollingInterval);
+            S.rawPhoto = data.image;
+            S.aiAttempt = 0; S.editStarted = false;
+            go('s2'); requestAI();
+          }
         }
       }
     } catch(e){}
@@ -930,6 +1024,7 @@ $('btnModalRestart').addEventListener('click', function(){ go('s0'); });$('btnDo
   document.documentElement.style.setProperty('--ink', CONFIG.INK_COLOR);
   $('dateInput').value = S.date;
   buildCards();
+  setLang(CONFIG.DEFAULT_LANG);
   try{ await preloadFrames(); }catch(e){}
   setTimeout(sizeStages, 60);
 })();
