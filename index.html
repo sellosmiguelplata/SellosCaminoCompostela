@@ -3,11 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK v4.6</title>
+<title>Sello del Peregrino · Camino de Santiago · KIOSK</title>
 <style>
-/* ============================================================
-   SELLO DEL PEREGRINO - KIOSK  (BUILD v4.6)
-   ============================================================ */
 :root{
   --ink:#8a2222;
   --bg0:#0d0f14;
@@ -35,7 +32,6 @@ button{font-family:inherit}
 #buildTag{position:fixed;left:6px;bottom:6px;z-index:120;
   font-size:.62rem;letter-spacing:.08em;color:#4a5466;pointer-events:none}
 
-/* ---------- screens ---------- */
 .screen{
   position:fixed;inset:0;display:none;flex-direction:column;
   align-items:center;justify-content:flex-start;
@@ -48,7 +44,6 @@ button{font-family:inherit}
 .screen.show{display:flex}
 .screen.visible{opacity:1;transform:scale(1)}
 
-/* ---------- Pantalla de Bloqueo / Candado Real ---------- */
 #lockScreen {
   position: fixed; inset: 0; z-index: 99999; background: var(--bg0);
   display: flex !important; align-items: center; justify-content: center; flex-direction: column;
@@ -67,7 +62,6 @@ button{font-family:inherit}
 .lock-box input:focus { border-color: var(--gold); }
 .lock-box button { width: 100%; padding: 14px; font-size: 1.1rem; }
 
-/* ---------- shared bits ---------- */
 .topbar{width:100%;max-width:850px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto;z-index:5}
 .brand{font-size:.85rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
 
@@ -137,13 +131,7 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
   padding: 24px; max-width: 580px; width: 90%; text-align: center;
   box-shadow: 0 12px 35px rgba(0,0,0,0.6); margin: auto;
 }
-.whatsapp-box h3 { color: #25d366; margin-top: 0; font-size: 1.4rem; }
-.whatsapp-number {
-  background: var(--bg0); border: 2px dashed #25d366; padding: 14px;
-  border-radius: 12px; font-size: 1.4rem; font-weight: 800; color: #fff;
-  letter-spacing: 0.05em; margin: 16px 0; user-select: text;
-}
-.whatsapp-box p { color: var(--txt-dim); font-size: 0.95rem; line-height: 1.5; }
+.whatsapp-box h3 { color: var(--gold); margin-top: 0; font-size: 1.4rem; }
 
 .stagewrap{position:relative;z-index:2;flex:1 1 auto;display:flex;
   align-items:center;justify-content:center;width:100%;min-height:0}
@@ -269,13 +257,10 @@ input[type="range"] { flex: 1; max-width: 210px; }
 .modal .btn{flex:1 1 150px}
 
 .done-ico{font-size:4rem;animation:bob 2.4s ease-in-out infinite}
-.warnstrip{position:fixed;left:0;right:0;bottom:0;z-index:99;background:#5a3a00;color:#ffe9b8;
-  font-size:.72rem;padding:6px 10px;text-align:center;display:none}
 </style>
 </head>
 <body>
 
-<!-- PANTALLA DE BLOQUEO SEGURA -->
 <div id="lockScreen">
   <div class="lock-box">
     <h2>🔒 Kiosco Protegido</h2>
@@ -286,9 +271,9 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </div>
 
-<div id="buildTag">KIOSK v4.6</div>
+<div id="buildTag">KIOSK v5.0</div>
 
-<!-- ================= SCREEN 0 : START ================= -->
+<!-- SCREEN 0 : START -->
 <section id="s0" class="screen">
   <div class="fall" id="fall0"></div>
   <div class="topbar" style="justify-content: center;">
@@ -317,7 +302,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </section>
 
-<!-- ================= SCREEN 1 : DUAL CHOICE ================= -->
+<!-- SCREEN 1 : DUAL CHOICE -->
 <section id="s1" class="screen">
   <div class="fall" id="fall1"></div>
   <div class="topbar">
@@ -326,7 +311,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
   <div class="stage0" style="justify-content: center; gap: 20px;">
     <h1 data-t="choiceTitle">¿Cómo quieres poner tu foto?</h1>
-    <p class="sub" data-t="choiceSub">Hazte un selfie ahora mismo o trae la foto de un ser querido.</p>
+    <p class="sub" data-t="choiceSub">Hazte un selfie ahora mismo o escanea el QR desde tu móvil.</p>
     
     <div class="dual-container">
       <div class="dual-card" id="btnChooseCamera">
@@ -336,14 +321,14 @@ input[type="range"] { flex: 1; max-width: 210px; }
       </div>
       <div class="dual-card" id="btnChooseMemory">
         <div class="dual-icon">📱</div>
-        <div class="dual-title">Escanear QR</div>
-        <div class="dual-desc">Sube la foto escaneando un código con tu propio móvil.</div>
+        <div class="dual-title" data-t="optMemTitle">Escanear QR</div>
+        <div class="dual-desc" data-t="optMemDesc">Sube la foto escaneando el código con tu móvil.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= SCREEN 1A : LIVE CAMERA ================= -->
+<!-- SCREEN 1A : LIVE CAMERA -->
 <section id="s1a" class="screen">
   <div class="fall" id="fall1a"></div>
   <div class="topbar">
@@ -377,24 +362,24 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </section>
 
-<!-- ================= SCREEN 1B : QR INSTRUCTIONS ================= -->
+<!-- SCREEN 1B : QR INSTRUCTIONS -->
 <section id="s1b" class="screen">
   <div class="fall" id="fall1b"></div>
   <div class="topbar">
     <div class="brand">Paso 1 · Escanea el QR</div>
-    <button class="btn ghost sm" id="btnBackMem">Volver</button>
+    <button class="btn ghost sm" id="btnBackMem" data-t="back">Volver</button>
   </div>
   <div class="stage0" style="justify-content: center;">
     <div class="whatsapp-box" style="text-align: center;">
       <h3 style="color: var(--gold);">📱 Sube la foto desde tu móvil</h3>
-      <p>Escanea este código con tu cámara y elige la foto. Aparecerá aquí mágicamente.</p>
+      <p>Escanea este código con tu cámara y elige la foto. Aparecerá aquí al instante.</p>
       <img id="qrImage" src="" alt="Código QR" style="width: 220px; height: 220px; margin: 15px auto; border-radius: 10px; display: block; border: 4px solid white;">
       <p id="qrStatus" style="color: var(--ok); font-weight: bold;">Esperando foto...</p>
     </div>
   </div>
 </section>
 
-<!-- ================= SCREEN 2 : DESIGN + DATE ================= -->
+<!-- SCREEN 2 : DESIGN + DATE -->
 <section id="s2" class="screen">
   <div class="topbar">
     <div class="brand" data-t="step2">Paso 2 · Tu sello</div>
@@ -491,7 +476,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </section>
 
-<!-- ================= SCREEN 3 : DONE ================= -->
+<!-- SCREEN 3 : DONE -->
 <section id="s3" class="screen">
   <div class="fall" id="fall3"></div>
   <div class="stage0">
@@ -502,7 +487,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </section>
 
-<!-- ================= MODAL ================= -->
+<!-- MODAL -->
 <div class="modal" id="modalTimeout">
   <div class="box">
     <h3 data-t="tmTitle">¿Imprimimos tu sello?</h3>
@@ -515,12 +500,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </div>
 
-<div class="warnstrip" id="warnstrip"></div>
-
 <script>
-/* ============================================================================
-   1) CONFIG & UNLOCK LOGIC (CORREGIDO Y DIRECTO)
-   ============================================================================ */
 const CONFIG = {
   AI_WEBHOOK_URL   : "https://hook.eu1.make.com/lqq9d91pvhkkssmte4ukt8cik4ulgj9v",
   PRINT_WEBHOOK_URL: "",
@@ -559,177 +539,46 @@ const CONFIG = {
 
 const $ = id => document.getElementById(id);
 
-// Función de desbloqueo robusta y directa
+// Desbloqueo seguro
 function intentarDesbloqueo() {
   const inputEl = $('lockInput');
   const errorEl = $('lockError');
   const screenEl = $('lockScreen');
-  
   if (!inputEl) return;
-  
   if (inputEl.value.trim() === "peregrino123") {
-    if (screenEl) {
-      screenEl.style.cssText = "display: none !important;";
-    }
+    if (screenEl) screenEl.style.cssText = "display: none !important;";
     go('s0');
-    // Forzar reproducción del vídeo al desbloquear
-    if (promoVideoEl) {
-      currentVideoIdx = 0;
-      playNextPromoVideo();
-    }
+    if (promoVideoEl) { currentVideoIdx = 0; playNextPromoVideo(); }
   } else {
-    if (errorEl) {
-      errorEl.style.display = 'block';
-    }
+    if (errorEl) errorEl.style.display = 'block';
   }
 }
 
 document.addEventListener('DOMContentLoaded', function(){
   const btnUnlock = $('btnUnlock');
   const lockInput = $('lockInput');
-  
-  if (btnUnlock) {
-    btnUnlock.addEventListener('click', intentarDesbloqueo);
-  }
-  if (lockInput) {
-    lockInput.addEventListener('keydown', function(e){
-      if(e.key === 'Enter') {
-        intentarDesbloqueo();
-      }
-    });
-  }
+  if (btnUnlock) btnUnlock.addEventListener('click', intentarDesbloqueo);
+  if (lockInput) lockInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') intentarDesbloqueo(); });
 });
 
-/* ---------------------------------------------------------------------------
-   2) i18n
-   --------------------------------------------------------------------------- */
 const I18N = {
-es:{welcomeTitle:"Sello del Peregrino",welcomeSub:"Hazte una foto y llévate tu sello en la credencial.",start:"Comenzar",
- step1:"Paso 1 · Foto",choiceTitle:"¿Cómo quieres poner tu foto?",choiceSub:"Hazte un selfie ahora mismo o trae la foto de un ser querido.",
- optCamTitle:"Hacerse un Selfie",optCamDesc:"Usa la cámara de la tablet con cuenta atrás.",
- optMemTitle:"Enviar por WhatsApp",optMemDesc:"Manda la foto de tu ser querido desde un móvil.",
- step1cam:"Paso 1 · Cámara",lookCamera:"Mira a la cámara",shootNow:"Hacer la foto ahora",back:"Volver",cancel:"Cancelar",retry:"Reintentar",
- step1mem:"Paso 1 · WhatsApp",waBoxTitle:"💬 Envía la foto por WhatsApp",waBoxSub:"Manda la foto de tu ser querido desde un teléfono móvil al siguiente número del kiosco:",waBoxWait:"Una vez enviada, pulsa el botón verde para verla y seleccionarla al instante.",waSelectBtn:"📂 Elegir foto enviada por WhatsApp",
- tmrPhoto:"Foto en",tmrEdit:"Tiempo",tmAuto:"Volvemos al inicio en",
- camErrTitle:"No se puede abrir la cámara",
- errFile:"La página se ha abierto como archivo local.",errPerm:"Permiso denegado.",errNone:"Sin cámara.",errBusy:"En uso.",errOther:"Error de cámara.",
- step2:"Paso 2 · Tu sello",locationLabel:"Lugar:",thresholdLabel:"Detalle:",print:"Imprimir sello",startAgain:"Empezar de nuevo",
- aiLoading:"Creando tu sello…",aiRetrying:"Reintentando…",
- aiErrTitle:"No hemos podido crear el dibujo",aiErrMsg:"El servicio no responde. Inténtalo de nuevo.",
- tmTitle:"¿Imprimimos tu sello?",tmMsg:"Se ha acabado el tiempo de edición.",
- doneTitle:"¡Buen Camino!",doneSub:"Tu sello se está imprimiendo. Retíralo de la impresora.",finish:"Finalizar",
- opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Escudo",
- lblChooseColor:"👉 Elige tu color:", lblChooseStamp:"👉 Elige tu sello:", lblChoosePlaceDate:"📍 Elige tu lugar y día:",
- taint:"Aviso del operador: abre la app desde un servidor web (http/https)."},
-gb:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in your credential.",start:"Start",
- step1:"Step 1 · Photo",choiceTitle:"How would you like your photo?",choiceSub:"Take a selfie right now or bring a photo of a loved one.",
- optCamTitle:"Take a Selfie",optCamDesc:"Use the tablet camera with countdown.",
- optMemTitle:"Send via WhatsApp",optMemDesc:"Send a loved one's photo from a mobile.",
- step1cam:"Step 1 · Camera",lookCamera:"Look at the camera",shootNow:"Take the photo now",back:"Back",cancel:"Cancel",retry:"Retry",
- step1mem:"Step 1 · WhatsApp",waBoxTitle:"💬 Send photo via WhatsApp",waBoxSub:"Send your loved one's photo from a mobile to our kiosk number:",waBoxWait:"Once sent, tap the green button to select it instantly.",waSelectBtn:"📂 Choose WhatsApp photo",
- tmrPhoto:"Photo in",tmrEdit:"Time left",tmAuto:"Back to start in",
- camErrTitle:"Cannot open the camera",
- errFile:"Local file block.",errPerm:"Permission denied.",errNone:"No camera found.",errBusy:"Camera in use.",errOther:"Camera error.",
- step2:"Step 2 · Your stamp",locationLabel:"Location:",thresholdLabel:"Details:",print:"Print stamp",startAgain:"Start again",
- aiLoading:"Creating your stamp…",aiRetrying:"Retrying…",
- aiErrTitle:"We could not create the drawing",aiErrMsg:"The service is not responding.",
- tmTitle:"Shall we print your stamp?",tmMsg:"Editing time is over.",
- doneTitle:"Buen Camino!",doneSub:"Your stamp is being printed.",finish:"Finish",
- opt1:"French Way",opt2:"Ultreia",opt3:"Credential",opt4:"Shield",
- lblChooseColor:"👉 Choose your color:", lblChooseStamp:"👉 Choose your stamp:", lblChoosePlaceDate:"📍 Choose place & date:",
- taint:"Operator notice: serve over http/https."},
-de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie und erhalte deinen Stempel im Pilgerpass.",start:"Starten",
- step1:"Schritt 1 · Foto",choiceTitle:"Wie möchten Sie Ihr Foto hinzufügen?",choiceSub:"Machen Sie jetzt ein Selfie oder bringen Sie ein Foto eines lieben Menschen mit.",
- optCamTitle:"Selfie machen",optCamDesc:"Nutzen Sie die Tabletkamera.",
- optMemTitle:"Per WhatsApp senden",optMemDesc:"Foto des Liebsten vom Handy senden.",
- step1cam:"Schritt 1 · Kamera",lookCamera:"Schau in die Kamera",shootNow:"Jetzt fotografieren",back:"Zurück",cancel:"Abbrechen",retry:"Erneut",
- step1mem:"Schritt 1 · WhatsApp",waBoxTitle:"💬 Foto per WhatsApp senden",waBoxSub:"Senden Sie das Foto von einem Handy an unsere Kiosk-Nummer:",waBoxWait:"Tippen Sie nach dem Senden auf den grünen Button.",waSelectBtn:"📂 WhatsApp-Foto auswählen",
- tmrPhoto:"Foto in",tmrEdit:"Restzeit",tmAuto:"Zurück zum Start in",
- camErrTitle:"Kamera kann nicht geöffnet werden",
- errFile:"Lokale Datei.",errPerm:"Zugriff verweigert.",errNone:"Keine Kamera.",errBusy:"Kamera in Nutzung.",errOther:"Kamerafehler.",
- step2:"Schritt 2 · Dein Stempel",locationLabel:"Ort:",thresholdLabel:"Details:",print:"Stempel drucken",startAgain:"Neu starten",
- aiLoading:"Dein Stempel wird erstellt…",aiRetrying:"Neuer Versuch…",
- aiErrTitle:"Die Zeichnung konnte nicht erstellt werden",aiErrMsg:"Der Dienst antwortet nicht.",
- tmTitle:"Sollen wir drucken?",tmMsg:"Zeit abgelaufen.",
- doneTitle:"Buen Camino!",doneSub:"Stempel wird gedruckt.",finish:"Beenden",
- opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Wappen",
- lblChooseColor:"👉 Wähle deine Farbe:", lblChooseStamp:"👉 Wähle deinen Stempel:", lblChoosePlaceDate:"📍 Ort & Datum wählen:",
- taint:"Hinweis: App über http/https bereitstellen."},
-fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie et repars avec ton tampon sur ta crédentiale.",start:"Commencer",
- step1:"Étape 1 · Photo",choiceTitle:"Comment souhaitez-vous ajouter votre photo ?",choiceSub:"Prenez un selfie ou apportez la photo d'un être cher.",
- optCamTitle:"Prendre un selfie",optCamDesc:"Utilisez la caméra de la tablette.",
- optMemTitle:"Envoyer par WhatsApp",optMemDesc:"Envoyez la photo depuis un mobile.",
- step1cam:"Étape 1 · Caméra",lookCamera:"Regardez l'objectif",shootNow:"Prendre la photo maintenant",back:"Retour",cancel:"Annuler",retry:"Réessayer",
- step1mem:"Étape 1 · WhatsApp",waBoxTitle:"💬 Envoyez la photo par WhatsApp",waBoxSub:"Envoyez la photo depuis un mobile vers le numéro du kiosque :",waBoxWait:"Une fois envoyée, appuyez sur le bouton vert.",waSelectBtn:"📂 Choisir la photo WhatsApp",
- tmrPhoto:"Photo dans",tmrEdit:"Temps",tmAuto:"Retour à l'accueil dans",
- camErrTitle:"Impossible d'ouvrir la caméra",
- errFile:"Fichier local.",errPerm:"Refusé.",errNone:"Aucune caméra.",errBusy:"Utilisée.",errOther:"Erreur.",
- step2:"Étape 2 · Votre tampon",locationLabel:"Lieu :",thresholdLabel:"Détails :",print:"Imprimer",startAgain:"Recommencer",
- aiLoading:"Création de votre tampon…",aiRetrying:"Nouvel essai…",
- aiErrTitle:"Impossible de créer",aiErrMsg:"Pas de réponse.",
- tmTitle:"On imprime ?",tmMsg:"Temps écoulé.",
- doneTitle:"Buen Camino !",doneSub:"Impression en cours.",finish:"Terminer",
- opt1:"Chemin Français",opt2:"Ultreia",opt3:"Credential",opt4:"Blason",
- lblChooseColor:"👉 Choisissez votre couleur :", lblChooseStamp:"👉 Choisissez votre tampon :", lblChoosePlaceDate:"📍 Lieu et date :",
- taint:"Avis opérateur : http/https requis."},
-pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma foto e leve seu carimbo na credencial.",start:"Começar",
- step1:"Passo 1 · Foto",choiceTitle:"Como deseja colocar sua foto?",choiceSub:"Tire uma selfie agora mesmo ou traga a foto de um ente querido.",
- optCamTitle:"Tirar uma selfie",optCamDesc:"Use a câmera do tablet.",
- optMemTitle:"Enviar por WhatsApp",optMemDesc:"Envie a foto de um ente querido.",
- step1cam:"Passo 1 · Câmera",lookCamera:"Olhe para a câmera",shootNow:"Tirar foto agora",back:"Voltar",cancel:"Cancelar",retry:"Tentar",
- step1mem:"Passo 1 · WhatsApp",waBoxTitle:"💬 Envie a foto por WhatsApp",waBoxSub:"Mande a foto de um celular para o número do quiosque:",waBoxWait:"Após enviar, toque no botão verde para selecioná-la.",waSelectBtn:"📂 Escolher foto do WhatsApp",
- tmrPhoto:"Foto em",tmrEdit:"Tempo",tmAuto:"Voltando em",
- camErrTitle:"Erro na câmera",
- errFile:"Arquivo local.",errPerm:"Negado.",errNone:"Sem câmera.",errBusy:"Em uso.",errOther:"Erro.",
- step2:"Passo 2 · Seu carimbo",locationLabel:"Local:",thresholdLabel:"Detalhe:",print:"Imprimir",startAgain:"Recomeçar",
- aiLoading:"Criando carimbo…",aiRetrying:"Tentando…",
- aiErrTitle:"Erro ao criar",aiErrMsg:"Sem resposta.",
- tmTitle:"Imprimir?",tmMsg:"Tempo esgotado.",
- doneTitle:"Buen Camino!",doneSub:"Imprimindo.",finish:"Finalizar",
- opt1:"Caminho Francés",opt2:"Ultreia",opt3:"Credencial",opt4:"Escudo",
- lblChooseColor:"👉 Escolha sua cor:", lblChooseStamp:"👉 Escolha seu carimbo:", lblChoosePlaceDate:"📍 Local e data:",
- taint:"Aviso: use http/https."},
-cn:{welcomeTitle:"朝圣者印章",welcomeSub:"拍张照片，在您的朝圣者护照上盖章。",start:"开始",
- step1:"第一步 · 拍照",choiceTitle:"您想如何添加照片？",choiceSub:"现在自拍或带来您挚爱之人的照片。",
- optCamTitle:"拍摄自拍照",optCamDesc:"使用平板电脑摄像头",
- optMemTitle:"通过WhatsApp发送",optMemDesc:"从手机发送挚爱之人的照片",
- step1cam:"第一步 · 相机",lookCamera:"看着相机",shootNow:"现在拍照",back:"返回",cancel:"取消",retry:"重试",
- step1mem:"第一步 · WhatsApp",waBoxTitle:"💬 通过WhatsApp发送照片",waBoxSub:"从手机将照片发送至我们的亭子号码：",waBoxWait:"发送后，点击绿色按钮即可直接选择。",waSelectBtn:"📂 选择WhatsApp照片",
- tmrPhoto:"倒计时",tmrEdit:"剩余",tmAuto:"返回",
- camErrTitle:"无法打开相机",
- errFile:"本地文件",errPerm:"拒绝权限",errNone:"无相机",errBusy:"忙碌",errOther:"错误",
- step2:"第二步 · 印章",locationLabel:"地点:",thresholdLabel:"细节:",print:"打印",startAgain:"重来",
- aiLoading:"制作中…",aiRetrying:"重试…",
- aiErrTitle:"错误",aiErrMsg:"无响应",
- tmTitle:"打印印章？",tmMsg:"时间到",
- doneTitle:"一路平安!",doneSub:"正在打印",finish:"完成",
- opt1:"法国之路",opt2:"Ultreia",opt3:"护照",opt4:"盾牌",
- lblChooseColor:"👉 选择您的颜色:", lblChooseStamp:"👉 选择您的印章:", lblChoosePlaceDate:"📍 地点和日期:",
- taint:"提示: 请通过 http/https 运行"},
-ua:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть фото та получите печатку у свій паспорт.",start:"Почати",
- step1:"Крок 1 · Фото",choiceTitle:"Як ви хочете додати фото?",choiceSub:"Зробіть селфі зараз або принесіть фото близької людини.",
- optCamTitle:"Зробити селфі",optCamDesc:"Використовуйте камеру планшета.",
- optMemTitle:"Надіслати через WhatsApp",optMemDesc:"Надішліть фото з мобільного.",
- step1cam:"Крок 1 · Камера",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото",back:"Назад",cancel:"Скасувати",retry:"Повторити",
- step1mem:"Крок 1 · WhatsApp",waBoxTitle:"💬 Надішліть фото через WhatsApp",waBoxSub:"Надішліть фото близької людини на номер кіоску:",waBoxWait:"Після надсилання натисніть зелену кнопку нижче.",waSelectBtn:"📂 Вибрати фото з WhatsApp",
- tmrPhoto:"Фото через",tmrEdit:"Час",tmAuto:"Повернення",
- camErrTitle:"Помилка камери",
- errFile:"Локальний файл.",errPerm:"Заборонено.",errNone:"Немає камери.",errBusy:"Зайнято.",errOther:"Помилка.",
- step2:"Крок 2 · Печатка",locationLabel:"Місце:",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
- aiLoading:"Створення…",aiRetrying:"Повтор…",
- aiErrTitle:"Помилка малювання",aiErrMsg:"Немає відповіді.",
- tmTitle:"Друкувати печатку?",tmMsg:"Час вийшов.",
- doneTitle:"Buen Camino!",doneSub:"Друкується.",finish:"Завершити",
- opt1:"Французький шлях",opt2:"Ultreia",opt3:"Креденсіаль",opt4:"Щит",
- lblChooseColor:"👉 Виберіть колір:", lblChooseStamp:"👉 Виберіть печатку:", lblChoosePlaceDate:"📍 Місце і дату:",
- taint:"Примітка: потрібен http/https."}
+  es:{welcomeTitle:"Sello del Peregrino",welcomeSub:"Hazte una foto y llévate tu sello en la credencial.",start:"Comenzar",
+   step1:"Paso 1 · Foto",choiceTitle:"¿Cómo quieres poner tu foto?",choiceSub:"Hazte un selfie ahora mismo o escanea el QR.",
+   optCamTitle:"Hacerse un Selfie",optCamDesc:"Usa la cámara de la tablet con cuenta atrás.",
+   optMemTitle:"Escanear QR",optMemDesc:"Sube la foto escaneando el código con tu móvil.",
+   step1cam:"Paso 1 · Cámara",lookCamera:"Mira a la cámara",shootNow:"Hacer la foto ahora",back:"Volver",cancel:"Cancelar",retry:"Reintentar",
+   step1mem:"Paso 1 · Escanea el QR",qrBoxTitle:"📱 Sube la foto desde tu móvil",qrBoxSub:"Escanea este código con tu cámara y elige la foto.",
+   step2:"Paso 2 · Tu sello",thresholdLabel:"Detalle:",print:"Imprimir sello",startAgain:"Empezar de nuevo",
+   aiLoading:"Creando tu sello…",aiRetrying:"Reintentando…",
+   aiErrTitle:"No hemos podido crear el dibujo",aiErrMsg:"El servicio no responde. Inténtalo de nuevo.",
+   tmTitle:"¿Imprimimos tu sello?",tmMsg:"Se ha acabado el tiempo de edición.",
+   doneTitle:"¡Buen Camino!",doneSub:"Tu sello se está imprimiendo. Retíralo de la impresora.",finish:"Finalizar",
+   opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Escudo",
+   lblChooseColor:"👉 Elige tu color:", lblChooseStamp:"👉 Elige tu sello:", lblChoosePlaceDate:"📍 Elige tu lugar y día:"}
 };
 let LANG = CONFIG.DEFAULT_LANG;
 const T = k => (I18N[LANG] && I18N[LANG][k]) || I18N.es[k] || k;
 
-/* ---------------------------------------------------------------------------
-   3) state + helpers
-   --------------------------------------------------------------------------- */
 const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null, color: CONFIG.INK_COLOR,
              location: "SANTIAGO DE COMPOSTELA", threshold: CONFIG.LINE_THRESHOLD,
              rawPhoto: null, aiAttempt: 0, screen: null, printing:false, editStarted:false };
@@ -758,12 +607,8 @@ function runCountdown(key, seconds, numEl, barEl, boxEl, onEnd){
   }, 200);
 }
 
-/* ---------------------------------------------------------------------------
-   4) frame artwork
-   --------------------------------------------------------------------------- */
 const FRAME_CACHE = [];
 let CANVAS_TAINTED = false;
-
 function loadImage(src){
   return new Promise(res=>{
     const im = new Image(); im.crossOrigin = "anonymous";
@@ -787,91 +632,59 @@ function recolourFrame(img, colorHex){
     }
     x.putImageData(d,0,0);
     return {canvas:c, tainted:false};
-  }catch(e){
-    CANVAS_TAINTED = true;
-    return {canvas:c, tainted:true};
-  }
+  }catch(e){ CANVAS_TAINTED = true; return {canvas:c, tainted:true}; }
 }
 async function preloadFrames(){
   for(let i=0;i<CONFIG.FRAMES.length;i++){
     const img = await loadImage(CONFIG.FRAMES[i].file);
-    if(img){ 
-      FRAME_CACHE[i] = { rawImage: img, ok: true };
-      rebuildFrameCacheColor(i);
-    }
+    if(img){ FRAME_CACHE[i] = { rawImage: img, ok: true }; rebuildFrameCacheColor(i); }
     else { FRAME_CACHE[i] = { canvas:null, rawImage:null, ok:false, tainted:false }; }
-  }
-  if(CANVAS_TAINTED || location.protocol === 'file:'){
-    const w = $('warnstrip'); w.textContent = T('taint'); w.style.display='block';
   }
 }
 function rebuildFrameCacheColor(i) {
   if(!FRAME_CACHE[i] || !FRAME_CACHE[i].rawImage) return;
   const r = recolourFrame(FRAME_CACHE[i].rawImage, S.color);
-  FRAME_CACHE[i].canvas = r.canvas;
-  FRAME_CACHE[i].tainted = r.tainted;
+  FRAME_CACHE[i].canvas = r.canvas; FRAME_CACHE[i].tainted = r.tainted;
 }
 function applyColor(hex) {
   S.color = hex;
   document.documentElement.style.setProperty('--ink', hex);
   for(let i=0; i<CONFIG.FRAMES.length; i++) rebuildFrameCacheColor(i);
-  if (S.screen === 's2') {
-    updateCards();
-    drawPreview();
-  }
+  if (S.screen === 's2') { updateCards(); drawPreview(); }
 }
 
-/* ---------------------------------------------------------------------------
-   5) renderer
-   --------------------------------------------------------------------------- */
 function renderStamp(ctx, size, opts){
-  const o = Object.assign({photo:null, frame:S.frame, date:S.date,
-                           background:true, drawPhoto:true}, opts||{});
+  const o = Object.assign({photo:null, frame:S.frame, date:S.date, background:true, drawPhoto:true}, opts||{});
   const k = size/600, cx = size/2, cy = size/2;
-
   ctx.clearRect(0,0,size,size);
   if(o.background){ ctx.fillStyle="#ffffff"; ctx.fillRect(0,0,size,size); }
   if(o.drawPhoto && o.photo) drawPhotoInk(ctx, size, o.photo);
-
   const F = FRAME_CACHE[o.frame];
   if(F && F.ok && F.canvas){
-    if(F.tainted){ ctx.save(); ctx.globalCompositeOperation='multiply';
-      ctx.drawImage(F.canvas,0,0,size,size); ctx.restore(); }
+    if(F.tainted){ ctx.save(); ctx.globalCompositeOperation='multiply'; ctx.drawImage(F.canvas,0,0,size,size); ctx.restore(); }
     else ctx.drawImage(F.canvas,0,0,size,size);
-  } else {
-    drawVectorBorder(ctx,size);
-  }
-
+  } else { drawVectorBorder(ctx,size); }
   ctx.fillStyle = S.color;
-  curvedText(ctx, S.location, cx, cy, CONFIG.RADIUS_TOP*k,   -Math.PI/2,  CONFIG.FONT_TOP*k,   false);
-  curvedText(ctx, isoToPretty(o.date), cx, cy, CONFIG.RADIUS_DATE*k,  Math.PI/2,   CONFIG.FONT_DATE*k,  true);
+  curvedText(ctx, S.location, cx, cy, CONFIG.RADIUS_TOP*k, -Math.PI/2, CONFIG.FONT_TOP*k, false);
+  curvedText(ctx, isoToPretty(o.date), cx, cy, CONFIG.RADIUS_DATE*k, Math.PI/2, CONFIG.FONT_DATE*k, true);
 }
 function drawPhotoInk(ctx, size, img){
-  const k = size/600, cx=size/2, cy=size/2;
-  const R = CONFIG.PHOTO_RADIUS*k;
+  const k = size/600, cx=size/2, cy=size/2, R = CONFIG.PHOTO_RADIUS*k;
   const t = document.createElement('canvas'); t.width=t.height=size;
   const c = t.getContext('2d',{willReadFrequently:true});
   c.save(); c.beginPath(); c.arc(cx, cy + CONFIG.PHOTO_OFFSET_Y*k, R, 0, Math.PI*2); c.clip();
-
-  const box = 2*R*CONFIG.PHOTO_SCALE;
-  const iw = img.naturalWidth||img.width, ih = img.naturalHeight||img.height;
-  const sc = Math.max(box/iw, box/ih);
-  const dw = iw*sc, dh = ih*sc;
+  const box = 2*R*CONFIG.PHOTO_SCALE, iw = img.naturalWidth||img.width, ih = img.naturalHeight||img.height;
+  const sc = Math.max(box/iw, box/ih), dw = iw*sc, dh = ih*sc;
   c.drawImage(img, cx-dw/2, cy + CONFIG.PHOTO_OFFSET_Y*k - dh/2, dw, dh);
   c.restore();
-
   try{
     const d = c.getImageData(0,0,size,size), px=d.data, ink=hexToRgb(S.color);
     for(let i=0;i<px.length;i+=4){
       const avg = px[i]*0.299+px[i+1]*0.587+px[i+2]*0.114;
-      if(avg < S.threshold && px[i+3] > 50){
-        px[i]=ink.r; px[i+1]=ink.g; px[i+2]=ink.b; px[i+3]=255;
-      } else px[i+3]=0;
+      if(avg < S.threshold && px[i+3] > 50){ px[i]=ink.r; px[i+1]=ink.g; px[i+2]=ink.b; px[i+3]=255; } else px[i+3]=0;
     }
-    c.putImageData(d,0,0);
-    ctx.drawImage(t,0,0);
+    c.putImageData(d,0,0); ctx.drawImage(t,0,0);
   }catch(e){
-    CANVAS_TAINTED = true;
     ctx.save(); ctx.globalCompositeOperation='multiply'; ctx.drawImage(t,0,0); ctx.restore();
   }
 }
@@ -881,17 +694,7 @@ function drawVectorBorder(ctx,size){
   [[282,6],[274,2],[CONFIG.PHOTO_RADIUS+2,4]].forEach(function(p){
     ctx.lineWidth=p[1]*k; ctx.beginPath(); ctx.arc(cx,cy,p[0]*k,0,Math.PI*2); ctx.stroke();
   });
-  star(ctx,cx-220*k,cy+140*k,5,10*k,5*k); star(ctx,cx+220*k,cy+140*k,5,10*k,5*k);
   ctx.restore();
-}
-function star(ctx,cx,cy,sp,ro,ri){
-  let rot=Math.PI/2*3, step=Math.PI/sp;
-  ctx.beginPath(); ctx.moveTo(cx,cy-ro);
-  for(let i=0;i<sp;i++){
-    ctx.lineTo(cx+Math.cos(rot)*ro, cy+Math.sin(rot)*ro); rot+=step;
-    ctx.lineTo(cx+Math.cos(rot)*ri, cy+Math.sin(rot)*ri); rot+=step;
-  }
-  ctx.closePath(); ctx.fill();
 }
 function curvedText(ctx,text,cx,cy,radius,centerAngle,fontSize,reverse){
   if(!text || !text.trim()) return;
@@ -900,8 +703,7 @@ function curvedText(ctx,text,cx,cy,radius,centerAngle,fontSize,reverse){
   const len=text.length, arc=(fontSize*0.62)/radius, start=centerAngle-(len*arc)/2;
   for(let i=0;i<len;i++){
     ctx.save();
-    const ci = reverse ? (len-1-i) : i;
-    const a  = start + (i+0.5)*arc;
+    const ci = reverse ? (len-1-i) : i, a = start + (i+0.5)*arc;
     ctx.translate(cx+Math.cos(a)*radius, cy+Math.sin(a)*radius);
     ctx.rotate(reverse ? a-Math.PI/2 : a+Math.PI/2);
     ctx.fillText(text[ci],0,0);
@@ -910,274 +712,114 @@ function curvedText(ctx,text,cx,cy,radius,centerAngle,fontSize,reverse){
   ctx.restore();
 }
 
-/* ---------------------------------------------------------------------------
-   6) Sizing
-   --------------------------------------------------------------------------- */
 function sizeStage(wrapId, stageId){
   const wrap=$(wrapId), stage=$(stageId);
   if(!wrap || !stage) return 0;
   const w = wrap.clientWidth, h = wrap.clientHeight;
   if(!w || !h) return 0;
   const side = Math.max(120, Math.floor(Math.min(w, h, CONFIG.MAX_STAGE_PX)));
-  stage.style.width  = side+'px';
-  stage.style.height = side+'px';
+  stage.style.width = side+'px'; stage.style.height = side+'px';
   return side;
 }
-function sizeStages(){
-  sizeStage('wrap1','stage1');
-  sizeStage('wrap2','stage2');
-  layoutVideo();
-}
+function sizeStages(){ sizeStage('wrap1','stage1'); sizeStage('wrap2','stage2'); layoutVideo(); }
 window.addEventListener('resize', sizeStages);
-window.addEventListener('orientationchange', ()=>setTimeout(sizeStages,250));
-if(window.ResizeObserver){
-  const ro=new ResizeObserver(()=>sizeStages());
-  window.addEventListener('DOMContentLoaded',()=>{ ro.observe($('wrap1')); ro.observe($('wrap2')); });
-}
 
-/* ---------------------------------------------------------------------------
-   7) Routing
-   --------------------------------------------------------------------------- */
 function go(id){
-  ['s0','s1','s1a','s1b','s2','s3'].forEach(function(s){ const el=$(s); el.classList.remove('visible'); el.classList.remove('show'); });
-  const el=$(id); el.classList.add('show');
+  ['s0','s1','s1a','s1b','s2','s3'].forEach(function(s){ const el=$(s); if(el){ el.classList.remove('visible'); el.classList.remove('show'); } });
+  const el=$(id);
+  if(!el) return;
+  el.classList.add('show');
   requestAnimationFrame(function(){ sizeStages(); requestAnimationFrame(function(){ el.classList.add('visible'); sizeStages(); }); });
   S.screen=id;
   closeModal();
   if(id!=='s1a') stopCamera();
   clearTimer('selfie'); clearTimer('modal'); clearTimer('done');
   if(id!=='s2') clearTimer('edit');
-  stopFalling();
-  if(id==='s0'){ resetSession(); startFalling('fall0'); armIdle(false); }
-  if(id==='s1'){ startFalling('fall1'); armIdle(true); }
-  if(id==='s1a'){ startFalling('fall1a'); enterSelfie(); armIdle(true); }
-  if(id==='s1b'){ startFalling('fall1b'); armIdle(true); }
-  if(id==='s2'){ enterEdit(); armIdle(true); }
-  if(id==='s3'){ startFalling('fall3'); timers.done=setTimeout(function(){go('s0');}, CONFIG.DONE_TIMEOUT*1000); armIdle(false); }
+  if(id==='s0'){ resetSession(); }
+  if(id==='s1a'){ enterSelfie(); }
+  if(id==='s2'){ enterEdit(); }
+  if(id==='s3'){ timers.done=setTimeout(function(){go('s0');}, CONFIG.DONE_TIMEOUT*1000); }
 }
+
 function resetSession(){
   S.aiImage=null; S.rawPhoto=null; S.aiAttempt=0; S.printing=false; S.editStarted=false;
   S.frame=CONFIG.DEFAULT_FRAME_INDEX; S.date=todayISO();
-  
   S.color = CONFIG.INK_COLOR;
-  document.querySelectorAll('.color-btn').forEach(b => b.classList.toggle('sel', b.dataset.color === S.color));
   applyColor(S.color);
-
   S.location = $('locationSelect').value = "SANTIAGO DE COMPOSTELA";
   S.threshold = $('thresholdRange').value = CONFIG.LINE_THRESHOLD;
-
   $('dateInput').value=S.date; $('btnPrint').disabled=true;
-  $('aiError').style.display='none'; $('camError').style.display='none';
-  $('aiErrMsg').textContent=T('aiErrMsg');
-  $('cd2').textContent=CONFIG.EDIT_COUNTDOWN;
-  $('bar2').style.width='100%'; $('timer2').classList.remove('warn');
-  $('cd1').textContent=CONFIG.SELFIE_COUNTDOWN;
-  $('bar1').style.width='100%'; $('timer1').classList.remove('warn');
-  
-  if (FRAME_CACHE.length > 0) updateCards();
-}
-function armIdle(on){
-  clearTimer('idle');
-  if(on) timers.idle = setTimeout(function(){go('s0');}, CONFIG.IDLE_TIMEOUT*1000);
-}
-function bumpIdle(){ if(S.screen==='s1'||S.screen==='s1a'||S.screen==='s1b'||S.screen==='s2') armIdle(true); }
-['pointerdown','keydown'].forEach(function(e){ document.addEventListener(e,bumpIdle,{passive:true}); });
-
-/* ---------------------------------------------------------------------------
-   8) Falling
-   --------------------------------------------------------------------------- */
-const GLYPHS = ['❤️','⭐','🙂','🐚','✨','💛','😊','⭐'];
-function startFalling(containerId){
-  const box=$(containerId); if(!box) return; box.innerHTML='';
-  const spawn = function(){
-    if(box.childElementCount>34) box.removeChild(box.firstChild);
-    const s=document.createElement('span');
-    s.textContent = GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
-    s.style.left = (Math.random()*100)+'vw';
-    s.style.fontSize = (14+Math.random()*24)+'px';
-    s.style.animationDuration = (5+Math.random()*5)+'s';
-    s.style.setProperty('--spin',(Math.random()*720-360)+'deg');
-    s.addEventListener('animationend',function(){ s.remove(); });
-    box.appendChild(s);
-  };
-  for(let i=0;i<10;i++) spawn();
-  timers.fall.push(setInterval(spawn,520));
-}
-function stopFalling(){
-  timers.fall.forEach(clearInterval); timers.fall=[];
-  ['fall0','fall1','fall1a','fall1b','fall3'].forEach(function(id){ const b=$(id); if(b) b.innerHTML=''; });
+  if(FRAME_CACHE.length > 0) updateCards();
 }
 
-/* ---------------------------------------------------------------------------
-   10) Selfie & Camera
-   --------------------------------------------------------------------------- */
 let stream=null;
 const video=$('liveVideo');
-
 function layoutVideo(){
   const stage=$('stage1'); if(!stage) return;
   const w=stage.clientWidth||0; if(!w) return;
   const d = w * (2*CONFIG.PHOTO_RADIUS*CONFIG.PHOTO_SCALE)/600;
   video.style.width=d+'px'; video.style.height=d+'px';
   video.style.marginTop = (CONFIG.PHOTO_OFFSET_Y*(w/600))+'px';
-  video.classList.toggle('nomirror', !CONFIG.MIRROR_SELFIE);
 }
 function drawOverlay(){
   const c=$('frameOverlay'), x=c.getContext('2d');
   renderStamp(x, c.width, {drawPhoto:false, background:false, frame:S.frame, date:S.date});
 }
 async function enterSelfie(){
-  $('camError').style.display='none';
-  $('camControls').style.display='';
-  $('timer1').style.display='';
-  drawOverlay();
-  requestAnimationFrame(function(){ sizeStages(); });
+  $('camError').style.display='none'; $('camControls').style.display=''; $('timer1').style.display='';
+  drawOverlay(); requestAnimationFrame(function(){ sizeStages(); });
   await startCamera();
 }
 async function startCamera(){
   stopCamera();
-  if(location.protocol==='file:'){ showCamError(T('errFile')); return; }
-  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ showCamError(T('errOther')); return; }
   try{
-    stream = await navigator.mediaDevices.getUserMedia({
-      video:{ facingMode:'user', width:{ideal:1280}, height:{ideal:1280} }, audio:false });
-    video.srcObject = stream;
-    try{ await video.play(); }catch(e){}
-    $('camError').style.display='none';
+    stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user', width:{ideal:1280}, height:{ideal:1280} }, audio:false });
+    video.srcObject = stream; await video.play().catch(e=>{});
     sizeStages();
     runCountdown('selfie', CONFIG.SELFIE_COUNTDOWN, $('cd1'), $('bar1'), $('timer1'), shoot);
-  }catch(err){
-    const n = err && err.name;
-    if(n==='NotAllowedError'||n==='SecurityError') showCamError(T('errPerm'));
-    else if(n==='NotFoundError'||n==='OverconstrainedError') showCamError(T('errNone'));
-    else if(n==='NotReadableError'||n==='AbortError') showCamError(T('errBusy'));
-    else showCamError(T('errOther')+' ('+(n||'?')+')');
-  }
+  }catch(err){ showCamError("Error de cámara"); }
 }
-function showCamError(msg){
-  clearTimer('selfie');
-  $('timer1').style.display='none';
-  $('camControls').style.display='none';
-  $('camErrMsg').textContent=msg;
-  $('camError').style.display='';
-}
-function stopCamera(){
-  if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
-  if(video) video.srcObject=null;
-}
+function showCamError(msg){ clearTimer('selfie'); $('camErrMsg').textContent=msg; $('camError').style.display=''; }
+function stopCamera(){ if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; } if(video) video.srcObject=null; }
 function shoot(){
   clearTimer('selfie');
-  if(!stream || !video.videoWidth){ showCamError(T('errOther')); return; }
-  const N=CONFIG.CAPTURE_SIZE, side=Math.min(video.videoWidth, video.videoHeight);
-  const sx=(video.videoWidth-side)/2, sy=(video.videoHeight-side)/2;
+  const N=CONFIG.CAPTURE_SIZE, side=Math.min(video.videoWidth||N, video.videoHeight||N);
+  const sx=((video.videoWidth||N)-side)/2, sy=((video.videoHeight||N)-side)/2;
   const c=document.createElement('canvas'); c.width=c.height=N;
   const x=c.getContext('2d');
-  if(CONFIG.MIRROR_SELFIE){ x.translate(N,0); x.scale(-1,1); }
   x.drawImage(video, sx, sy, side, side, 0, 0, N, N);
-  const dataUrl = c.toDataURL('image/jpeg',0.92);
   stopCamera();
-  S.rawPhoto = dataUrl;
-  S.aiAttempt = 0;
-  S.editStarted = false;
-  go('s2');
-  requestAI();
+  S.rawPhoto = c.toDataURL('image/jpeg',0.92);
+  S.aiAttempt = 0; S.editStarted = false;
+  go('s2'); requestAI();
 }
-
-$('whatsappFileInput').addEventListener('change', function(e){
-  const f=e.target.files && e.target.files[0]; if(!f) return;
-  const r=new FileReader();
-  r.onload=function(ev){ 
-    const img = new Image();
-    img.onload = function(){
-      const N = CONFIG.CAPTURE_SIZE;
-      const minDim = Math.min(img.width, img.height);
-      const sx = (img.width - minDim) / 2;
-      const sy = (img.height - minDim) / 2;
-      
-      const c = document.createElement('canvas');
-      c.width = N; c.height = N;
-      const ctx = c.getContext('2d');
-      ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, N, N);
-      
-      S.rawPhoto = c.toDataURL('image/jpeg', 0.92);
-      S.aiAttempt = 0; S.editStarted = false; 
-      go('s2'); requestAI(); 
-    };
-    img.src = ev.target.result;
-  };
-  r.readAsDataURL(f);
-  e.target.value='';
-});
-
-/* ---------------------------------------------------------------------------
-   11) AI
-   --------------------------------------------------------------------------- */
-function showAiBadge(txt){ $('aiBadgeTxt').textContent=txt; $('aiBadge').style.display=''; }
-function hideAiBadge(){ $('aiBadge').style.display='none'; }
 
 async function requestAI(){
   if(!S.rawPhoto) return;
-  S.aiAttempt++;
-  S.aiImage=null; $('btnPrint').disabled=true; $('aiError').style.display='none';
-  showAiBadge(S.aiAttempt>1 ? T('aiRetrying')+' '+S.aiAttempt+'/'+CONFIG.AI_MAX_ATTEMPTS : T('aiLoading'));
+  S.aiAttempt++; S.aiImage=null; $('btnPrint').disabled=true; $('aiError').style.display='none';
   drawPreview();
-
-  const ctrl=new AbortController();
-  const to=setTimeout(function(){ ctrl.abort(); }, CONFIG.AI_TIMEOUT*1000);
   try{
     const res = await fetch(CONFIG.AI_WEBHOOK_URL,{
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ image:S.rawPhoto, design:CONFIG.FRAMES[S.frame].file, lang:LANG }),
-      signal: ctrl.signal
+      body: JSON.stringify({ image:S.rawPhoto, design:CONFIG.FRAMES[S.frame].file, lang:LANG })
     });
-    clearTimeout(to);
     const txt = await res.text();
-    const url = extractUrl(txt);
-    if(!url) throw new Error('no image in response');
-    const img = await loadImageTimed(url, CONFIG.AI_TIMEOUT*1000);
-    if(!img) throw new Error('image did not load');
-    S.aiImage = img;
-    hideAiBadge();
-    $('btnPrint').disabled=false;
-    drawPreview();
+    let u = JSON.parse(txt); u = (typeof u==='string') ? u : (u.url||u.image||u.data||'');
+    const img = await loadImage(u);
+    if(!img) throw new Error();
+    S.aiImage = img; $('btnPrint').disabled=false; drawPreview();
   }catch(err){
-    clearTimeout(to);
-    console.warn('AI attempt '+S.aiAttempt+' failed:', err);
-    if(S.aiAttempt < CONFIG.AI_MAX_ATTEMPTS && S.screen==='s2'){ requestAI(); }
-    else { hideAiBadge(); $('aiErrMsg').textContent=T('aiErrMsg'); $('aiError').style.display=''; }
+    if(S.aiAttempt < CONFIG.AI_MAX_ATTEMPTS && S.screen==='s2') requestAI();
+    else $('aiError').style.display='';
   }
 }
-function extractUrl(text){
-  let u='';
-  try{
-    const d=JSON.parse(text);
-    u = (typeof d==='string') ? d : (d.url||d.image||d.data||'');
-    if(typeof u==='string' && (u.charAt(0)==='{'||u.charAt(0)==='"')){
-      const cl=JSON.parse(u); u = cl.url||cl.image||cl;
-    }
-  }catch(e){ u = String(text).trim().replace(/^["']|["']$/g,''); }
-  u = String(u||'').trim();
-  return (u.indexOf('http')===0||u.indexOf('data:')===0) ? u : '';
-}
-function loadImageTimed(src, ms){
-  return new Promise(function(res){
-    const im=new Image(); im.crossOrigin='anonymous';
-    const t=setTimeout(function(){ res(null); }, ms);
-    im.onload =function(){ clearTimeout(t); res(im); };
-    im.onerror=function(){ clearTimeout(t); res(null); };
-    im.src=src;
-  });
-}
 
-/* ---------------------------------------------------------------------------
-   12) Screen 2
-   --------------------------------------------------------------------------- */
 function buildCards(){
-  const box=$('designCards'); box.innerHTML='';
+  const box=$('designCards'); if(!box) return; box.innerHTML='';
   CONFIG.FRAMES.forEach(function(f,i){
-    const d=document.createElement('div'); d.className='card'; d.dataset.i=i;
+    const d=document.createElement('div'); d.className='card';
     const c=document.createElement('canvas'); c.width=240; c.height=240;
-    const nm=document.createElement('div'); nm.className='nm'; nm.setAttribute('data-t',f.key); nm.textContent=T(f.key);
+    const nm=document.createElement('div'); nm.className='nm'; nm.textContent=T(f.key);
     d.appendChild(c); d.appendChild(nm);
     d.addEventListener('click',function(){ S.frame=i; drawPreview(); });
     box.appendChild(d);
@@ -1192,18 +834,15 @@ function updateCards(){
   }
 }
 function drawPreview(){
-  const c=$('stampCanvas');
+  const c=$('stampCanvas'); if(!c) return;
   renderStamp(c.getContext('2d'), c.width, {frame:S.frame, photo:S.aiImage, date:S.date});
   updateCards();
 }
 
-const colorBtns = document.querySelectorAll('.color-btn');
-colorBtns.forEach(b => b.addEventListener('click', function(e){
-  e.stopPropagation();
-  const hex = this.getAttribute('data-color');
-  colorBtns.forEach(btn => btn.classList.remove('sel'));
+document.querySelectorAll('.color-btn').forEach(b => b.addEventListener('click', function(e){
+  e.stopPropagation(); applyColor(this.getAttribute('data-color'));
+  document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('sel'));
   this.classList.add('sel');
-  applyColor(hex);
 }));
 
 $('dateInput').addEventListener('change', function(e){ S.date = e.target.value || todayISO(); drawPreview(); });
@@ -1211,107 +850,43 @@ $('locationSelect').addEventListener('change', function(e){ S.location = e.targe
 $('thresholdRange').addEventListener('input', function(e){ S.threshold = parseInt(e.target.value); drawPreview(); });
 
 function enterEdit(){
-  $('dateInput').value = S.date;
-  $('locationSelect').value = S.location;
-  $('thresholdRange').value = S.threshold;
+  $('dateInput').value = S.date; $('locationSelect').value = S.location; $('thresholdRange').value = S.threshold;
   drawPreview();
-  if(!S.editStarted){                 
-    S.editStarted = true;
-    runCountdown('edit', CONFIG.EDIT_COUNTDOWN, $('cd2'), $('bar2'), $('timer2'), openModal);
-  }
+  if(!S.editStarted){ S.editStarted = true; runCountdown('edit', CONFIG.EDIT_COUNTDOWN, $('cd2'), $('bar2'), $('timer2'), openModal); }
 }
-function openModal(){
-  $('modalTimeout').classList.add('show');
-  runCountdown('modal', CONFIG.MODAL_TIMEOUT, $('modalCd'), null, null, function(){ go('s0'); });
-}
+function openModal(){ $('modalTimeout').classList.add('show'); runCountdown('modal', CONFIG.MODAL_TIMEOUT, $('modalCd'), null, null, function(){ go('s0'); }); }
 function closeModal(){ $('modalTimeout').classList.remove('show'); clearTimer('modal'); }
 
-/* ---------------------------------------------------------------------------
-   13) Print
-   --------------------------------------------------------------------------- */
 function exportJpeg(){
-  const N=CONFIG.EXPORT_SIZE;
-  const c=document.createElement('canvas'); c.width=N; c.height=N;
-  const x=c.getContext('2d');
-  x.fillStyle='#ffffff'; x.fillRect(0,0,N,N);
+  const N=CONFIG.EXPORT_SIZE, c=document.createElement('canvas'); c.width=c.height=N;
+  const x=c.getContext('2d'); x.fillStyle='#ffffff'; x.fillRect(0,0,N,N);
   renderStamp(x, N, {frame:S.frame, photo:S.aiImage, date:S.date, background:true});
   return c.toDataURL('image/jpeg', CONFIG.JPEG_QUALITY);
 }
-function stampFilename(){
-  const d=new Date(), p=n=>String(n).padStart(2,'0');
-  return 'sello-peregrino_'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+p(d.getSeconds())+'.jpg';
-}
 async function doPrint(){
-  if(S.printing || !S.aiImage) return;
-  S.printing=true;
-  clearTimer('edit'); closeModal();
-  let dataUrl='';
-  try{ dataUrl = exportJpeg(); }
-  catch(e){
-    S.printing=false;
-    $('aiErrMsg').textContent=T('taint');
-    $('aiError').style.display='';
-    return;
-  }
-  const filename = stampFilename();
-  if(CONFIG.DOWNLOAD_ON_PRINT){
-    const a=document.createElement('a'); a.download=filename; a.href=dataUrl; a.click();
-  }
-  if(CONFIG.PRINT_WEBHOOK_URL){
-    try{
-      const ctrl=new AbortController(); const to=setTimeout(function(){ctrl.abort();},15000);
-      await fetch(CONFIG.PRINT_WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({image:dataUrl, filename:filename, place:S.location, date:S.date}), signal:ctrl.signal});
-      clearTimeout(to);
-    }catch(e){}
-  }
+  if(S.printing || !S.aiImage) return; S.printing=true; clearTimer('edit'); closeModal();
+  const a=document.createElement('a'); a.download='sello.jpg'; a.href=exportJpeg(); a.click();
   go('s3');
 }
 
-/* ---------------------------------------------------------------------------
-   14) Languages & Videos Loop
-   --------------------------------------------------------------------------- */
+/* Vídeos promocionales */
 const promoVideos = ["Tutorialalex.mp4", "Tutorialangela.mp4"];
 let currentVideoIdx = 0;
 const promoVideoEl = document.getElementById('promoVideo');
-
 function playNextPromoVideo() {
   if (!promoVideoEl) return;
   promoVideoEl.src = promoVideos[currentVideoIdx];
-  promoVideoEl.play().catch(e => console.log("Autoplay waiting interaction:", e));
+  promoVideoEl.play().catch(e => {});
   currentVideoIdx = (currentVideoIdx + 1) % promoVideos.length;
 }
-
 if (promoVideoEl) {
   promoVideoEl.addEventListener('ended', playNextPromoVideo);
 }
 
-function setLang(l){
-  LANG=l;
-  document.documentElement.lang=l;
-  const btns=document.querySelectorAll('.lang-btn');
-  for(let i=0;i<btns.length;i++) btns[i].classList.toggle('active', btns[i].dataset.lang===l);
-  const els=document.querySelectorAll('[data-t]');
-  for(let i=0;i<els.length;i++) els[i].textContent=T(els[i].getAttribute('data-t'));
-  if($('warnstrip').style.display==='block') $('warnstrip').textContent=T('taint');
-}
-(function(){
-  const btns=document.querySelectorAll('.lang-btn');
-  for(let i=0;i<btns.length;i++){
-    btns[i].addEventListener('click',function(ev){ ev.stopPropagation(); setLang(this.dataset.lang); });
-  }
-})();
-
-/* ---------------------------------------------------------------------------
-   15) Wiring
-   --------------------------------------------------------------------------- */
-$('btnStart').addEventListener('click', function(e){ e.stopPropagation(); go('s1'); });
-$('s0').addEventListener('click', function(e){ if(e.target.closest('.lang-btn')) return; go('s1'); });
-
-$('btnChooseCamera').addEventListener('click', function(){ go('s1a'); });
+/* QR Code y Polling */
 let pollingInterval = null;
 const URL_APP_MOVIL = "https://sellosmiguelplata.github.io/SellosCaminoCompostela/subir.html";
-const WEBHOOK_CONSULTA = "https://hook.eu1.make.com/cefuk6tab3wwawyvmjg36rg92jh9pnbd"; // Lo rellenaremos en el siguiente paso
+const WEBHOOK_CONSULTA = "https://hook.eu1.make.com/cefuk6tab3wwawyvmjg36rg92jh9pnbd";
 
 $('btnChooseMemory').addEventListener('click', function(){ 
   go('s1b'); 
@@ -1323,7 +898,6 @@ $('btnChooseMemory').addEventListener('click', function(){
 
   clearInterval(pollingInterval);
   pollingInterval = setInterval(async () => {
-    if(!WEBHOOK_CONSULTA.startsWith("http")) return; 
     try {
       const res = await fetch(`${WEBHOOK_CONSULTA}?sesion=${sessionId}`);
       if (res.ok) {
@@ -1339,36 +913,23 @@ $('btnChooseMemory').addEventListener('click', function(){
   }, 3000);
 });
 
-$('btnBackMem').addEventListener('click', function(){ 
-  clearInterval(pollingInterval);
-  go('s1'); 
-});
+$('btnBackMem').addEventListener('click', function(){ clearInterval(pollingInterval); go('s1'); });
 
-$('btnBack1').addEventListener('click', function(){ go('s0'); });
-$('btnBackCam').addEventListener('click', function(){ go('s1'); });
-$('btnBackCamErr').addEventListener('click', function(){ go('s1'); });
+/* Botones y navegación */
+$('btnStart').addEventListener('click', function(e){ e.stopPropagation(); go('s1'); });
+$('s0').addEventListener('click', function(e){ if(e.target.closest('.lang-btn')) return; go('s1'); });$('btnChooseCamera').addEventListener('click', function(){ go('s1a'); });
+$('btnBack1').addEventListener('click', function(){ go('s0'); });$('btnBackCam').addEventListener('click', function(){ go('s1'); });
+$('btnBackCamErr').addEventListener('click', function(){ go('s1'); });$('btnShoot').addEventListener('click', shoot);
+$('btnRetryCam').addEventListener('click', function(){ startCamera(); });$('btnCancel2').addEventListener('click', function(){ go('s0'); });
+$('btnRetryAi').addEventListener('click', function(){ S.aiAttempt=0; requestAI(); });$('btnRestartAi').addEventListener('click', function(){ go('s0'); });
+$('btnPrint').addEventListener('click', doPrint);$('btnModalPrint').addEventListener('click', doPrint);
+$('btnModalRestart').addEventListener('click', function(){ go('s0'); });$('btnDoneNow').addEventListener('click', function(){ go('s0'); });
 
-
-$('btnShoot').addEventListener('click', shoot);
-$('btnRetryCam').addEventListener('click', function(){ $('timer1').style.display=''; $('camControls').style.display=''; startCamera(); });
-$('btnCancel2').addEventListener('click', function(){ go('s0'); });
-$('btnRetryAi').addEventListener('click', function(){ S.aiAttempt=0; requestAI(); });
-$('btnRestartAi').addEventListener('click', function(){ go('s0'); });
-$('btnPrint').addEventListener('click', doPrint);
-$('btnModalPrint').addEventListener('click', doPrint);
-$('btnModalRestart').addEventListener('click', function(){ go('s0'); });
-$('btnDoneNow').addEventListener('click', function(){ go('s0'); });
-document.addEventListener('visibilitychange', function(){ if(document.hidden && S.screen==='s1a') stopCamera(); });
-
-/* boot */
+/* Inicialización */
 (async function boot(){
   document.documentElement.style.setProperty('--ink', CONFIG.INK_COLOR);
   $('dateInput').value = S.date;
-  $('cd1').textContent = CONFIG.SELFIE_COUNTDOWN;
-  $('cd2').textContent = CONFIG.EDIT_COUNTDOWN;
-  $('modalCd').textContent = CONFIG.MODAL_TIMEOUT;
   buildCards();
-  setLang(CONFIG.DEFAULT_LANG);
   try{ await preloadFrames(); }catch(e){}
   setTimeout(sizeStages, 60);
 })();
