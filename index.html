@@ -575,6 +575,11 @@ function intentarDesbloqueo() {
       screenEl.style.cssText = "display: none !important;";
     }
     go('s0');
+    // Forzar reproducción del vídeo al desbloquear
+    if (promoVideoEl) {
+      currentVideoIdx = 0;
+      playNextPromoVideo();
+    }
   } else {
     if (errorEl) {
       errorEl.style.display = 'block';
