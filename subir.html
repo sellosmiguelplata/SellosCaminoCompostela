@@ -24,39 +24,53 @@
   <p id="mensaje"></p>
 
   <script>
-    // Leemos un código secreto para saber de qué tablet viene (luego la tablet lo generará sola)
     const parametros = new URLSearchParams(window.location.search);
     const idSesion = parametros.get('sesion') || 'sesion_prueba';
-
-    // AQUÍ ESTÁ TU BUZÓN DE MAKE
-    const URL_MAKE = "https://hook.eu1.make.com/5k5pbmm8hm86kd02veu5gv4xo581jiy9";
+    const URL_MAKE = "https://hook.eu1.make.com/5k5pbmm8hm86kd02veu5gv4xo581jiy9"; // Tu webhook de subida
 
     document.getElementById('selectorFoto').addEventListener('change', function(evento) {
       const archivo = evento.target.files[0];
       if (!archivo) return;
 
-      document.getElementById('mensaje').innerText = "Enviando foto de forma segura...";
+      document.getElementById('mensaje').innerText = "Optimizando y enviando foto...";
       document.getElementById('mensaje').style.color = "#d8b25f";
 
       const lector = new FileReader();
       lector.onload = function(e) {
-        document.getElementById('miniatura').src = e.target.result;
-        document.getElementById('miniatura').style.display = 'inline-block';
         
-        // Disparamos la foto hacia Make
-        fetch(URL_MAKE, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sesion: idSesion, imagen: e.target.result })
-        })
-        .then(respuesta => {
-          document.getElementById('mensaje').innerText = "✅ ¡Foto enviada! Ya puedes mirar la pantalla de la tablet.";
-          document.getElementById('mensaje').style.color = "#2f9e6b";
-        })
-        .catch(error => {
-          document.getElementById('mensaje').innerText = "❌ Hubo un error al enviar. Revisa tu internet.";
-          document.getElementById('mensaje').style.color = "#d0534a";
-        });
+        // Crear una imagen temporal para comprimirla
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 800; // Reducimos el tamaño a 800px para que pese muy poco
+          const scaleSize = MAX_WIDTH / img.width;
+          canvas.width = MAX_WIDTH;
+          canvas.height = img.height * scaleSize;
+          
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          
+          // Extraemos la imagen comprimida (JPEG al 80% de calidad)
+          const fotoComprimida = canvas.toDataURL('image/jpeg', 0.8);
+
+          document.getElementById('miniatura').src = fotoComprimida;
+          document.getElementById('miniatura').style.display = 'inline-block';
+          
+          fetch(URL_MAKE, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sesion: idSesion, imagen: fotoComprimida })
+          })
+          .then(respuesta => {
+            document.getElementById('mensaje').innerText = "✅ ¡Foto enviada! Ya puedes mirar la pantalla de la tablet.";
+            document.getElementById('mensaje').style.color = "#2f9e6b";
+          })
+          .catch(error => {
+            document.getElementById('mensaje').innerText = "❌ Hubo un error al enviar. Revisa tu internet.";
+            document.getElementById('mensaje').style.color = "#d0534a";
+          });
+        };
+        img.src = e.target.result;
       };
       lector.readAsDataURL(archivo);
     });
