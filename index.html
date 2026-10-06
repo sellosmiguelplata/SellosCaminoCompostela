@@ -972,7 +972,7 @@ if (promoVideoEl) {
   promoVideoEl.addEventListener('ended', playNextPromoVideo);
 }
 
-/* QR Code y Polling con manejo limpio de respuesta */
+/* QR Code y Polling - BLINDADO */
 let pollingInterval = null;
 const URL_APP_MOVIL = "https://sellosmiguelplata.github.io/SellosCaminoCompostela/subir.html";
 const WEBHOOK_CONSULTA = "https://hook.eu1.make.com/cefuk6tab3wwawyvmjg36rg92jh9pnbd";
@@ -991,19 +991,20 @@ $('btnChooseMemory').addEventListener('click', function(){
       const res = await fetch(`${WEBHOOK_CONSULTA}?sesion=${sessionId}`);
       if (res.ok) {
         const textData = await res.text();
-        if (textData && textData.length > 10) {
-          let data;
-          try { data = JSON.parse(textData); } catch(err) { data = { image: textData }; }
+        // Si el texto que llega contiene "data:image", es nuestra foto
+        if (textData && textData.includes('data:image')) {
+          clearInterval(pollingInterval);
+          // Extraemos la foto limpia por si Make añade algún espacio
+          const base64Data = textData.substring(textData.indexOf('data:image'));
           
-          if (data && data.image) {
-            clearInterval(pollingInterval);
-            S.rawPhoto = data.image;
-            S.aiAttempt = 0; S.editStarted = false;
-            go('s2'); requestAI();
-          }
+          S.rawPhoto = base64Data;
+          S.aiAttempt = 0; S.editStarted = false;
+          go('s2'); requestAI();
         }
       }
-    } catch(e){}
+    } catch(e){
+      // Ignoramos errores de red temporales mientras espera
+    }
   }, 3000);
 });
 
