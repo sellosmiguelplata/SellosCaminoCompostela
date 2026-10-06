@@ -980,7 +980,7 @@ const WEBHOOK_CONSULTA = "https://hook.eu1.make.com/cefuk6tab3wwawyvmjg36rg92jh9
 $('btnChooseMemory').addEventListener('click', function(){ 
   go('s1b'); 
   const sessionId = Math.random().toString(36).substring(2, 10);
-  const qrUrl = `${URL_APP_MOVIL}?sesion=${sessionId}`;
+  const qrUrl = `${URL_APP_MOVIL}?sesion=${sessionId}&t=${Date.now()}`;
   
   $('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrUrl)}`;
   $('qrStatus').textContent = "Esperando foto...";
@@ -988,7 +988,7 @@ $('btnChooseMemory').addEventListener('click', function(){
   clearInterval(pollingInterval);
   pollingInterval = setInterval(async () => {
     try {
-      const res = await fetch(`${WEBHOOK_CONSULTA}?sesion=${sessionId}`);
+      const res = await fetch(`${WEBHOOK_CONSULTA}?sesion=${sessionId}&_t=${Date.now()}`);
       if (res.ok) {
         const textData = await res.text();
         // Si el texto que llega contiene "data:image", es nuestra foto
