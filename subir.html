@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sube tu foto</title>
+  <title id="tituloDoc">Sube tu foto</title>
   <style>
     body { background-color: #161a22; color: white; font-family: sans-serif; text-align: center; padding: 50px 20px; }
     h1 { color: #d8b25f; }
@@ -14,11 +14,11 @@
 </head>
 <body>
 
-  <h1>Sello del Peregrino</h1>
-  <p>Selecciona la foto desde tu galería personal.</p>
+  <h1 id="tituloPrincipal">Sello del Peregrino</h1>
+  <p id="subtitulo">Selecciona la foto desde tu galería personal.</p>
 
   <input type="file" id="selectorFoto" accept="image/*" style="display: none;">
-  <button class="boton" onclick="document.getElementById('selectorFoto').click()">📸 Elegir Foto</button>
+  <button class="boton" id="btnElegir" onclick="document.getElementById('selectorFoto').click()">📸 Elegir Foto</button>
 
   <br><img id="miniatura">
   <p id="mensaje"></p>
@@ -26,23 +26,38 @@
   <script>
     const parametros = new URLSearchParams(window.location.search);
     const idSesion = parametros.get('sesion') || 'sesion_prueba';
-    const URL_MAKE = "https://hook.eu1.make.com/5k5pbmm8hm86kd02veu5gv4xo581jiy9"; // Tu webhook de subida
+    const lang = parametros.get('lang') || 'es';
+    const URL_MAKE = "https://hook.eu1.make.com/5k5pbmm8hm86kd02veu5gv4xo581jiy9";
+
+    // Traducciones
+    const textos = {
+      es: { title: "Sube tu foto", main: "Sello del Peregrino", sub: "Selecciona la foto desde tu galería personal.", btn: "📸 Elegir Foto", opt: "Optimizando y enviando foto...", ok: "✅ ¡Foto enviada! Ya puedes mirar la pantalla de la tablet.", err: "❌ Hubo un error al enviar. Revisa tu internet." },
+      en: { title: "Upload your photo", main: "Pilgrim Stamp", sub: "Select a photo from your personal gallery.", btn: "📸 Choose Photo", opt: "Optimizing and sending photo...", ok: "✅ Photo sent! You can now look at the tablet screen.", err: "❌ Error sending. Check your internet connection." },
+      fr: { title: "Téléchargez votre photo", main: "Tampon du Pèlerin", sub: "Sélectionnez une photo de votre galerie personnelle.", btn: "📸 Choisir une photo", opt: "Optimisation et envoi de la photo...", ok: "✅ Photo envoyée ! Vous pouvez regarder l'écran de la tablette.", err: "❌ Erreur d'envoi. Vérifiez votre connexion." },
+      de: { title: "Foto hochladen", main: "Pilgerstempel", sub: "Wähle ein Foto aus deiner persönlichen Galerie.", btn: "📸 Foto auswählen", opt: "Foto wird optimiert und gesendet...", ok: "✅ Foto gesendet! Du kannst jetzt auf den Tablet-Bildschirm schauen.", err: "❌ Fehler beim Senden. Bitte Internet prüfen." },
+      it: { title: "Carica la tua foto", main: "Timbro del Pellegrino", sub: "Seleziona una foto dalla tua galleria personale.", btn: "📸 Scegli Foto", opt: "Ottimizzazione e invio della foto...", ok: "✅ Foto inviata! Ora puoi guardare lo schermo del tablet.", err: "❌ Errore di invio. Controlla la tua connessione." }
+    };
+
+    // Aplicar idioma
+    const t = textos[lang] || textos.es;
+    document.getElementById('tituloDoc').innerText = t.title;
+    document.getElementById('tituloPrincipal').innerText = t.main;
+    document.getElementById('subtitulo').innerText = t.sub;
+    document.getElementById('btnElegir').innerText = t.btn;
 
     document.getElementById('selectorFoto').addEventListener('change', function(evento) {
       const archivo = evento.target.files[0];
       if (!archivo) return;
 
-      document.getElementById('mensaje').innerText = "Optimizando y enviando foto...";
+      document.getElementById('mensaje').innerText = t.opt;
       document.getElementById('mensaje').style.color = "#d8b25f";
 
       const lector = new FileReader();
       lector.onload = function(e) {
-        
-        // Crear una imagen temporal para comprimirla
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 800; // Reducimos el tamaño a 800px para que pese muy poco
+          const MAX_WIDTH = 800;
           const scaleSize = MAX_WIDTH / img.width;
           canvas.width = MAX_WIDTH;
           canvas.height = img.height * scaleSize;
@@ -50,7 +65,6 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           
-          // Extraemos la imagen comprimida (JPEG al 80% de calidad)
           const fotoComprimida = canvas.toDataURL('image/jpeg', 0.8);
 
           document.getElementById('miniatura').src = fotoComprimida;
@@ -62,11 +76,11 @@
             body: JSON.stringify({ sesion: idSesion, imagen: fotoComprimida })
           })
           .then(respuesta => {
-            document.getElementById('mensaje').innerText = "✅ ¡Foto enviada! Ya puedes mirar la pantalla de la tablet.";
+            document.getElementById('mensaje').innerText = t.ok;
             document.getElementById('mensaje').style.color = "#2f9e6b";
           })
           .catch(error => {
-            document.getElementById('mensaje').innerText = "❌ Hubo un error al enviar. Revisa tu internet.";
+            document.getElementById('mensaje').innerText = t.err;
             document.getElementById('mensaje').style.color = "#d0534a";
           });
         };
