@@ -29,13 +29,15 @@
     const lang = parametros.get('lang') || 'es';
     const URL_MAKE = "https://hook.eu1.make.com/5k5pbmm8hm86kd02veu5gv4xo581jiy9";
 
-    // Traducciones
+    // Traducciones completas mapeadas exactamente con los botones de la tablet (es, gb, de, fr, pt, cn, ua)
     const textos = {
       es: { title: "Sube tu foto", main: "Sello del Peregrino", sub: "Selecciona la foto desde tu galería personal.", btn: "📸 Elegir Foto", opt: "Optimizando y enviando foto...", ok: "✅ ¡Foto enviada! Ya puedes mirar la pantalla de la tablet.", err: "❌ Hubo un error al enviar. Revisa tu internet." },
-      en: { title: "Upload your photo", main: "Pilgrim Stamp", sub: "Select a photo from your personal gallery.", btn: "📸 Choose Photo", opt: "Optimizing and sending photo...", ok: "✅ Photo sent! You can now look at the tablet screen.", err: "❌ Error sending. Check your internet connection." },
-      fr: { title: "Téléchargez votre photo", main: "Tampon du Pèlerin", sub: "Sélectionnez une photo de votre galerie personnelle.", btn: "📸 Choisir une photo", opt: "Optimisation et envoi de la photo...", ok: "✅ Photo envoyée ! Vous pouvez regarder l'écran de la tablette.", err: "❌ Erreur d'envoi. Vérifiez votre connexion." },
+      gb: { title: "Upload your photo", main: "Pilgrim Stamp", sub: "Select a photo from your personal gallery.", btn: "📸 Choose Photo", opt: "Optimizing and sending photo...", ok: "✅ Photo sent! You can now look at the tablet screen.", err: "❌ Error sending. Check your internet connection." },
       de: { title: "Foto hochladen", main: "Pilgerstempel", sub: "Wähle ein Foto aus deiner persönlichen Galerie.", btn: "📸 Foto auswählen", opt: "Foto wird optimiert und gesendet...", ok: "✅ Foto gesendet! Du kannst jetzt auf den Tablet-Bildschirm schauen.", err: "❌ Fehler beim Senden. Bitte Internet prüfen." },
-      it: { title: "Carica la tua foto", main: "Timbro del Pellegrino", sub: "Seleziona una foto dalla tua galleria personale.", btn: "📸 Scegli Foto", opt: "Ottimizzazione e invio della foto...", ok: "✅ Foto inviata! Ora puoi guardare lo schermo del tablet.", err: "❌ Errore di invio. Controlla la tua connessione." }
+      fr: { title: "Téléchargez votre photo", main: "Tampon du Pèlerin", sub: "Sélectionnez une photo de votre galerie personnelle.", btn: "📸 Choisir une photo", opt: "Optimisation et envoi de la photo...", ok: "✅ Photo envoyée ! Vous pouvez regarder l'écran de la tablette.", err: "❌ Erreur d'envoi. Vérifiez votre connexion." },
+      pt: { title: "Envie sua foto", main: "Carimbo do Peregrino", sub: "Selecione uma foto da sua galeria pessoal.", btn: "📸 Escolher Foto", opt: "Otimizando e enviando foto...", ok: "✅ Foto enviada! Agora você pode olhar para a tela do tablet.", err: "❌ Erro ao enviar. Verifique sua internet." },
+      cn: { title: "上传照片", main: "朝圣者印章", sub: "从您的个人相册中选择一张照片。", btn: "📸 选择照片", opt: "正在优化并发送照片...", ok: "✅ 照片已发送！您现在可以看平板屏幕了。", err: "❌ 发送错误。请检查您的网络。" },
+      ua: { title: "Завантажити фото", main: "Печатка паломника", sub: "Виберіть фото з особистої галереї.", btn: "📸 Обрати фото", opt: "Оптимізація та надсилання фото...", ok: "✅ Фото надіслано! Тепер ви можете подивитися на екран планшета.", err: "❌ Помилка надсилання. Перевірте інтернет." }
     };
 
     // Aplicar idioma
