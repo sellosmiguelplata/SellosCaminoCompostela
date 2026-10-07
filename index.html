@@ -221,7 +221,7 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
   font-size:0.85rem;color:var(--gold);font-weight:900;white-space:nowrap;
   animation: blinker 1.8s infinite ease-in-out;
 }
-input[type="date"], select {
+input[type="date"] {
   background:var(--card);border:1px solid var(--line);color:var(--txt);
   padding:8px 10px;border-radius:12px;font-size:.9rem;min-height:40px;flex:1;max-width:210px;
 }
@@ -271,7 +271,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </div>
 
-<div id="buildTag">KIOSK v5.2</div>
+<div id="buildTag">KIOSK v5.3</div>
 
 <!-- SCREEN 0 : START -->
 <section id="s0" class="screen">
@@ -374,7 +374,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
       <h3 style="color: var(--gold);" data-t="qrBoxTitle">📱 Sube la foto desde tu móvil</h3>
       <p data-t="qrBoxSub">Escanea este código con tu cámara y elige la foto. Aparecerá aquí al instante.</p>
       <img id="qrImage" src="" alt="Código QR" style="width: 220px; height: 220px; margin: 15px auto; border-radius: 10px; display: block; border: 4px solid white;">
-      <p id="qrStatus" style="color: var(--ok); font-weight: bold;">Esperando foto...</p>
+      <p id="qrStatus" data-t="qrWaiting" style="color: var(--ok); font-weight: bold;">Esperando foto...</p>
     </div>
   </div>
 </section>
@@ -529,7 +529,7 @@ const I18N = {
    optCamTitle:"Hacerse un Selfie",optCamDesc:"Usa la cámara de la tablet con cuenta atrás.",
    optMemTitle:"Escanear QR",optMemDesc:"Sube la foto escaneando el código con tu móvil.",
    step1cam:"Paso 1 · Cámara",lookCamera:"Mira a la cámara",shootNow:"Hacer la foto ahora",back:"Volver",cancel:"Cancelar",retry:"Reintentar",
-   step1mem:"Paso 1 · Escanea el QR",qrBoxTitle:"📱 Sube la foto desde tu móvil",qrBoxSub:"Escanea este código con tu cámara y elige la foto.",
+   step1mem:"Paso 1 · Escanea el QR",qrBoxTitle:"📱 Sube la foto desde tu móvil",qrBoxSub:"Escanea este código con tu cámara y elige la foto.",qrWaiting:"Esperando foto...",
    step2:"Paso 2 · Tu sello",thresholdLabel:"Detalle:",print:"Imprimir sello",startAgain:"Empezar de nuevo",
    aiLoading:"Creando tu sello…",aiRetrying:"Reintentando…",
    aiErrTitle:"No hemos podido crear el dibujo",aiErrMsg:"El servicio no responde. Inténtalo de nuevo.",
@@ -542,7 +542,7 @@ const I18N = {
    optCamTitle:"Take a Selfie",optCamDesc:"Use tablet camera with countdown.",
    optMemTitle:"Scan QR",optMemDesc:"Upload photo by scanning code with mobile.",
    step1cam:"Step 1 · Camera",lookCamera:"Look at the camera",shootNow:"Take photo now",back:"Back",cancel:"Cancel",retry:"Retry",
-   step1mem:"Step 1 · Scan QR",qrBoxTitle:"📱 Upload photo from mobile",qrBoxSub:"Scan code and choose photo.",
+   step1mem:"Step 1 · Scan QR",qrBoxTitle:"📱 Upload photo from mobile",qrBoxSub:"Scan code and choose photo.",qrWaiting:"Waiting for photo...",
    step2:"Step 2 · Your stamp",thresholdLabel:"Details:",print:"Print stamp",startAgain:"Start again",
    aiLoading:"Creating your stamp…",aiRetrying:"Retrying…",
    aiErrTitle:"We could not create the drawing",aiErrMsg:"Service not responding.",
@@ -555,7 +555,7 @@ const I18N = {
    optCamTitle:"Selfie machen",optCamDesc:"Tabletkamera nutzen.",
    optMemTitle:"QR scannen",optMemDesc:"Foto mit dem Handy hochladen.",
    step1cam:"Schritt 1 · Kamera",lookCamera:"Schau in die Kamera",shootNow:"Foto machen",back:"Zurück",cancel:"Abbrechen",retry:"Erneut",
-   step1mem:"Schritt 1 · QR scannen",qrBoxTitle:"📱 Foto vom Handy hochladen",qrBoxSub:"Code scannen und Foto wählen.",
+   step1mem:"Schritt 1 · QR scannen",qrBoxTitle:"📱 Foto vom Handy hochladen",qrBoxSub:"Code scannen und Foto wählen.",qrWaiting:"Warten auf Foto...",
    step2:"Schritt 2 · Dein Stempel",thresholdLabel:"Details:",print:"Drucken",startAgain:"Neu starten",
    aiLoading:"Erstelle Stempel…",aiRetrying:"Neuer Versuch…",
    aiErrTitle:"Fehler",aiErrMsg:"Dienst antwortet nicht.",
@@ -568,7 +568,7 @@ const I18N = {
    optCamTitle:"Prendre un selfie",optCamDesc:"Utilisez la caméra.",
    optMemTitle:"Scanner QR",optMemDesc:"Téléchargez la photo via mobile.",
    step1cam:"Étape 1 · Caméra",lookCamera:"Regardez l'objectif",shootNow:"Prendre la photo",back:"Retour",cancel:"Annuler",retry:"Réessayer",
-   step1mem:"Étape 1 · Scanner QR",qrBoxTitle:"📱 Télécharger depuis le mobile",qrBoxSub:"Scannez le code et choisissez la photo.",
+   step1mem:"Étape 1 · Scanner QR",qrBoxTitle:"📱 Télécharger depuis le mobile",qrBoxSub:"Scannez le code et choisissez la photo.",qrWaiting:"En attente de la photo...",
    step2:"Étape 2 · Votre tampon",thresholdLabel:"Détails :",print:"Imprimer",startAgain:"Recommencer",
    aiLoading:"Création…",aiRetrying:"Nouvel essai…",
    aiErrTitle:"Erreur",aiErrMsg:"Pas de réponse.",
@@ -581,7 +581,7 @@ const I18N = {
    optCamTitle:"Tirar selfie",optCamDesc:"Use a câmera.",
    optMemTitle:"Escanear QR",optMemDesc:"Envie a foto pelo celular.",
    step1cam:"Passo 1 · Câmera",lookCamera:"Olhe para a câmera",shootNow:"Tirar foto",back:"Voltar",cancel:"Cancelar",retry:"Tentar",
-   step1mem:"Passo 1 · Escanear QR",qrBoxTitle:"📱 Enviar pelo celular",qrBoxSub:"Escaneie o código e escolha a foto.",
+   step1mem:"Passo 1 · Escanear QR",qrBoxTitle:"📱 Enviar pelo celular",qrBoxSub:"Escaneie o código e escolha a foto.",qrWaiting:"Aguardando foto...",
    step2:"Passo 2 · Seu carimbo",thresholdLabel:"Detalhe:",print:"Imprimir",startAgain:"Recomeçar",
    aiLoading:"Criando…",aiRetrying:"Tentando…",
    aiErrTitle:"Erro",aiErrMsg:"Sem resposta.",
@@ -594,7 +594,7 @@ const I18N = {
    optCamTitle:"自拍",optCamDesc:"使用相机",
    optMemTitle:"扫描二维码",optMemDesc:"用手机上传",
    step1cam:"第一步 · 相机",lookCamera:"看镜头",shootNow:"拍照",back:"返回",cancel:"取消",retry:"重试",
-   step1mem:"第一步 · 扫描二维码",qrBoxTitle:"📱 从手机上传",qrBoxSub:"扫描二维码并选择照片。",
+   step1mem:"第一步 · 扫描二维码",qrBoxTitle:"📱 从手机上传",qrBoxSub:"扫描二维码并选择照片。",qrWaiting:"等待照片...",
    step2:"第二步 · 印章",thresholdLabel:"细节:",print:"打印",startAgain:"重来",
    aiLoading:"制作中…",aiRetrying:"重试…",
    aiErrTitle:"错误",aiErrMsg:"无响应",
@@ -607,7 +607,7 @@ const I18N = {
    optCamTitle:"Селфі",optCamDesc:"Камера планшета.",
    optMemTitle:"Сканувати QR",optMemDesc:"Завантажити з мобільного.",
    step1cam:"Крок 1 · Камера",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото",back:"Назад",cancel:"Скасувати",retry:"Повторити",
-   step1mem:"Крок 1 · Сканувати QR",qrBoxTitle:"📱 Завантажити з мобільного",qrBoxSub:"Скануйте код та оберіть фото.",
+   step1mem:"Крок 1 · Сканувати QR",qrBoxTitle:"📱 Завантажити з мобільного",qrBoxSub:"Скануйте код та оберіть фото.",qrWaiting:"Очікування фото...",
    step2:"Kрок 2 · Печатка",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
    aiLoading:"Створення…",aiRetrying:"Повтор…",
    aiErrTitle:"Помилка",aiErrMsg:"Немає відповіді.",
@@ -632,7 +632,7 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
 });
 
 const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null, color: CONFIG.INK_COLOR,
-             location: "SANTIAGO DE COMPOSTELA", threshold: CONFIG.LINE_THRESHOLD,
+             location: "", threshold: CONFIG.LINE_THRESHOLD,
              rawPhoto: null, aiAttempt: 0, screen: null, printing:false, editStarted:false };
 const timers = { selfie:null, edit:null, idle:null, modal:null, done:null, fall:[] };
 
@@ -798,7 +798,7 @@ function resetSession(){
   S.frame=CONFIG.DEFAULT_FRAME_INDEX; S.date=todayISO();
   S.color = CONFIG.INK_COLOR;
   applyColor(S.color);
-  S.location = "SANTIAGO DE COMPOSTELA";
+  S.location = "";
   S.threshold = $('thresholdRange').value = CONFIG.LINE_THRESHOLD;
   $('dateInput').value=S.date; $('btnPrint').disabled=true;
   if(FRAME_CACHE.length > 0) updateCards();
@@ -934,7 +934,7 @@ if (promoVideoEl) {
   promoVideoEl.addEventListener('ended', playNextPromoVideo);
 }
 
-/* QR Code y Polling - BLINDADO CON IDIOMA */
+/* QR Code y Polling - BLINDADO CON IDIOMA Y TRADUCCION */
 let pollingInterval = null;
 const URL_APP_MOVIL = "https://sellosmiguelplata.github.io/SellosCaminoCompostela/subir.html";
 const WEBHOOK_CONSULTA = "https://hook.eu1.make.com/cefuk6tab3wwawyvmjg36rg92jh9pnbd";
@@ -946,7 +946,7 @@ $('btnChooseMemory').addEventListener('click', function(){
   const qrUrl = `${URL_APP_MOVIL}?sesion=${sessionId}&lang=${langActual}&t=${Date.now()}`;
   
   $('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrUrl)}`;
-  $('qrStatus').textContent = "Esperando foto...";
+  $('qrStatus').textContent = T('qrWaiting');
 
   clearInterval(pollingInterval);
   pollingInterval = setInterval(async () => {
