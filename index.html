@@ -271,7 +271,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </div>
 
-<div id="buildTag">KIOSK v5.1</div>
+<div id="buildTag">KIOSK v5.2</div>
 
 <!-- SCREEN 0 : START -->
 <section id="s0" class="screen">
@@ -422,45 +422,8 @@ input[type="range"] { flex: 1; max-width: 210px; }
     </div>
     
     <div class="datebox">
-      <label data-t="lblChoosePlaceDate">📍 Elige tu lugar y día:</label>
-      <select id="locationSelect">
-        <option value="SAINT-JEAN-PIED-DE-PORT">Saint-Jean-Pied-de-Port</option>
-        <option value="RONCESVALLES">Roncesvalles</option>
-        <option value="ZUBIRI">Zubiri</option>
-        <option value="PAMPLONA">Pamplona</option>
-        <option value="PUENTE LA REINA">Puente la Reina</option>
-        <option value="ESTELLA">Estella</option>
-        <option value="LOS ARCOS">Los Arcos</option>
-        <option value="LOGROÑO">Logroño</option>
-        <option value="NÁJERA">Nájera</option>
-        <option value="STO. DOMINGO DE LA CALZADA">Santo Domingo de la Calzada</option>
-        <option value="BELORADO">Belorado</option>
-        <option value="SAN JUAN DE ORTEGA">San Juan de Ortega</option>
-        <option value="BURGOS">Burgos</option>
-        <option value="HORNILLOS DEL CAMINO">Hornillos del Camino</option>
-        <option value="CASTROJERIZ">Castrojeriz</option>
-        <option value="FRÓMISTA">Frómista</option>
-        <option value="CARRIÓN DE LOS CONDES">Carrión de los Condes</option>
-        <option value="SAHAGÚN">Sahagún</option>
-        <option value="EL BURGO RANERO">El Burgo Ranero</option>
-        <option value="MANSILLA DE LAS MULAS">Mansilla de las Mulas</option>
-        <option value="LEÓN">León</option>
-        <option value="SAN MARTÍN DEL CAMINO">San Martín del Camino</option>
-        <option value="ASTORGA">Astorga</option>
-        <option value="RABANAL DEL CAMINO">Rabanal del Camino</option>
-        <option value="PONFERRADA">Ponferrada</option>
-        <option value="VILLAFRANCA DEL BIERZO">Villafranca del Bierzo</option>
-        <option value="O CEBREIRO">O Cebreiro</option>
-        <option value="TRIACASTELA">Triacastela</option>
-        <option value="SARRIA">Sarria</option>
-        <option value="PORTOMARÍN">Portomarín</option>
-        <option value="PALAS DE REI">Palas de Rei</option>
-        <option value="ARZÚA">Arzúa</option>
-        <option value="O PEDROUZO">O Pedrouzo</option>
-        <option value="LAVACOLLA">Lavacolla</option>
-        <option value="SANTIAGO DE COMPOSTELA">Santiago de Compostela</option>
-      </select>
-      <input type="date" id="dateInput">
+      <label data-t="lblChooseDate">📍 Elige tu día:</label>
+      <input type="date" id="dateInput" style="max-width:100%;">
     </div>
 
     <div class="datebox" style="margin-top:0; border-style:solid; border-color:var(--line); background:var(--card);">
@@ -572,8 +535,8 @@ const I18N = {
    aiErrTitle:"No hemos podido crear el dibujo",aiErrMsg:"El servicio no responde. Inténtalo de nuevo.",
    tmTitle:"¿Imprimimos tu sello?",tmMsg:"Se ha acabado el tiempo de edición.",
    doneTitle:"¡Buen Camino!",doneSub:"Tu sello se está imprimiendo. Retíralo de la impresora.",finish:"Finalizar",
-   opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Escudo",
-   lblChooseColor:"👉 Elige tu color:", lblChooseStamp:"👉 Elige tu sello:", lblChoosePlaceDate:"📍 Elige tu lugar y día:"},
+   opt1:"Sello 1",opt2:"Sello 2",opt3:"Sello 3",opt4:"Sello 4",
+   lblChooseColor:"👉 Elige tu color:", lblChooseStamp:"👉 Elige tu sello:", lblChooseDate:"📍 Elige tu día:"},
   gb:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in your credential.",start:"Start",
    step1:"Step 1 · Photo",choiceTitle:"How would you like your photo?",choiceSub:"Take a selfie or scan the QR.",
    optCamTitle:"Take a Selfie",optCamDesc:"Use tablet camera with countdown.",
@@ -585,8 +548,8 @@ const I18N = {
    aiErrTitle:"We could not create the drawing",aiErrMsg:"Service not responding.",
    tmTitle:"Shall we print?",tmMsg:"Time is over.",
    doneTitle:"Buen Camino!",doneSub:"Printing stamp.",finish:"Finish",
-   opt1:"French Way",opt2:"Ultreia",opt3:"Credential",opt4:"Shield",
-   lblChooseColor:"👉 Choose color:", lblChooseStamp:"👉 Choose stamp:", lblChoosePlaceDate:"📍 Choose place & date:"},
+   opt1:"Stamp 1",opt2:"Stamp 2",opt3:"Stamp 3",opt4:"Stamp 4",
+   lblChooseColor:"👉 Choose color:", lblChooseStamp:"👉 Choose stamp:", lblChooseDate:"📍 Choose date:"},
   de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie oder scanne den QR-Code.",start:"Starten",
    step1:"Schritt 1 · Foto",choiceTitle:"Wie möchten Sie Ihr Foto hinzufügen?",choiceSub:"Machen Sie ein Selfie oder scannen Sie den QR-Code.",
    optCamTitle:"Selfie machen",optCamDesc:"Tabletkamera nutzen.",
@@ -598,8 +561,8 @@ const I18N = {
    aiErrTitle:"Fehler",aiErrMsg:"Dienst antwortet nicht.",
    tmTitle:"Drucken?",tmMsg:"Zeit abgelaufen.",
    doneTitle:"Buen Camino!",doneSub:"Wird gedruckt.",finish:"Beenden",
-   opt1:"Camino Francés",opt2:"Ultreia",opt3:"Credential",opt4:"Wappen",
-   lblChooseColor:"👉 Farbe wählen:", lblChooseStamp:"👉 Stempel wählen:", lblChoosePlaceDate:"📍 Ort & Datum wählen:"},
+   opt1:"Stempel 1",opt2:"Stempel 2",opt3:"Stempel 3",opt4:"Stempel 4",
+   lblChooseColor:"👉 Farbe wählen:", lblChooseStamp:"👉 Stempel wählen:", lblChooseDate:"📍 Datum wählen:"},
   fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie ou scanne le QR code.",start:"Commencer",
    step1:"Étape 1 · Photo",choiceTitle:"Comment ajouter votre photo ?",choiceSub:"Prenez un selfie ou scannez le QR code.",
    optCamTitle:"Prendre un selfie",optCamDesc:"Utilisez la caméra.",
@@ -611,8 +574,8 @@ const I18N = {
    aiErrTitle:"Erreur",aiErrMsg:"Pas de réponse.",
    tmTitle:"On imprime ?",tmMsg:"Temps écoulé.",
    doneTitle:"Buen Camino !",doneSub:"Impression...",finish:"Terminer",
-   opt1:"Chemin Français",opt2:"Ultreia",opt3:"Credential",opt4:"Blason",
-   lblChooseColor:"👉 Couleur :", lblChooseStamp:"👉 Tampon :", lblChoosePlaceDate:"📍 Lieu et date :"},
+   opt1:"Tampon 1",opt2:"Tampon 2",opt3:"Tampon 3",opt4:"Tampon 4",
+   lblChooseColor:"👉 Couleur :", lblChooseStamp:"👉 Tampon :", lblChooseDate:"📍 Date :"},
   pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma selfie ou escaneie o QR.",start:"Começar",
    step1:"Passo 1 · Foto",choiceTitle:"Como deseja colocar sua foto?",choiceSub:"Tire uma selfie ou escaneie o QR.",
    optCamTitle:"Tirar selfie",optCamDesc:"Use a câmera.",
@@ -624,412 +587,4 @@ const I18N = {
    aiErrTitle:"Erro",aiErrMsg:"Sem resposta.",
    tmTitle:"Imprimir?",tmMsg:"Tempo esgotado.",
    doneTitle:"Buen Camino!",doneSub:"Imprimindo.",finish:"Finalizar",
-   opt1:"Caminho Francés",opt2:"Ultreia",opt3:"Credencial",opt4:"Escudo",
-   lblChooseColor:"👉 Cor:", lblChooseStamp:"👉 Carimbo:", lblChoosePlaceDate:"📍 Local e data:"},
-  cn:{welcomeTitle:"朝圣者印章",welcomeSub:"自拍或扫描二维码。",start:"开始",
-   step1:"第一步 · 拍照",choiceTitle:"您想如何添加照片？",choiceSub:"自拍或扫描二维码。",
-   optCamTitle:"自拍",optCamDesc:"使用相机",
-   optMemTitle:"扫描二维码",optMemDesc:"用手机上传",
-   step1cam:"第一步 · 相机",lookCamera:"看镜头",shootNow:"拍照",back:"返回",cancel:"取消",retry:"重试",
-   step1mem:"第一步 · 扫描二维码",qrBoxTitle:"📱 从手机上传",qrBoxSub:"扫描二维码并选择照片。",
-   step2:"第二步 · 印章",thresholdLabel:"细节:",print:"打印",startAgain:"重来",
-   aiLoading:"制作中…",aiRetrying:"重试…",
-   aiErrTitle:"错误",aiErrMsg:"无响应",
-   tmTitle:"打印？",tmMsg:"时间到",
-   doneTitle:"一路平安!",doneSub:"正在打印",finish:"完成",
-   opt1:"法国之路",opt2:"Ultreia",opt3:"护照",opt4:"盾牌",
-   lblChooseColor:"👉 颜色:", lblChooseStamp:"👉 印章:", lblChoosePlaceDate:"📍 地点和日期:"},
-  ua:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть селфі або скануйте QR.",start:"Почати",
-   step1:"Крок 1 · Фото",choiceTitle:"Як додати фото?",choiceSub:"Зробіть селфі або скануйте QR.",
-   optCamTitle:"Селфі",optCamDesc:"Камера планшета.",
-   optMemTitle:"Сканувати QR",optMemDesc:"Завантажити з мобільного.",
-   step1cam:"Крок 1 · Камера",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото",back:"Назад",cancel:"Скасувати",retry:"Повторити",
-   step1mem:"Крок 1 · Сканувати QR",qrBoxTitle:"📱 Завантажити з мобільного",qrBoxSub:"Скануйте код та оберіть фото.",
-   step2:"Kрок 2 · Печатка",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
-   aiLoading:"Створення…",aiRetrying:"Повтор…",
-   aiErrTitle:"Помилка",aiErrMsg:"Немає відповіді.",
-   tmTitle:"Друкувати?",tmMsg:"Час вийшов.",
-   doneTitle:"Buen Camino!",doneSub:"Друкується.",finish:"Завершити",
-   opt1:"Французький шлях",opt2:"Ultreia",opt3:"Креденсіаль",opt4:"Щит",
-   lblChooseColor:"👉 Колір:", lblChooseStamp:"👉 Печатка:", lblChoosePlaceDate:"📍 Місце і дата:"}
-};
-let LANG = CONFIG.DEFAULT_LANG;
-const T = k => (I18N[LANG] && I18N[LANG][k]) || I18N.es[k] || k;
-
-function setLang(l){
-  LANG=l;
-  document.documentElement.lang=l;
-  const btns=document.querySelectorAll('.lang-btn');
-  for(let i=0;i<btns.length;i++) btns[i].classList.toggle('active', btns[i].dataset.lang===l);
-  const els=document.querySelectorAll('[data-t]');
-  for(let i=0;i<els.length;i++) els[i].textContent=T(els[i].getAttribute('data-t'));
-}
-document.querySelectorAll('.lang-btn').forEach(btn => {
-  btn.addEventListener('click', function(ev){ ev.stopPropagation(); setLang(this.dataset.lang); });
-});
-
-const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null, color: CONFIG.INK_COLOR,
-             location: "SANTIAGO DE COMPOSTELA", threshold: CONFIG.LINE_THRESHOLD,
-             rawPhoto: null, aiAttempt: 0, screen: null, printing:false, editStarted:false };
-const timers = { selfie:null, edit:null, idle:null, modal:null, done:null, fall:[] };
-
-function todayISO(){ const d=new Date(), p=n=>String(n).padStart(2,'0');
-  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
-function isoToPretty(iso){ if(!iso) return ''; const a=iso.split('-'); return a[2]+'/'+a[1]+'/'+a[0]; }
-function clearTimer(k){ if(timers[k]){ clearInterval(timers[k]); clearTimeout(timers[k]); timers[k]=null; } }
-function hexToRgb(h){ return {r:parseInt(h.slice(1,3),16), g:parseInt(h.slice(3,5),16), b:parseInt(h.slice(5,7),16)}; }
-
-function runCountdown(key, seconds, numEl, barEl, boxEl, onEnd){
-  clearTimer(key);
-  const total = seconds*1000, end = Date.now()+total;
-  const paint = () => {
-    const left = Math.max(0, end - Date.now());
-    const secs = Math.ceil(left/1000);
-    if(numEl) numEl.textContent = secs;
-    if(barEl) barEl.style.width = (left/total*100)+'%';
-    if(boxEl) boxEl.classList.toggle('warn', secs<=5);
-    return left;
-  };
-  paint();
-  timers[key] = setInterval(() => {
-    if(paint() <= 0){ clearTimer(key); if(onEnd) onEnd(); }
-  }, 200);
-}
-
-const FRAME_CACHE = [];
-let CANVAS_TAINTED = false;
-function loadImage(src){
-  return new Promise(res=>{
-    const im = new Image(); im.crossOrigin = "anonymous";
-    im.onload  = () => res(im.naturalWidth ? im : null);
-    im.onerror = () => res(null);
-    im.src = src;
-  });
-}
-function recolourFrame(img, colorHex){
-  const N = 1200, c = document.createElement('canvas'); c.width=c.height=N;
-  const x = c.getContext('2d', {willReadFrequently:true});
-  x.drawImage(img,0,0,N,N);
-  const ink = hexToRgb(colorHex);
-  try{
-    const d = x.getImageData(0,0,N,N), px = d.data;
-    for(let i=0;i<px.length;i+=4){
-      const avg = px[i]*0.299 + px[i+1]*0.587 + px[i+2]*0.114;
-      if(avg < CONFIG.FRAME_THRESHOLD && px[i+3] > 50){
-        px[i]=ink.r; px[i+1]=ink.g; px[i+2]=ink.b; px[i+3]=255;
-      } else px[i+3]=0;
-    }
-    x.putImageData(d,0,0);
-    return {canvas:c, tainted:false};
-  }catch(e){ CANVAS_TAINTED = true; return {canvas:c, tainted:true}; }
-}
-async function preloadFrames(){
-  for(let i=0;i<CONFIG.FRAMES.length;i++){
-    const img = await loadImage(CONFIG.FRAMES[i].file);
-    if(img){ FRAME_CACHE[i] = { rawImage: img, ok: true }; rebuildFrameCacheColor(i); }
-    else { FRAME_CACHE[i] = { canvas:null, rawImage:null, ok:false, tainted:false }; }
-  }
-}
-function rebuildFrameCacheColor(i) {
-  if(!FRAME_CACHE[i] || !FRAME_CACHE[i].rawImage) return;
-  const r = recolourFrame(FRAME_CACHE[i].rawImage, S.color);
-  FRAME_CACHE[i].canvas = r.canvas; FRAME_CACHE[i].tainted = r.tainted;
-}
-function applyColor(hex) {
-  S.color = hex;
-  document.documentElement.style.setProperty('--ink', hex);
-  for(let i=0; i<CONFIG.FRAMES.length; i++) rebuildFrameCacheColor(i);
-  if (S.screen === 's2') { updateCards(); drawPreview(); }
-}
-
-function renderStamp(ctx, size, opts){
-  const o = Object.assign({photo:null, frame:S.frame, date:S.date, background:true, drawPhoto:true}, opts||{});
-  const k = size/600, cx = size/2, cy = size/2;
-  ctx.clearRect(0,0,size,size);
-  if(o.background){ ctx.fillStyle="#ffffff"; ctx.fillRect(0,0,size,size); }
-  if(o.drawPhoto && o.photo) drawPhotoInk(ctx, size, o.photo);
-  const F = FRAME_CACHE[o.frame];
-  if(F && F.ok && F.canvas){
-    if(F.tainted){ ctx.save(); ctx.globalCompositeOperation='multiply'; ctx.drawImage(F.canvas,0,0,size,size); ctx.restore(); }
-    else ctx.drawImage(F.canvas,0,0,size,size);
-  } else { drawVectorBorder(ctx,size); }
-  ctx.fillStyle = S.color;
-  curvedText(ctx, S.location, cx, cy, CONFIG.RADIUS_TOP*k, -Math.PI/2, CONFIG.FONT_TOP*k, false);
-  curvedText(ctx, isoToPretty(o.date), cx, cy, CONFIG.RADIUS_DATE*k, Math.PI/2, CONFIG.FONT_DATE*k, true);
-}
-function drawPhotoInk(ctx, size, img){
-  const k = size/600, cx=size/2, cy=size/2, R = CONFIG.PHOTO_RADIUS*k;
-  const t = document.createElement('canvas'); t.width=t.height=size;
-  const c = t.getContext('2d',{willReadFrequently:true});
-  c.save(); c.beginPath(); c.arc(cx, cy + CONFIG.PHOTO_OFFSET_Y*k, R, 0, Math.PI*2); c.clip();
-  const box = 2*R*CONFIG.PHOTO_SCALE, iw = img.naturalWidth||img.width, ih = img.naturalHeight||img.height;
-  const sc = Math.max(box/iw, box/ih), dw = iw*sc, dh = ih*sc;
-  c.drawImage(img, cx-dw/2, cy + CONFIG.PHOTO_OFFSET_Y*k - dh/2, dw, dh);
-  c.restore();
-  try{
-    const d = c.getImageData(0,0,size,size), px=d.data, ink=hexToRgb(S.color);
-    for(let i=0;i<px.length;i+=4){
-      const avg = px[i]*0.299+px[i+1]*0.587+px[i+2]*0.114;
-      if(avg < S.threshold && px[i+3] > 50){ px[i]=ink.r; px[i+1]=ink.g; px[i+2]=ink.b; px[i+3]=255; } else px[i+3]=0;
-    }
-    c.putImageData(d,0,0); ctx.drawImage(t,0,0);
-  }catch(e){
-    ctx.save(); ctx.globalCompositeOperation='multiply'; ctx.drawImage(t,0,0); ctx.restore();
-  }
-}
-function drawVectorBorder(ctx,size){
-  const k=size/600, cx=size/2, cy=size/2;
-  ctx.save(); ctx.strokeStyle=S.color; ctx.fillStyle=S.color;
-  [[282,6],[274,2],[CONFIG.PHOTO_RADIUS+2,4]].forEach(function(p){
-    ctx.lineWidth=p[1]*k; ctx.beginPath(); ctx.arc(cx,cy,p[0]*k,0,Math.PI*2); ctx.stroke();
-  });
-  ctx.restore();
-}
-function curvedText(ctx,text,cx,cy,radius,centerAngle,fontSize,reverse){
-  if(!text || !text.trim()) return;
-  ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.font = "bold "+fontSize+"px 'Courier New',monospace";
-  const len=text.length, arc=(fontSize*0.62)/radius, start=centerAngle-(len*arc)/2;
-  for(let i=0;i<len;i++){
-    ctx.save();
-    const ci = reverse ? (len-1-i) : i, a = start + (i+0.5)*arc;
-    ctx.translate(cx+Math.cos(a)*radius, cy+Math.sin(a)*radius);
-    ctx.rotate(reverse ? a-Math.PI/2 : a+Math.PI/2);
-    ctx.fillText(text[ci],0,0);
-    ctx.restore();
-  }
-  ctx.restore();
-}
-
-function sizeStage(wrapId, stageId){
-  const wrap=$(wrapId), stage=$(stageId);
-  if(!wrap || !stage) return 0;
-  const w = wrap.clientWidth, h = wrap.clientHeight;
-  if(!w || !h) return 0;
-  const side = Math.max(120, Math.floor(Math.min(w, h, CONFIG.MAX_STAGE_PX)));
-  stage.style.width = side+'px'; stage.style.height = side+'px';
-  return side;
-}
-function sizeStages(){ sizeStage('wrap1','stage1'); sizeStage('wrap2','stage2'); layoutVideo(); }
-window.addEventListener('resize', sizeStages);
-
-function go(id){
-  ['s0','s1','s1a','s1b','s2','s3'].forEach(function(s){ const el=$(s); if(el){ el.classList.remove('visible'); el.classList.remove('show'); } });
-  const el=$(id);
-  if(!el) return;
-  el.classList.add('show');
-  requestAnimationFrame(function(){ sizeStages(); requestAnimationFrame(function(){ el.classList.add('visible'); sizeStages(); }); });
-  S.screen=id;
-  closeModal();
-  if(id!=='s1a') stopCamera();
-  clearTimer('selfie'); clearTimer('modal'); clearTimer('done');
-  if(id!=='s2') clearTimer('edit');
-  if(id==='s0'){ resetSession(); }
-  if(id==='s1a'){ enterSelfie(); }
-  if(id==='s2'){ enterEdit(); }
-  if(id==='s3'){ timers.done=setTimeout(function(){go('s0');}, CONFIG.DONE_TIMEOUT*1000); }
-}
-
-function resetSession(){
-  S.aiImage=null; S.rawPhoto=null; S.aiAttempt=0; S.printing=false; S.editStarted=false;
-  S.frame=CONFIG.DEFAULT_FRAME_INDEX; S.date=todayISO();
-  S.color = CONFIG.INK_COLOR;
-  applyColor(S.color);
-  S.location = $('locationSelect').value = "SANTIAGO DE COMPOSTELA";
-  S.threshold = $('thresholdRange').value = CONFIG.LINE_THRESHOLD;
-  $('dateInput').value=S.date; $('btnPrint').disabled=true;
-  if(FRAME_CACHE.length > 0) updateCards();
-}
-
-let stream=null;
-const video=$('liveVideo');
-function layoutVideo(){
-  const stage=$('stage1'); if(!stage) return;
-  const w=stage.clientWidth||0; if(!w) return;
-  const d = w * (2*CONFIG.PHOTO_RADIUS*CONFIG.PHOTO_SCALE)/600;
-  video.style.width=d+'px'; video.style.height=d+'px';
-  video.style.marginTop = (CONFIG.PHOTO_OFFSET_Y*(w/600))+'px';
-}
-function drawOverlay(){
-  const c=$('frameOverlay'), x=c.getContext('2d');
-  renderStamp(x, c.width, {drawPhoto:false, background:false, frame:S.frame, date:S.date});
-}
-async function enterSelfie(){
-  $('camError').style.display='none'; $('camControls').style.display=''; $('timer1').style.display='';
-  drawOverlay(); requestAnimationFrame(function(){ sizeStages(); });
-  await startCamera();
-}
-async function startCamera(){
-  stopCamera();
-  try{
-    stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user', width:{ideal:1280}, height:{ideal:1280} }, audio:false });
-    video.srcObject = stream; await video.play().catch(e=>{});
-    sizeStages();
-    runCountdown('selfie', CONFIG.SELFIE_COUNTDOWN, $('cd1'), $('bar1'), $('timer1'), shoot);
-  }catch(err){ showCamError("Error de cámara"); }
-}
-function showCamError(msg){ clearTimer('selfie'); $('camErrMsg').textContent=msg; $('camError').style.display=''; }
-function stopCamera(){ if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; } if(video) video.srcObject=null; }
-function shoot(){
-  clearTimer('selfie');
-  const N=CONFIG.CAPTURE_SIZE, side=Math.min(video.videoWidth||N, video.videoHeight||N);
-  const sx=((video.videoWidth||N)-side)/2, sy=((video.videoHeight||N)-side)/2;
-  const c=document.createElement('canvas'); c.width=c.height=N;
-  const x=c.getContext('2d');
-  x.drawImage(video, sx, sy, side, side, 0, 0, N, N);
-  stopCamera();
-  S.rawPhoto = c.toDataURL('image/jpeg',0.92);
-  S.aiAttempt = 0; S.editStarted = false;
-  go('s2'); requestAI();
-}
-
-async function requestAI(){
-  if(!S.rawPhoto) return;
-  S.aiAttempt++; S.aiImage=null; $('btnPrint').disabled=true; $('aiError').style.display='none';
-  drawPreview();
-  try{
-    const res = await fetch(CONFIG.AI_WEBHOOK_URL,{
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ image:S.rawPhoto, design:CONFIG.FRAMES[S.frame].file, lang:LANG })
-    });
-    const txt = await res.text();
-    let u = JSON.parse(txt); u = (typeof u==='string') ? u : (u.url||u.image||u.data||'');
-    const img = await loadImage(u);
-    if(!img) throw new Error();
-    S.aiImage = img; $('btnPrint').disabled=false; drawPreview();
-  }catch(err){
-    if(S.aiAttempt < CONFIG.AI_MAX_ATTEMPTS && S.screen==='s2') requestAI();
-    else $('aiError').style.display='';
-  }
-}
-
-function buildCards(){
-  const box=$('designCards'); if(!box) return; box.innerHTML='';
-  CONFIG.FRAMES.forEach(function(f,i){
-    const d=document.createElement('div'); d.className='card';
-    const c=document.createElement('canvas'); c.width=240; c.height=240;
-    const nm=document.createElement('div'); nm.className='nm'; nm.textContent=T(f.key);
-    d.appendChild(c); d.appendChild(nm);
-    d.addEventListener('click',function(){ S.frame=i; drawPreview(); });
-    box.appendChild(d);
-  });
-}
-function updateCards(){
-  const cards=document.querySelectorAll('#designCards .card');
-  for(let i=0;i<cards.length;i++){
-    cards[i].classList.toggle('sel', i===S.frame);
-    const c=cards[i].querySelector('canvas');
-    renderStamp(c.getContext('2d'), c.width, {frame:i, photo:S.aiImage, date:S.date});
-  }
-}
-function drawPreview(){
-  const c=$('stampCanvas'); if(!c) return;
-  renderStamp(c.getContext('2d'), c.width, {frame:S.frame, photo:S.aiImage, date:S.date});
-  updateCards();
-}
-
-document.querySelectorAll('.color-btn').forEach(b => b.addEventListener('click', function(e){
-  e.stopPropagation(); applyColor(this.getAttribute('data-color'));
-  document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('sel'));
-  this.classList.add('sel');
-}));
-
-$('dateInput').addEventListener('change', function(e){ S.date = e.target.value || todayISO(); drawPreview(); });
-$('locationSelect').addEventListener('change', function(e){ S.location = e.target.value; drawPreview(); });
-$('thresholdRange').addEventListener('input', function(e){ S.threshold = parseInt(e.target.value); drawPreview(); });
-
-function enterEdit(){
-  $('dateInput').value = S.date; $('locationSelect').value = S.location; $('thresholdRange').value = S.threshold;
-  drawPreview();
-  if(!S.editStarted){ S.editStarted = true; runCountdown('edit', CONFIG.EDIT_COUNTDOWN, $('cd2'), $('bar2'), $('timer2'), openModal); }
-}
-function openModal(){ $('modalTimeout').classList.add('show'); runCountdown('modal', CONFIG.MODAL_TIMEOUT, $('modalCd'), null, null, function(){ go('s0'); }); }
-function closeModal(){ $('modalTimeout').classList.remove('show'); clearTimer('modal'); }
-
-function exportJpeg(){
-  const N=CONFIG.EXPORT_SIZE, c=document.createElement('canvas'); c.width=c.height=N;
-  const x=c.getContext('2d'); x.fillStyle='#ffffff'; x.fillRect(0,0,N,N);
-  renderStamp(x, N, {frame:S.frame, photo:S.aiImage, date:S.date, background:true});
-  return c.toDataURL('image/jpeg', CONFIG.JPEG_QUALITY);
-}
-async function doPrint(){
-  if(S.printing || !S.aiImage) return; S.printing=true; clearTimer('edit'); closeModal();
-  const a=document.createElement('a'); a.download='sello.jpg'; a.href=exportJpeg(); a.click();
-  go('s3');
-}
-
-/* Vídeos promocionales */
-const promoVideos = ["Tutorialalex.mp4", "Tutorialangela.mp4"];
-let currentVideoIdx = 0;
-const promoVideoEl = document.getElementById('promoVideo');
-function playNextPromoVideo() {
-  if (!promoVideoEl) return;
-  promoVideoEl.src = promoVideos[currentVideoIdx];
-  promoVideoEl.play().catch(e => {});
-  currentVideoIdx = (currentVideoIdx + 1) % promoVideos.length;
-}
-if (promoVideoEl) {
-  promoVideoEl.addEventListener('ended', playNextPromoVideo);
-}
-
-/* QR Code y Polling - BLINDADO */
-let pollingInterval = null;
-const URL_APP_MOVIL = "https://sellosmiguelplata.github.io/SellosCaminoCompostela/subir.html";
-const WEBHOOK_CONSULTA = "https://hook.eu1.make.com/cefuk6tab3wwawyvmjg36rg92jh9pnbd";
-
-$('btnChooseMemory').addEventListener('click', function(){ 
-  go('s1b'); 
-  const sessionId = Math.random().toString(36).substring(2, 10);
-  const langActual = S.lang || 'es'; // Recoge el idioma actual de la tablet (es, en, fr, de, etc.)
-  const qrUrl = `${URL_APP_MOVIL}?sesion=${sessionId}&lang=${langActual}&t=${Date.now()}`;
-  
-  $('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrUrl)}`;
-  $('qrStatus').textContent = "Esperando foto...";
-
-  clearInterval(pollingInterval);
-  pollingInterval = setInterval(async () => {
-    try {
-      const res = await fetch(`${WEBHOOK_CONSULTA}?sesion=${sessionId}&_t=${Date.now()}`);
-      if (res.ok) {
-        const textData = await res.text();
-        // Si el texto que llega contiene "data:image", es nuestra foto
-        if (textData && textData.includes('data:image')) {
-          clearInterval(pollingInterval);
-          // Extraemos la foto limpia por si Make añade algún espacio
-          const base64Data = textData.substring(textData.indexOf('data:image'));
-          
-          S.rawPhoto = base64Data;
-          S.aiAttempt = 0; S.editStarted = false;
-          go('s2'); requestAI();
-        }
-      }
-    } catch(e){
-      // Ignoramos errores de red temporales mientras espera
-    }
-  }, 3000);
-});
-
-$('btnBackMem').addEventListener('click', function(){ clearInterval(pollingInterval); go('s1'); });
-
-/* Botones y navegación */
-$('btnStart').addEventListener('click', function(e){ e.stopPropagation(); go('s1'); });
-$('s0').addEventListener('click', function(e){ if(e.target.closest('.lang-btn')) return; go('s1'); });$('btnChooseCamera').addEventListener('click', function(){ go('s1a'); });
-$('btnBack1').addEventListener('click', function(){ go('s0'); });$('btnBackCam').addEventListener('click', function(){ go('s1'); });
-$('btnBackCamErr').addEventListener('click', function(){ go('s1'); });$('btnShoot').addEventListener('click', shoot);
-$('btnRetryCam').addEventListener('click', function(){ startCamera(); });$('btnCancel2').addEventListener('click', function(){ go('s0'); });
-$('btnRetryAi').addEventListener('click', function(){ S.aiAttempt=0; requestAI(); });$('btnRestartAi').addEventListener('click', function(){ go('s0'); });
-$('btnPrint').addEventListener('click', doPrint);$('btnModalPrint').addEventListener('click', doPrint);
-$('btnModalRestart').addEventListener('click', function(){ go('s0'); });$('btnDoneNow').addEventListener('click', function(){ go('s0'); });
-
-/* Inicialización */
-(async function boot(){
-  document.documentElement.style.setProperty('--ink', CONFIG.INK_COLOR);
-  $('dateInput').value = S.date;
-  buildCards();
-  setLang(CONFIG.DEFAULT_LANG);
-  try{ await preloadFrames(); }catch(e){}
-  setTimeout(sizeStages, 60);
-})();
-</script>
-</body>
-</html>
+   opt1:"Carimbo 1",opt2:"Carimbo 2",opt3:"Carimbo
