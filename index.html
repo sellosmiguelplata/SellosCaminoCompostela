@@ -271,7 +271,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </div>
 
-<div id="buildTag">KIOSK v5.3</div>
+<div id="buildTag">KIOSK v5.4</div>
 
 <!-- SCREEN 0 : START -->
 <section id="s0" class="screen">
@@ -570,7 +570,7 @@ const I18N = {
    step1cam:"Étape 1 · Caméra",lookCamera:"Regardez l'objectif",shootNow:"Prendre la photo",back:"Retour",cancel:"Annuler",retry:"Réessayer",
    step1mem:"Étape 1 · Scanner QR",qrBoxTitle:"📱 Télécharger depuis le mobile",qrBoxSub:"Scannez le code et choisissez la photo.",qrWaiting:"En attente de la photo...",
    step2:"Étape 2 · Votre tampon",thresholdLabel:"Détails :",print:"Imprimer",startAgain:"Recommencer",
-   aiLoading:"Création…",aiRetrying:"Nouvel essai…",
+   aiLoading:"Création du tampon…",aiRetrying:"Nouvel essai…",
    aiErrTitle:"Erreur",aiErrMsg:"Pas de réponse.",
    tmTitle:"On imprime ?",tmMsg:"Temps écoulé.",
    doneTitle:"Buen Camino !",doneSub:"Impression...",finish:"Terminer",
@@ -583,7 +583,7 @@ const I18N = {
    step1cam:"Passo 1 · Câmera",lookCamera:"Olhe para a câmera",shootNow:"Tirar foto",back:"Voltar",cancel:"Cancelar",retry:"Tentar",
    step1mem:"Passo 1 · Escanear QR",qrBoxTitle:"📱 Enviar pelo celular",qrBoxSub:"Escaneie o código e escolha a foto.",qrWaiting:"Aguardando foto...",
    step2:"Passo 2 · Seu carimbo",thresholdLabel:"Detalhe:",print:"Imprimir",startAgain:"Recomeçar",
-   aiLoading:"Criando…",aiRetrying:"Tentando…",
+   aiLoading:"Criando o carimbo…",aiRetrying:"Tentando…",
    aiErrTitle:"Erro",aiErrMsg:"Sem resposta.",
    tmTitle:"Imprimir?",tmMsg:"Tempo esgotado.",
    doneTitle:"Buen Camino!",doneSub:"Imprimindo.",finish:"Finalizar",
@@ -596,7 +596,7 @@ const I18N = {
    step1cam:"第一步 · 相机",lookCamera:"看镜头",shootNow:"拍照",back:"返回",cancel:"取消",retry:"重试",
    step1mem:"第一步 · 扫描二维码",qrBoxTitle:"📱 从手机上传",qrBoxSub:"扫描二维码并选择照片。",qrWaiting:"等待照片...",
    step2:"第二步 · 印章",thresholdLabel:"细节:",print:"打印",startAgain:"重来",
-   aiLoading:"制作中…",aiRetrying:"重试…",
+   aiLoading:"制作印章中…",aiRetrying:"重试…",
    aiErrTitle:"错误",aiErrMsg:"无响应",
    tmTitle:"打印？",tmMsg:"时间到",
    doneTitle:"一路平安!",doneSub:"正在打印",finish:"完成",
@@ -609,7 +609,7 @@ const I18N = {
    step1cam:"Крок 1 · Камера",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото",back:"Назад",cancel:"Скасувати",retry:"Повторити",
    step1mem:"Крок 1 · Сканувати QR",qrBoxTitle:"📱 Завантажити з мобільного",qrBoxSub:"Скануйте код та оберіть фото.",qrWaiting:"Очікування фото...",
    step2:"Kрок 2 · Печатка",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
-   aiLoading:"Створення…",aiRetrying:"Повтор…",
+   aiLoading:"Створення печатки…",aiRetrying:"Повтор…",
    aiErrTitle:"Помилка",aiErrMsg:"Немає відповіді.",
    tmTitle:"Друкувати?",tmMsg:"Час вийшов.",
    doneTitle:"Buen Camino!",doneSub:"Друкується.",finish:"Завершити",
@@ -851,7 +851,7 @@ async function requestAI(){
   S.aiAttempt++; S.aiImage=null; $('btnPrint').disabled=true; $('aiError').style.display='none';
   drawPreview();
   
-  // Mostrar mensaje bonito de "Creando sello"
+  // 1. Mostrar el mensaje "Creando tu sello..." en el Paso 2
   const aiBadge = $('aiBadge');
   const aiBadgeTxt = $('aiBadgeTxt');
   if(aiBadge && aiBadgeTxt) {
@@ -870,11 +870,14 @@ async function requestAI(){
     if(!img) throw new Error();
     S.aiImage = img; 
     $('btnPrint').disabled=false; 
-    if(aiBadge) aiBadge.style.display = 'none'; // Ocultar mensaje al terminar
+    
+    // 2. Ocultar el mensaje en cuanto la imagen está lista
+    if(aiBadge) aiBadge.style.display = 'none'; 
     drawPreview();
   }catch(err){
     if(S.aiAttempt < CONFIG.AI_MAX_ATTEMPTS && S.screen==='s2') requestAI();
     else {
+      // Si hay error definitivo, ocultamos el mensaje de carga y mostramos panel de error
       if(aiBadge) aiBadge.style.display = 'none';
       $('aiError').style.display='';
     }
@@ -949,7 +952,7 @@ if (promoVideoEl) {
   promoVideoEl.addEventListener('ended', playNextPromoVideo);
 }
 
-/* QR Code y Polling - BLINDADO CON IDIOMA Y TRADUCCION */
+/* QR Code y Polling */
 let pollingInterval = null;
 const URL_APP_MOVIL = "https://sellosmiguelplata.github.io/SellosCaminoCompostela/subir.html";
 const WEBHOOK_CONSULTA = "https://hook.eu1.make.com/cefuk6tab3wwawyvmjg36rg92jh9pnbd";
