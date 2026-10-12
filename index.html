@@ -850,6 +850,15 @@ async function requestAI(){
   if(!S.rawPhoto) return;
   S.aiAttempt++; S.aiImage=null; $('btnPrint').disabled=true; $('aiError').style.display='none';
   drawPreview();
+  
+  // Mostrar mensaje bonito de "Creando sello"
+  const aiBadge = $('aiBadge');
+  const aiBadgeTxt = $('aiBadgeTxt');
+  if(aiBadge && aiBadgeTxt) {
+    aiBadgeTxt.textContent = S.aiAttempt > 1 ? T('aiRetrying') : T('aiLoading');
+    aiBadge.style.display = 'block';
+  }
+
   try{
     const res = await fetch(CONFIG.AI_WEBHOOK_URL,{
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -859,10 +868,16 @@ async function requestAI(){
     let u = JSON.parse(txt); u = (typeof u==='string') ? u : (u.url||u.image||u.data||'');
     const img = await loadImage(u);
     if(!img) throw new Error();
-    S.aiImage = img; $('btnPrint').disabled=false; drawPreview();
+    S.aiImage = img; 
+    $('btnPrint').disabled=false; 
+    if(aiBadge) aiBadge.style.display = 'none'; // Ocultar mensaje al terminar
+    drawPreview();
   }catch(err){
     if(S.aiAttempt < CONFIG.AI_MAX_ATTEMPTS && S.screen==='s2') requestAI();
-    else $('aiError').style.display='';
+    else {
+      if(aiBadge) aiBadge.style.display = 'none';
+      $('aiError').style.display='';
+    }
   }
 }
 
