@@ -71,6 +71,40 @@
     input[type="text"]:focus {
       border-color: #d8b25f;
     }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .opt-btn {
+      background: #232936;
+      color: #e2e8f0;
+      border: 2px solid #323a4b;
+      border-radius: 10px;
+      padding: 10px 6px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .opt-btn.sel {
+      border-color: #d8b25f;
+      background: #2e3647;
+      color: #d8b25f;
+      box-shadow: 0 0 0 2px rgba(216, 178, 95, 0.25);
+    }
+    .color-btn {
+      height: 42px;
+      border-radius: 10px;
+      border: 2px solid #323a4b;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .color-btn.sel {
+      border-color: #ffffff;
+      box-shadow: 0 0 0 3px #d8b25f;
+      transform: scale(1.04);
+    }
     .boton {
       width: 100%;
       background-color: #2f9e6b;
@@ -89,9 +123,10 @@
       margin-top: 20px;
     }
     #estadoFoto {
-      margin-top: 16px;
+      margin-top: 14px;
       font-size: 15px;
-      color: #9aa4b8;
+      color: #2f9e6b;
+      font-weight: bold;
       display: none;
     }
     #mensaje {
@@ -116,12 +151,32 @@
     </div>
 
     <h1 id="tituloPrincipal">Order Your Portrait Stamp</h1>
-    <p id="subtitulo">Enter your name and upload your photo. Grab a coffee while we prepare your stamp!</p>
+    <p id="subtitulo">Enter your name, pick your crest style and ink color, and upload your photo.</p>
 
     <div id="formulario">
       <div class="campo-grupo">
         <label id="lblNombre" for="nombreCliente">Your Name (for pickup)</label>
         <input type="text" id="nombreCliente" placeholder="e.g. Alex" maxlength="35" required>
+      </div>
+
+      <div class="campo-grupo">
+        <label id="lblEstilo">Crest Style</label>
+        <div class="grid-4" id="estiloGroup">
+          <button type="button" class="opt-btn sel" data-estilo="marco1.jpg" onclick="setEstilo('marco1.jpg', this)"><span class="estilo-txt">Style 1</span></button>
+          <button type="button" class="opt-btn" data-estilo="marco2.jpg" onclick="setEstilo('marco2.jpg', this)"><span class="estilo-txt">Style 2</span></button>
+          <button type="button" class="opt-btn" data-estilo="marco3.jpg" onclick="setEstilo('marco3.jpg', this)"><span class="estilo-txt">Style 3</span></button>
+          <button type="button" class="opt-btn" data-estilo="marco4.jpg" onclick="setEstilo('marco4.jpg', this)"><span class="estilo-txt">Style 4</span></button>
+        </div>
+      </div>
+
+      <div class="campo-grupo">
+        <label id="lblColor">Ink Color</label>
+        <div class="grid-4" id="colorGroup">
+          <button type="button" class="color-btn sel" data-color="8a2222" style="background:#8a2222;" onclick="setColor('8a2222', this)" title="Burgundy"></button>
+          <button type="button" class="color-btn" data-color="1e3a8a" style="background:#1e3a8a;" onclick="setColor('1e3a8a', this)" title="Navy"></button>
+          <button type="button" class="color-btn" data-color="065f46" style="background:#065f46;" onclick="setColor('065f46', this)" title="Green"></button>
+          <button type="button" class="color-btn" data-color="111827" style="background:#111827;" onclick="setColor('111827', this)" title="Black"></button>
+        </div>
       </div>
 
       <input type="file" id="selectorFoto" accept="image/*" style="display: none;">
@@ -140,65 +195,91 @@
 
     let blobFotoCruda = null;
     let idiomaActual = 'en';
+    let estiloActual = 'marco1.jpg';
+    let colorActual = '8a2222';
 
     const textos = {
       en: {
         main: "Order Your Portrait Stamp",
-        sub: "Enter your name and upload your photo. Grab a coffee while we prepare your stamp!",
+        sub: "Enter your name, pick your crest style and ink color, and upload your photo.",
         lbl: "Your Name (for pickup)",
         ph: "e.g. Alex",
+        lblEstilo: "Crest Style",
+        styleWord: "Style",
+        lblColor: "Ink Color",
         btnChoose: "📸 1. Choose Photo",
         btnChange: "🔄 Change Photo",
         btnSend: "🚀 2. Send to Queue",
         ready: "✓ Photo ready to send",
         noName: "⚠️ Please enter your name first.",
         sending: "⏳ Sending your photo...",
-        ok: "✅ Photo received! Grab a coffee — your stamp will be ready soon.",
+        ok: "✅ Photo received! Grab a coffee — we are preparing your stamp.",
         err: "❌ Connection error. Please check your internet and try again."
       },
       es: {
         main: "Pide tu Sello Retrato",
-        sub: "Escribe tu nombre y sube tu foto. ¡Ve a tomar un café mientras preparamos tu sello!",
+        sub: "Escribe tu nombre, elige el estilo del escudo y el color, y sube tu foto.",
         lbl: "Tu Nombre (para recogerlo)",
         ph: "ej. Alex",
+        lblEstilo: "Estilo del escudo",
+        styleWord: "Estilo",
+        lblColor: "Color de tinta",
         btnChoose: "📸 1. Elegir Foto",
         btnChange: "🔄 Cambiar Foto",
         btnSend: "🚀 2. Enviar Pedido",
         ready: "✓ Foto lista para enviar",
         noName: "⚠️ Por favor, escribe tu nombre primero.",
         sending: "⏳ Enviando tu foto...",
-        ok: "✅ ¡Foto recibida! Ve a tomar un café, enseguida tendremos tu sello listo.",
+        ok: "✅ ¡Foto recibida! Ve a tomar un café, estamos preparando tu sello.",
         err: "❌ Error de conexión. Revisa tu internet e inténtalo de nuevo."
       },
       de: {
         main: "Porträtstempel bestellen",
-        sub: "Gib deinen Namen ein und lade dein Foto hoch. Gönn dir einen Kaffee, wir bereiten alles vor!",
+        sub: "Gib deinen Namen ein, wähle Wappenstil und Farbe und lade dein Foto hoch.",
         lbl: "Dein Name (zur Abholung)",
         ph: "z. B. Alex",
+        lblEstilo: "Wappenstil",
+        styleWord: "Stil",
+        lblColor: "Tintenfarbe",
         btnChoose: "📸 1. Foto auswählen",
         btnChange: "🔄 Foto ändern",
         btnSend: "🚀 2. Bestellung senden",
         ready: "✓ Foto bereit zum Senden",
         noName: "⚠️ Bitte gib zuerst deinen Namen ein.",
         sending: "⏳ Foto wird gesendet...",
-        ok: "✅ Foto erhalten! Genieß deinen Kaffee – dein Stempel ist gleich fertig.",
+        ok: "✅ Foto erhalten! Genieß deinen Kaffee – dein Stempel wird vorbereitet.",
         err: "❌ Verbindungsfehler. Bitte prüfe dein Internet."
       },
       fr: {
         main: "Commandez votre Tampon",
-        sub: "Entrez votre nom et envoyez votre photo. Prenez un café pendant que nous préparons votre tampon !",
+        sub: "Entrez votre nom, choisissez le style et la couleur, puis envoyez votre photo.",
         lbl: "Votre Nom (pour le retrait)",
         ph: "ex. Alex",
+        lblEstilo: "Style d'écusson",
+        styleWord: "Style",
+        lblColor: "Couleur d'encre",
         btnChoose: "📸 1. Choisir une photo",
         btnChange: "🔄 Changer la photo",
         btnSend: "🚀 2. Envoyer la commande",
         ready: "✓ Photo prête à être envoyée",
         noName: "⚠️ Veuillez d'abord entrer votre nom.",
-        sending: "⏳ Envoi de la photo...",
-        ok: "✅ Photo reçue ! Prenez un café, votre tampon sera bientôt prêt.",
+        sending: "⏳ Envoi de votre photo...",
+        ok: "✅ Photo reçue ! Prenez un café, nous préparons votre tampon.",
         err: "❌ Erreur de connexion. Vérifiez votre internet."
       }
     };
+
+    function setEstilo(estilo, btn) {
+      estiloActual = estilo;
+      document.querySelectorAll('#estiloGroup .opt-btn').forEach(b => b.classList.remove('sel'));
+      if (btn) btn.classList.add('sel');
+    }
+
+    function setColor(colorHex, btn) {
+      colorActual = colorHex;
+      document.querySelectorAll('#colorGroup .color-btn').forEach(b => b.classList.remove('sel'));
+      if (btn) btn.classList.add('sel');
+    }
 
     function setLang(lang, btn) {
       idiomaActual = lang;
@@ -209,6 +290,11 @@
       document.getElementById('subtitulo').innerText = t.sub;
       document.getElementById('lblNombre').innerText = t.lbl;
       document.getElementById('nombreCliente').placeholder = t.ph;
+      document.getElementById('lblEstilo').innerText = t.lblEstilo;
+      document.getElementById('lblColor').innerText = t.lblColor;
+      document.querySelectorAll('#estiloGroup .estilo-txt').forEach((el, idx) => {
+        el.innerText = `${t.styleWord} ${idx + 1}`;
+      });
       document.getElementById('btnElegir').innerText = blobFotoCruda ? t.btnChange : t.btnChoose;
       document.getElementById('btnEnviar').innerText = t.btnSend;
       if (blobFotoCruda) {
@@ -274,6 +360,8 @@
       const formData = new FormData();
       formData.append('nombre', nombre);
       formData.append('archivo_nombre', nombreLimpio + '.jpg');
+      formData.append('estilo', estiloActual);
+      formData.append('color', colorActual);
       formData.append('idioma', idiomaActual);
       formData.append('foto', blobFotoCruda, nombreLimpio + '.jpg');
 
