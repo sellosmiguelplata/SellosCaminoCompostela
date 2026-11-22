@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StampMyFace — Order Your Stamp</title>
+  <style>
+    body {
+      background-color: #161a22;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      text-align: center;
+      padding: 35px 20px;
+      margin: 0;
+    }
+    .container {
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .lang-bar {
+      margin-bottom: 20px;
+    }
+    .lang-btn {
+      background: #232936;
+      color: #9aa4b8;
+      border: 1px solid #323a4b;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      margin: 0 3px;
+    }
+    .lang-btn.active {
+      border-color: #d8b25f;
+      color: #d8b25f;
+      font-weight: bold;
+    }
+    h1 {
+      color: #d8b25f;
+      margin-bottom: 8px;
+      font-size: 28px;
+    }
+    #subtitulo {
+      color: #b8c1d1;
+      font-size: 16px;
+      line-height: 1.4;
+      margin-bottom: 25px;
+    }
+    .campo-grupo {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      color: #d8b25f;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 15px;
+      font-size: 17px;
+      border-radius: 12px;
+      border: 2px solid #323a4b;
+      background-color: #232936;
+      color: white;
+      outline: none;
+    }
+    input[type="text"]:focus {
+      border-color: #d8b25f;
+    }
+    .boton {
+      width: 100%;
+      background-color: #2f9e6b;
+      color: white;
+      border: none;
+      padding: 18px 25px;
+      font-size: 19px;
+      font-weight: bold;
+      border-radius: 14px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .boton-enviar {
+      background-color: #d8b25f;
+      color: #161a22;
+      margin-top: 20px;
+    }
+    #miniatura {
+      max-width: 240px;
+      border-radius: 14px;
+      margin-top: 20px;
+      border: 3px solid #d8b25f;
+      display: none;
+    }
+    #mensaje {
+      margin-top: 22px;
+      font-size: 17px;
+      line-height: 1.4;
+      font-weight: bold;
+    }
+    .oculto {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="lang-bar">
+      <button class="lang-btn active" onclick="setLang('en', this)">EN</button>
+      <button class="lang-btn" onclick="setLang('es', this)">ES</button>
+      <button class="lang-btn" onclick="setLang('de', this)">DE</button>
+      <button class="lang-btn" onclick="setLang('fr', this)">FR</button>
+    </div>
+
+    <h1 id="tituloPrincipal">Order Your Portrait Stamp</h1>
+    <p id="subtitulo">Enter your name and upload your photo. Grab a coffee while we prepare your stamp!</p>
+
+    <div id="formulario">
+      <div class="campo-grupo">
+        <label id="lblNombre" for="nombreCliente">Your Name (for pickup)</label>
+        <input type="text" id="nombreCliente" placeholder="e.g. Alex" maxlength="35" required>
+      </div>
+
+      <input type="file" id="selectorFoto" accept="image/*" style="display: none;">
+      <button type="button" class="boton" id="btnElegir" onclick="document.getElementById('selectorFoto').click()">📸 1. Choose Photo</button>
+
+      <br><img id="miniatura" alt="Preview">
+
+      <button type="button" class="boton boton-enviar oculto" id="btnEnviar" onclick="enviarPedido()">🚀 2. Send to Queue</button>
+    </div>
+
+    <p id="mensaje"></p>
+  </div>
+
+  <script>
+    // IMPORTANTE: Sustituye esta URL por el NUEVO Webhook de Make.com para pedidos en fila
+    const URL_MAKE_QUEUE = "PEGA_AQUI_TU_NUEVO_WEBHOOK_DE_MAKE";
+
+    let fotoBase64Lista = null;
+    let idiomaActual = 'en';
+
+    const textos = {
+      en: {
+        main: "Order Your Portrait Stamp",
+        sub: "Enter your name and upload your photo. Grab a coffee while we prepare your stamp!",
+        lbl: "Your Name (for pickup)",
+        ph: "e.g. Alex",
+        btnChoose: "📸 1. Choose Photo",
+        btnChange: "🔄 Change Photo",
+        btnSend: "🚀 2. Send to Queue",
+        noName: "⚠️ Please enter your name first.",
+        sending: "⏳ Sending your photo to our workshop...",
+        ok: "✅ Photo received! Go enjoy your coffee — we will have your stamp ready soon.",
+        err: "❌ Connection error. Please check your internet and try again."
+      },
+      es: {
+        main: "Pide tu Sello Retrato",
+        sub: "Escribe tu nombre y sube tu foto. ¡Ve a tomar un café mientras preparamos tu sello!",
+        lbl: "Tu Nombre (para recogerlo)",
+        ph: "ej. Alex",
+        btnChoose: "📸 1. Elegir Foto",
+        btnChange: "🔄 Cambiar Foto",
+        btnSend: "🚀 2. Enviar Pedido",
+        noName: "⚠️ Por favor, escribe tu nombre primero.",
+        sending: "⏳ Enviando tu foto al taller...",
+        ok: "✅ ¡Foto recibida! Ve a disfrutar de tu café, enseguida tendremos tu sello listo.",
+        err: "❌ Error de conexión. Revisa tu internet e inténtalo de nuevo."
+      },
+      de: {
+        main: "Porträtstempel bestellen",
+        sub: "Gib deinen Namen ein und lade dein Foto hoch. Gönn dir einen Kaffee, wir bereiten alles vor!",
+        lbl: "Dein Name (zur Abholung)",
+        ph: "z. B. Alex",
+        btnChoose: "📸 1. Foto auswählen",
+        btnChange: "🔄 Foto ändern",
+        btnSend: "🚀 2. Bestellung senden",
+        noName: "⚠️ Bitte gib zuerst deinen Namen ein.",
+        sending: "⏳ Dein Foto wird gesendet...",
+        ok: "✅ Foto erhalten! Genieß deinen Kaffee – dein Stempel ist gleich fertig.",
+        err: "❌ Verbindungsfehler. Bitte prüfe dein Internet."
+      },
+      fr: {
+        main: "Commandez votre Tampon",
+        sub: "Entrez votre nom et envoyez votre photo. Prenez un café pendant que nous préparons votre tampon !",
+        lbl: "Votre Nom (pour le retrait)",
+        ph: "ex. Alex",
+        btnChoose: "📸 1. Choisir une photo",
+        btnChange: "🔄 Changer la photo",
+        btnSend: "🚀 2. Envoyer la commande",
+        noName: "⚠️ Veuillez d'abord entrer votre nom.",
+        sending: "⏳ Envoi de votre photo...",
+        ok: "✅ Photo reçue ! Profitez de votre café, votre tampon sera bientôt prêt.",
+        err: "❌ Erreur de connexion. Vérifiez votre internet."
+      }
+    };
+
+    function setLang(lang, btn) {
+      idiomaActual = lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      const t = textos[lang];
+      document.getElementById('tituloPrincipal').innerText = t.main;
+      document.getElementById('subtitulo').innerText = t.sub;
+      document.getElementById('lblNombre').innerText = t.lbl;
+      document.getElementById('nombreCliente').placeholder = t.ph;
+      document.getElementById('btnElegir').innerText = fotoBase64Lista ? t.btnChange : t.btnChoose;
+      document.getElementById('btnEnviar').innerText = t.btnSend;
+    }
+
+    document.getElementById('selectorFoto').addEventListener('change', function(evento) {
+      const archivo = evento.target.files[0];
+      if (!archivo) return;
+
+      const lector = new FileReader();
+      lector.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 900;
+          const scaleSize = MAX_WIDTH / img.width;
+          canvas.width = MAX_WIDTH;
+          canvas.height = img.height * scaleSize;
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          fotoBase64Lista = canvas.toDataURL('image/jpeg', 0.85);
+
+          const mini = document.getElementById('miniatura');
+          mini.src = fotoBase64Lista;
+          mini.style.display = 'inline-block';
+
+          document.getElementById('btnElegir').innerText = textos[idiomaActual].btnChange;
+          document.getElementById('btnEnviar').classList.remove('oculto');
+          document.getElementById('mensaje').innerText = "";
+        };
+        img.src = e.target.result;
+      };
+      lector.readAsDataURL(archivo);
+    });
+
+    function enviarPedido() {
+      const t = textos[idiomaActual];
+      const nombre = document.getElementById('nombreCliente').value.trim();
+
+      if (!nombre) {
+        document.getElementById('mensaje').innerText = t.noName;
+        document.getElementById('mensaje').style.color = "#d8b25f";
+        document.getElementById('nombreCliente').focus();
+        return;
+      }
+      if (!fotoBase64Lista) return;
+
+      document.getElementById('btnEnviar').classList.add('oculto');
+      document.getElementById('btnElegir').classList.add('oculto');
+      document.getElementById('mensaje').innerText = t.sending;
+      document.getElementById('mensaje').style.color = "#d8b25f";
+
+      // Limpiamos caracteres raros del nombre para que sirva como nombre de archivo
+      const nombreLimpio = nombre.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ_-]/g, '_');
+
+      fetch(URL_MAKE_QUEUE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: nombre,
+          archivo_nombre: nombreLimpio + ".jpg",
+          idioma: idiomaActual,
+          imagen: fotoBase64Lista
+        })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        document.getElementById('formulario').classList.add('oculto');
+        document.getElementById('mensaje').innerText = t.ok;
+        document.getElementById('mensaje').style.color = "#2f9e6b";
+      })
+      .catch(err => {
+        document.getElementById('mensaje').innerText = t.err;
+        document.getElementById('mensaje').style.color = "#d0534a";
+        document.getElementById('btnEnviar').classList.remove('oculto');
+        document.getElementById('btnElegir').classList.remove('oculto');
+      });
+    }
+  </script>
+
+</body>
+</html>
