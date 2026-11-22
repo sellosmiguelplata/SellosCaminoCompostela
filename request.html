@@ -89,11 +89,13 @@
       margin-top: 20px;
     }
     #miniatura {
-      max-width: 240px;
-      border-radius: 14px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
       margin-top: 20px;
       border: 3px solid #d8b25f;
       display: none;
+      background: #fff;
     }
     #mensaje {
       margin-top: 22px;
@@ -128,7 +130,7 @@
       <input type="file" id="selectorFoto" accept="image/*" style="display: none;">
       <button type="button" class="boton" id="btnElegir" onclick="document.getElementById('selectorFoto').click()">📸 1. Choose Photo</button>
 
-      <br><img id="miniatura" alt="Preview">
+      <br><canvas id="miniatura" width="600" height="600"></canvas>
 
       <button type="button" class="boton boton-enviar oculto" id="btnEnviar" onclick="enviarPedido()">🚀 2. Send to Queue</button>
     </div>
@@ -138,9 +140,18 @@
 
   <script>
     const URL_MAKE_QUEUE = "https://hook.eu1.make.com/phiridpll24la7dvtru2ezv45fkvxc5p";
+    const INK_HEX = "#8a2222";
+    const THRESHOLD = 110;
+    const FRAME_FILE = "marco1.jpg";
 
-    let blobFotoLista = null;
+    let blobSelloLista = null;
     let idiomaActual = 'en';
+    let frameImg = null;
+
+    const marcoTemp = new Image();
+    marcoTemp.crossOrigin = "anonymous";
+    marcoTemp.onload = () => { frameImg = marcoTemp; };
+    marcoTemp.src = FRAME_FILE;
 
     const textos = {
       en: {
@@ -152,8 +163,8 @@
         btnChange: "🔄 Change Photo",
         btnSend: "🚀 2. Send to Queue",
         noName: "⚠️ Please enter your name first.",
-        sending: "⏳ Sending your photo to our workshop...",
-        ok: "✅ Photo received! Go enjoy your coffee — we will have your stamp ready soon.",
+        sending: "⏳ Sending your stamp...",
+        ok: "✅ Stamp sent! Go enjoy your coffee — it will be ready soon.",
         err: "❌ Connection error. Please check your internet and try again."
       },
       es: {
@@ -165,8 +176,8 @@
         btnChange: "🔄 Cambiar Foto",
         btnSend: "🚀 2. Enviar Pedido",
         noName: "⚠️ Por favor, escribe tu nombre primero.",
-        sending: "⏳ Enviando tu foto al taller...",
-        ok: "✅ ¡Foto recibida! Ve a disfrutar de tu café, enseguida tendremos tu sello listo.",
+        sending: "⏳ Enviando tu sello...",
+        ok: "✅ ¡Sello enviado! Ve a disfrutar de tu café, enseguida estará listo.",
         err: "❌ Error de conexión. Revisa tu internet e inténtalo de nuevo."
       },
       de: {
@@ -178,8 +189,8 @@
         btnChange: "🔄 Foto ändern",
         btnSend: "🚀 2. Bestellung senden",
         noName: "⚠️ Bitte gib zuerst deinen Namen ein.",
-        sending: "⏳ Dein Foto wird gesendet...",
-        ok: "✅ Foto erhalten! Genieß deinen Kaffee – dein Stempel ist gleich fertig.",
+        sending: "⏳ Dein Stempel wird gesendet...",
+        ok: "✅ Stempel gesendet! Genieß deinen Kaffee – er ist gleich fertig.",
         err: "❌ Verbindungsfehler. Bitte prüfe dein Internet."
       },
       fr: {
@@ -191,11 +202,99 @@
         btnChange: "🔄 Changer la photo",
         btnSend: "🚀 2. Envoyer la commande",
         noName: "⚠️ Veuillez d'abord entrer votre nom.",
-        sending: "⏳ Envoi de votre photo...",
-        ok: "✅ Photo reçue ! Profitez de votre café, votre tampon sera bientôt prêt.",
+        sending: "⏳ Envoi de votre tampon...",
+        ok: "✅ Tampon envoyé ! Profitez de votre café, il sera bientôt prêt.",
         err: "❌ Erreur de connexion. Vérifiez votre internet."
       }
     };
+
+    function hexToRgb(hex) {
+      return {
+        r: parseInt(hex.slice(1, 3), 16),
+        g: parseInt(hex.slice(3, 5), 16),
+        b: parseInt(hex.slice(5, 7), 16)
+      };
+    }
+
+    function renderStampBlob(img, callback) {
+      const size = 600;
+      const cx = size / 2;
+      const cy = size / 2;
+      const R = 170;
+      const offsetY = -6;
+      const ink = hexToRgb(INK_HEX);
+
+      const outCanvas = document.getElementById('miniatura');
+      outCanvas.width = size;
+      outCanvas.height = size;
+      const ctx = outCanvas.getContext('2d');
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, size, size);
+
+      // Foto recortada en círculo y convertida a tinta
+      const temp = document.createElement('canvas');
+      temp.width = size;
+      temp.height = size;
+      const tctx = temp.getContext('2d', { willReadFrequently: true });
+      tctx.save();
+      tctx.beginPath();
+      tctx.arc(cx, cy + offsetY, R, 0, Math.PI * 2);
+      tctx.clip();
+
+      const iw = img.naturalWidth || img.width;
+      const ih = img.naturalHeight || img.height;
+      const box = R * 2;
+      const sc = Math.max(box / iw, box / ih);
+      const dw = iw * sc;
+      const dh = ih * sc;
+      tctx.drawImage(img, cx - dw / 2, cy + offsetY - dh / 2, dw, dh);
+      tctx.restore();
+
+      try {
+        const d = tctx.getImageData(0, 0, size, size);
+        const px = d.data;
+        for (let i = 0; i < px.length; i += 4) {
+          const avg = px[i] * 0.299 + px[i + 1] * 0.587 + px[i + 2] * 0.114;
+          if (avg < THRESHOLD && px[i + 3] > 50) {
+            px[i] = ink.r; px[i + 1] = ink.g; px[i + 2] = ink.b; px[i + 3] = 255;
+          } else {
+            px[i + 3] = 0;
+          }
+        }
+        tctx.putImageData(d, 0, 0);
+        ctx.drawImage(temp, 0, 0);
+      } catch (e) {
+        ctx.drawImage(temp, 0, 0);
+      }
+
+      // Marco si está cargado
+      if (frameImg) {
+        const fCanvas = document.createElement('canvas');
+        fCanvas.width = size;
+        fCanvas.height = size;
+        const fctx = fCanvas.getContext('2d', { willReadFrequently: true });
+        fctx.drawImage(frameImg, 0, 0, size, size);
+        try {
+          const fd = fctx.getImageData(0, 0, size, size);
+          const fpx = fd.data;
+          for (let i = 0; i < fpx.length; i += 4) {
+            const avg = fpx[i] * 0.299 + fpx[i + 1] * 0.587 + fpx[i + 2] * 0.114;
+            if (avg < 120 && fpx[i + 3] > 50) {
+              fpx[i] = ink.r; fpx[i + 1] = ink.g; fpx[i + 2] = ink.b; fpx[i + 3] = 255;
+            } else {
+              fpx[i + 3] = 0;
+            }
+          }
+          fctx.putImageData(fd, 0, 0);
+          ctx.drawImage(fCanvas, 0, 0);
+        } catch (e) {
+          ctx.drawImage(frameImg, 0, 0, size, size);
+        }
+      }
+
+      outCanvas.style.display = 'inline-block';
+      outCanvas.toBlob(blob => callback(blob), 'image/jpeg', 0.92);
+    }
 
     function setLang(lang, btn) {
       idiomaActual = lang;
@@ -206,7 +305,7 @@
       document.getElementById('subtitulo').innerText = t.sub;
       document.getElementById('lblNombre').innerText = t.lbl;
       document.getElementById('nombreCliente').placeholder = t.ph;
-      document.getElementById('btnElegir').innerText = blobFotoLista ? t.btnChange : t.btnChoose;
+      document.getElementById('btnElegir').innerText = blobSelloLista ? t.btnChange : t.btnChoose;
       document.getElementById('btnEnviar').innerText = t.btnSend;
     }
 
@@ -218,27 +317,13 @@
       lector.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 900;
-          const scaleSize = MAX_WIDTH / img.width;
-          canvas.width = MAX_WIDTH;
-          canvas.height = img.height * scaleSize;
-
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          canvas.toBlob(function(blob) {
+          renderStampBlob(img, function(blob) {
             if (!blob) return;
-            blobFotoLista = blob;
-
-            const mini = document.getElementById('miniatura');
-            mini.src = URL.createObjectURL(blob);
-            mini.style.display = 'inline-block';
-
+            blobSelloLista = blob;
             document.getElementById('btnElegir').innerText = textos[idiomaActual].btnChange;
             document.getElementById('btnEnviar').classList.remove('oculto');
             document.getElementById('mensaje').innerText = "";
-          }, 'image/jpeg', 0.85);
+          });
         };
         img.src = e.target.result;
       };
@@ -255,7 +340,7 @@
         document.getElementById('nombreCliente').focus();
         return;
       }
-      if (!blobFotoLista) return;
+      if (!blobSelloLista) return;
 
       document.getElementById('btnEnviar').classList.add('oculto');
       document.getElementById('btnElegir').classList.add('oculto');
@@ -267,7 +352,7 @@
       formData.append('nombre', nombre);
       formData.append('archivo_nombre', nombreLimpio + '.jpg');
       formData.append('idioma', idiomaActual);
-      formData.append('foto', blobFotoLista, nombreLimpio + '.jpg');
+      formData.append('foto', blobSelloLista, nombreLimpio + '.jpg');
 
       fetch(URL_MAKE_QUEUE, {
         method: 'POST',
