@@ -137,10 +137,9 @@
   </div>
 
   <script>
-    // IMPORTANTE: Sustituye esta URL por el NUEVO Webhook de Make.com para pedidos en fila
     const URL_MAKE_QUEUE = "https://hook.eu1.make.com/phiridpll24la7dvtru2ezv45fkvxc5p";
 
-    let fotoBase64Lista = null;
+    let blobFotoLista = null;
     let idiomaActual = 'en';
 
     const textos = {
@@ -207,7 +206,7 @@
       document.getElementById('subtitulo').innerText = t.sub;
       document.getElementById('lblNombre').innerText = t.lbl;
       document.getElementById('nombreCliente').placeholder = t.ph;
-      document.getElementById('btnElegir').innerText = fotoBase64Lista ? t.btnChange : t.btnChoose;
+      document.getElementById('btnElegir').innerText = blobFotoLista ? t.btnChange : t.btnChoose;
       document.getElementById('btnEnviar').innerText = t.btnSend;
     }
 
@@ -228,15 +227,18 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-          fotoBase64Lista = canvas.toDataURL('image/jpeg', 0.85);
+          canvas.toBlob(function(blob) {
+            if (!blob) return;
+            blobFotoLista = blob;
 
-          const mini = document.getElementById('miniatura');
-          mini.src = fotoBase64Lista;
-          mini.style.display = 'inline-block';
+            const mini = document.getElementById('miniatura');
+            mini.src = URL.createObjectURL(blob);
+            mini.style.display = 'inline-block';
 
-          document.getElementById('btnElegir').innerText = textos[idiomaActual].btnChange;
-          document.getElementById('btnEnviar').classList.remove('oculto');
-          document.getElementById('mensaje').innerText = "";
+            document.getElementById('btnElegir').innerText = textos[idiomaActual].btnChange;
+            document.getElementById('btnEnviar').classList.remove('oculto');
+            document.getElementById('mensaje').innerText = "";
+          }, 'image/jpeg', 0.85);
         };
         img.src = e.target.result;
       };
@@ -253,25 +255,23 @@
         document.getElementById('nombreCliente').focus();
         return;
       }
-      if (!fotoBase64Lista) return;
+      if (!blobFotoLista) return;
 
       document.getElementById('btnEnviar').classList.add('oculto');
       document.getElementById('btnElegir').classList.add('oculto');
       document.getElementById('mensaje').innerText = t.sending;
       document.getElementById('mensaje').style.color = "#d8b25f";
 
-      // Limpiamos caracteres raros del nombre para que sirva como nombre de archivo
       const nombreLimpio = nombre.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ_-]/g, '_');
+      const formData = new FormData();
+      formData.append('nombre', nombre);
+      formData.append('archivo_nombre', nombreLimpio + '.jpg');
+      formData.append('idioma', idiomaActual);
+      formData.append('foto', blobFotoLista, nombreLimpio + '.jpg');
 
       fetch(URL_MAKE_QUEUE, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre: nombre,
-          archivo_nombre: nombreLimpio + ".jpg",
-          idioma: idiomaActual,
-          imagen: fotoBase64Lista
-        })
+        body: formData
       })
       .then(res => {
         if (!res.ok) throw new Error("HTTP " + res.status);
