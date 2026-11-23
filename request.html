@@ -1,82 +1,179 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stamp My Face – Warteschlange</title>
+  <title>Stamp My Face – Camino de Santiago</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-parchment: #f4efe6;
+      --bg-card: #fffdf9;
+      --stone-dark: #231f1d;
+      --stone-muted: #635b54;
+      --camino-gold: #c6922c;
+      --camino-gold-soft: #f7eed8;
+      --camino-blue: #1b365d;
+      --border-soft: #e2d8c8;
+      --shadow-card: 0 18px 40px rgba(35, 31, 29, 0.10);
+    }
+
     * {
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     body {
       margin: 0;
-      padding: 20px 16px 40px;
-      background: #f5f5f4;
-      color: #1c1917;
+      min-height: 100vh;
+      padding: 20px 14px 44px;
+      background:
+        radial-gradient(circle at top right, rgba(198, 146, 44, 0.14), transparent 45%),
+        radial-gradient(circle at bottom left, rgba(27, 54, 93, 0.10), transparent 50%),
+        var(--bg-parchment);
+      color: var(--stone-dark);
+      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
       display: flex;
       justify-content: center;
+      align-items: flex-start;
     }
 
     .card {
       width: 100%;
-      max-width: 440px;
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 22px 20px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      max-width: 460px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: 22px;
+      padding: 24px 20px 26px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
     }
 
-    .top-bar {
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--camino-blue), var(--camino-gold), var(--camino-blue));
+    }
+
+    .header {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .brand {
+      display: flex;
       align-items: center;
-      margin-bottom: 12px;
+      gap: 11px;
     }
 
-    h1 {
-      font-size: 1.35rem;
+    .shell-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, var(--camino-blue), #26497d);
+      color: #f6d37f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 6px 14px rgba(27, 54, 93, 0.22);
+    }
+
+    .brand-text h1 {
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.03em;
       margin: 0;
+      color: var(--stone-dark);
     }
 
-    select.lang-select {
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 1px solid #d6d3d1;
-      background: #fff;
-      font-size: 0.9rem;
-    }
-
-    p.subtitle {
-      margin: 0 0 18px;
-      font-size: 0.92rem;
-      color: #57534e;
-      line-height: 1.4;
-    }
-
-    .field {
-      margin-bottom: 18px;
-    }
-
-    label.field-label {
-      display: block;
+    .brand-text .tag {
+      font-size: 0.76rem;
       font-weight: 600;
-      font-size: 0.92rem;
-      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--camino-gold);
+      margin-top: 2px;
+      display: block;
     }
 
-    input[type="text"],
-    input[type="file"] {
-      width: 100%;
-      padding: 11px 12px;
-      border: 1px solid #d6d3d1;
+    .lang-select {
+      padding: 6px 10px;
       border-radius: 10px;
-      font-size: 1rem;
-      background: #fafaf9;
+      border: 1px solid var(--border-soft);
+      background: #fbf8f2;
+      color: var(--stone-dark);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
     }
 
-    /* Vorschau der 4 leeren Rahmen */
+    .subtitle {
+      margin: 0 0 20px;
+      font-size: 0.9rem;
+      line-height: 1.48;
+      color: var(--stone-muted);
+      background: #faf6ee;
+      border-left: 3px solid var(--camino-gold);
+      padding: 10px 12px;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .step-section {
+      margin-bottom: 20px;
+    }
+
+    .step-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 9px;
+      color: var(--stone-dark);
+    }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--camino-blue);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border-soft);
+      border-radius: 12px;
+      font-size: 0.98rem;
+      background: #fcfaf5;
+      color: var(--stone-dark);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--camino-gold);
+      box-shadow: 0 0 0 3px rgba(198, 146, 44, 0.16);
+    }
+
+    /* 4 leere Rahmen */
     .marco-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -89,13 +186,17 @@
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      padding: 10px;
-      border: 2px solid #e7e5e4;
-      border-radius: 12px;
+      padding: 11px 8px;
+      border: 1.5px solid var(--border-soft);
+      border-radius: 14px;
       cursor: pointer;
       user-select: none;
       background: #ffffff;
-      transition: border-color 0.15s ease, background 0.15s ease;
+      transition: transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .marco-option:active {
+      transform: scale(0.98);
     }
 
     .marco-option input[type="radio"] {
@@ -105,32 +206,34 @@
     }
 
     .marco-option img {
-      width: 88px;
-      height: 88px;
+      width: 86px;
+      height: 86px;
       object-fit: contain;
       display: block;
     }
 
     .marco-option span {
-      font-size: 0.85rem;
-      color: #44403c;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--stone-muted);
     }
 
     .marco-option:has(input[type="radio"]:checked) {
-      border-color: #1c1917;
-      background: #f5f5f4;
+      border-color: var(--camino-gold);
+      background: var(--camino-gold-soft);
+      box-shadow: 0 4px 12px rgba(198, 146, 44, 0.16);
     }
 
     .marco-option:has(input[type="radio"]:checked) span {
+      color: var(--stone-dark);
       font-weight: 700;
-      color: #1c1917;
     }
 
-    /* Farbauswahl */
+    /* Tintenfarben */
     .color-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      gap: 9px;
     }
 
     .color-option {
@@ -138,11 +241,15 @@
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      padding: 8px 4px;
-      border: 2px solid #e7e5e4;
-      border-radius: 10px;
+      padding: 9px 4px;
+      border: 1.5px solid var(--border-soft);
+      border-radius: 12px;
       cursor: pointer;
-      font-size: 0.8rem;
+      background: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--stone-muted);
+      transition: border-color 0.15s ease, background 0.15s ease;
     }
 
     .color-option input[type="radio"] {
@@ -153,40 +260,120 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      border: 1px solid rgba(0, 0, 0, 0.15);
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1.5px rgba(35, 31, 29, 0.2);
     }
 
     .color-option:has(input[type="radio"]:checked) {
-      border-color: #1c1917;
-      background: #f5f5f4;
+      border-color: var(--camino-blue);
+      background: #eef3fa;
+      color: var(--camino-blue);
       font-weight: 700;
     }
 
-    button.submit-btn {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: #1c1917;
-      color: #ffffff;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 6px;
+    /* Foto: Kamera ODER Galerie */
+    .photo-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
-    button.submit-btn:disabled {
+    .photo-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 13px 10px;
+      border: 1.5px dashed #c8baa4;
+      border-radius: 14px;
+      background: #fcf9f2;
+      color: var(--stone-dark);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .photo-btn:hover {
+      border-color: var(--camino-gold);
+      background: var(--camino-gold-soft);
+    }
+
+    .photo-btn svg {
+      width: 22px;
+      height: 22px;
+      color: var(--camino-blue);
+    }
+
+    .hidden-input {
+      display: none;
+    }
+
+    .file-badge {
+      margin-top: 9px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: #eef6f0;
+      border: 1px solid #b7dec2;
+      color: #165b33;
+      font-size: 0.83rem;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .file-badge.visible {
+      display: flex;
+    }
+
+    .clear-file {
+      background: none;
+      border: none;
+      color: #165b33;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0 4px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--camino-blue), #274c82);
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      margin-top: 4px;
+      box-shadow: 0 8px 20px rgba(27, 54, 93, 0.25);
+      transition: transform 0.12s ease, opacity 0.15s ease;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    .submit-btn:disabled {
       opacity: 0.55;
       cursor: not-allowed;
     }
 
     .status {
       margin-top: 14px;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 0.9rem;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
       display: none;
       text-align: center;
+      line-height: 1.4;
     }
 
     .status.ok {
@@ -202,149 +389,285 @@
       color: #991b1b;
       border: 1px solid #fecaca;
     }
+
+    .footer-note {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--stone-muted);
+    }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="top-bar">
-      <h1 id="txt-title">Stamp My Face</h1>
+    <div class="header">
+      <div class="brand">
+        <div class="shell-badge" aria-hidden="true">
+          <!-- Jakobsmuschel-Icon -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20c-4.8 0-9-3.2-9-8.2C3 7.2 7 4 12 4s9 3.2 9 7.8c0 5-4.2 8.2-9 8.2Z"/>
+            <path d="M12 20V4"/>
+            <path d="M12 20 6.8 5.6"/>
+            <path d="M12 20 17.2 5.6"/>
+            <path d="M12 20 3.6 10.5"/>
+            <path d="M12 20 20.4 10.5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Stamp My Face</h1>
+          <span class="tag" id="txt-tag">Camino de Santiago · Sello Peregrino</span>
+        </div>
+      </div>
+
       <select id="idioma" class="lang-select" aria-label="Language">
-        <option value="es">ES</option>
+        <option value="es" selected>ES</option>
         <option value="en">EN</option>
-        <option value="de" selected>DE</option>
+        <option value="de">DE</option>
       </select>
     </div>
 
     <p class="subtitle" id="txt-sub">
-      Wähle deinen Rahmen und deine Farbe und sende dein Foto direkt an unsere Station.
+      Prepara tu sello personalizado para la Credencial del Peregrino sin hacer cola. Elige marco, tinta y envía tu foto.
     </p>
 
     <form id="stamp-form">
-      <div class="field">
-        <label class="field-label" for="nombre" id="lbl-name">Dein Name</label>
-        <input type="text" id="nombre" name="nombre" placeholder="z. B. Alex" required />
+      <!-- Schritt 1: Name -->
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">1</span>
+          <span id="lbl-name">Nombre del peregrino</span>
+        </div>
+        <input type="text" id="nombre" name="nombre" placeholder="Ej. Alex / María" required />
       </div>
 
-      <div class="field">
-        <label class="field-label" id="lbl-frame">1. Rahmen wählen</label>
+      <!-- Schritt 2: Rahmen-Vorschau (nur leere Marcos) -->
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">2</span>
+          <span id="lbl-frame">Elige el diseño de tu marco</span>
+        </div>
         <div class="marco-grid">
           <label class="marco-option">
             <input type="radio" name="estilo" value="marco1.jpg" checked />
-            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco1.jpg" alt="Rahmen 1" />
-            <span>Stil 1</span>
+            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco1.jpg" alt="Diseño 1" />
+            <span id="st-1">Diseño 1</span>
           </label>
 
           <label class="marco-option">
             <input type="radio" name="estilo" value="marco2.jpg" />
-            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco2.jpg" alt="Rahmen 2" />
-            <span>Stil 2</span>
+            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco2.jpg" alt="Diseño 2" />
+            <span id="st-2">Diseño 2</span>
           </label>
 
           <label class="marco-option">
             <input type="radio" name="estilo" value="marco3.jpg" />
-            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco3.jpg" alt="Rahmen 3" />
-            <span>Stil 3</span>
+            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco3.jpg" alt="Diseño 3" />
+            <span id="st-3">Diseño 3</span>
           </label>
 
           <label class="marco-option">
             <input type="radio" name="estilo" value="marco4.jpg" />
-            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco4.jpg" alt="Rahmen 4" />
-            <span>Stil 4</span>
+            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco4.jpg" alt="Diseño 4" />
+            <span id="st-4">Diseño 4</span>
           </label>
         </div>
       </div>
 
-      <div class="field">
-        <label class="field-label" id="lbl-color">2. Stempelfarbe wählen</label>
+      <!-- Schritt 3: Tintenfarbe -->
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">3</span>
+          <span id="lbl-color">Color de tinta del sello</span>
+        </div>
         <div class="color-grid">
           <label class="color-option">
             <input type="radio" name="color" value="111827" checked />
             <span class="swatch" style="background:#111827;"></span>
-            <span>Schwarz</span>
+            <span id="col-black">Negro</span>
           </label>
 
           <label class="color-option">
             <input type="radio" name="color" value="1e3a8a" />
             <span class="swatch" style="background:#1e3a8a;"></span>
-            <span>Blau</span>
+            <span id="col-blue">Azul</span>
           </label>
 
           <label class="color-option">
             <input type="radio" name="color" value="7f1d1d" />
             <span class="swatch" style="background:#7f1d1d;"></span>
-            <span>Rot</span>
+            <span id="col-red">Rojo</span>
           </label>
 
           <label class="color-option">
             <input type="radio" name="color" value="065f46" />
             <span class="swatch" style="background:#065f46;"></span>
-            <span>Grün</span>
+            <span id="col-green">Verde</span>
           </label>
         </div>
       </div>
 
-      <div class="field">
-        <label class="field-label" for="foto" id="lbl-photo">3. Selfie auswählen</label>
-        <input type="file" id="foto" name="foto" accept="image/*" capture="user" required />
+      <!-- Schritt 4: Kamera ODER Galerie -->
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">4</span>
+          <span id="lbl-photo">Tu retrato (selfie o galería)</span>
+        </div>
+
+        <input type="file" id="foto-camera" class="hidden-input" accept="image/*" capture="user" />
+        <input type="file" id="foto-gallery" class="hidden-input" accept="image/*" />
+
+        <div class="photo-actions">
+          <button type="button" class="photo-btn" id="btn-camera">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+              <circle cx="12" cy="13" r="3"/>
+            </svg>
+            <span id="txt-cam">Hacer selfie</span>
+          </button>
+
+          <button type="button" class="photo-btn" id="btn-gallery">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span id="txt-gal">Subir foto</span>
+          </button>
+        </div>
+
+        <div class="file-badge" id="file-badge">
+          <span id="file-name-text">Foto lista</span>
+          <button type="button" class="clear-file" id="clear-file" title="Quitar">✕</button>
+        </div>
       </div>
 
-      <button type="submit" class="submit-btn" id="submit-btn">Auftrag absenden</button>
+      <button type="submit" class="submit-btn" id="submit-btn">Enviar a producción</button>
       <div id="status" class="status"></div>
     </form>
+
+    <div class="footer-note" id="txt-footer">
+      Buen Camino · Recoge tu sello en nuestro punto de estampación
+    </div>
   </div>
 
   <script>
     // HIER DEINE MAKE-WEBHOOK-URL AUS SZENARIO 8732407 EINTRAGEN:
     const WEBHOOK_URL = "https://hook.eu1.make.com/phiridpll24la7dvtru2ezv45fkvxc5p";
 
+    let selectedFile = null;
+
     const translations = {
-      de: {
-        sub: "Wähle deinen Rahmen und deine Farbe und sende dein Foto direkt an unsere Station.",
-        name: "Dein Name",
-        frame: "1. Rahmen wählen",
-        color: "2. Stempelfarbe wählen",
-        photo: "3. Selfie auswählen",
-        btn: "Auftrag absenden",
-        sending: "Wird gesendet...",
-        ok: "Perfekt! Dein Auftrag ist in der Warteschlange angekommen.",
-        err: "Fehler beim Senden. Bitte erneut versuchen."
-      },
       es: {
-        sub: "Elige tu marco y color y envía tu foto directamente a nuestra estación.",
-        name: "Tu nombre",
-        frame: "1. Elige el marco",
-        color: "2. Elige el color",
-        photo: "3. Sube tu selfie",
-        btn: "Enviar pedido",
-        sending: "Enviando...",
-        ok: "¡Listo! Tu pedido ya está en la cola.",
-        err: "Error al enviar. Inténtalo de nuevo."
+        tag: "Camino de Santiago · Sello Peregrino",
+        sub: "Prepara tu sello personalizado para la Credencial del Peregrino sin hacer cola. Elige marco, tinta y envía tu foto.",
+        name: "Nombre del peregrino",
+        placeholder: "Ej. Alex / María",
+        frame: "Elige el diseño de tu marco",
+        st: ["Diseño 1", "Diseño 2", "Diseño 3", "Diseño 4"],
+        color: "Color de tinta del sello",
+        cols: ["Negro", "Azul", "Rojo", "Verde"],
+        photo: "Tu retrato (selfie o galería)",
+        cam: "Hacer selfie",
+        gal: "Subir foto",
+        noPhoto: "Por favor, haz un selfie o sube una foto antes de enviar.",
+        btn: "Enviar a producción",
+        sending: "Enviando tu sello...",
+        ok: "¡Buen Camino! Tu solicitud ya está en cola. Acércate al mostrador para estampar tu Credencial.",
+        err: "No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.",
+        footer: "Buen Camino · Recoge tu sello en nuestro punto de estampación"
       },
       en: {
-        sub: "Choose your frame and color and send your photo directly to our station.",
-        name: "Your name",
-        frame: "1. Choose frame",
-        color: "2. Choose ink color",
-        photo: "3. Select selfie",
-        btn: "Send request",
-        sending: "Sending...",
-        ok: "Done! Your stamp request is in the queue.",
-        err: "Upload failed. Please try again."
+        tag: "Camino de Santiago · Pilgrim Stamp",
+        sub: "Prepare your custom Pilgrim Credential stamp without waiting in line. Pick a frame, ink color, and send your photo.",
+        name: "Pilgrim name",
+        placeholder: "e.g. Alex / Maria",
+        frame: "Choose your frame design",
+        st: ["Design 1", "Design 2", "Design 3", "Design 4"],
+        color: "Stamp ink color",
+        cols: ["Black", "Blue", "Red", "Green"],
+        photo: "Your portrait (selfie or gallery)",
+        cam: "Take selfie",
+        gal: "Upload photo",
+        noPhoto: "Please take a selfie or upload a photo first.",
+        btn: "Send to stamp station",
+        sending: "Sending your request...",
+        ok: "Buen Camino! Your stamp is in the queue. Visit the counter to stamp your Credential.",
+        err: "Upload failed. Please check your connection and try again.",
+        footer: "Buen Camino · Pick up your stamp at our stamping desk"
+      },
+      de: {
+        tag: "Camino de Santiago · Pilgerstempel",
+        sub: "Erstelle deinen persönlichen Stempel für den Pilgerausweis ohne Wartezeit. Rahmen und Farbe wählen und Foto senden.",
+        name: "Name des Pilgers",
+        placeholder: "z. B. Alex / Maria",
+        frame: "Wähle dein Rahmendesign",
+        st: ["Design 1", "Design 2", "Design 3", "Design 4"],
+        color: "Stempelfarbe wählen",
+        cols: ["Schwarz", "Blau", "Rot", "Grün"],
+        photo: "Dein Porträt (Selfie oder Galerie)",
+        cam: "Selfie machen",
+        gal: "Foto hochladen",
+        noPhoto: "Bitte mache zuerst ein Selfie oder wähle ein Foto aus der Galerie.",
+        btn: "An Stempelstation senden",
+        sending: "Wird gesendet...",
+        ok: "Buen Camino! Dein Auftrag ist in der Warteschlange. Komm einfach zum Stempeln an den Stand.",
+        err: "Fehler beim Senden. Bitte Verbindung prüfen und erneut versuchen.",
+        footer: "Buen Camino · Hol dir deinen Abdruck direkt am Stand"
       }
     };
 
     const langSelect = document.getElementById("idioma");
-    langSelect.addEventListener("change", () => {
-      const t = translations[langSelect.value] || translations.de;
+    function applyLanguage(lang) {
+      const t = translations[lang] || translations.es;
+      document.getElementById("txt-tag").textContent = t.tag;
       document.getElementById("txt-sub").textContent = t.sub;
       document.getElementById("lbl-name").textContent = t.name;
+      document.getElementById("nombre").placeholder = t.placeholder;
       document.getElementById("lbl-frame").textContent = t.frame;
+      document.getElementById("st-1").textContent = t.st[0];
+      document.getElementById("st-2").textContent = t.st[1];
+      document.getElementById("st-3").textContent = t.st[2];
+      document.getElementById("st-4").textContent = t.st[3];
       document.getElementById("lbl-color").textContent = t.color;
+      document.getElementById("col-black").textContent = t.cols[0];
+      document.getElementById("col-blue").textContent = t.cols[1];
+      document.getElementById("col-red").textContent = t.cols[2];
+      document.getElementById("col-green").textContent = t.cols[3];
       document.getElementById("lbl-photo").textContent = t.photo;
+      document.getElementById("txt-cam").textContent = t.cam;
+      document.getElementById("txt-gal").textContent = t.gal;
       document.getElementById("submit-btn").textContent = t.btn;
+      document.getElementById("txt-footer").textContent = t.footer;
+    }
+
+    langSelect.addEventListener("change", () => applyLanguage(langSelect.value));
+    applyLanguage(langSelect.value);
+
+    const camInput = document.getElementById("foto-camera");
+    const galInput = document.getElementById("foto-gallery");
+    const fileBadge = document.getElementById("file-badge");
+    const fileNameText = document.getElementById("file-name-text");
+
+    document.getElementById("btn-camera").addEventListener("click", () => camInput.click());
+    document.getElementById("btn-gallery").addEventListener("click", () => galInput.click());
+
+    function handleFilePicked(file) {
+      if (!file) return;
+      selectedFile = file;
+      fileNameText.textContent = "✓ " + file.name;
+      fileBadge.classList.add("visible");
+    }
+
+    camInput.addEventListener("change", (e) => handleFilePicked(e.target.files[0]));
+    galInput.addEventListener("change", (e) => handleFilePicked(e.target.files[0]));
+
+    document.getElementById("clear-file").addEventListener("click", () => {
+      selectedFile = null;
+      camInput.value = "";
+      galInput.value = "";
+      fileBadge.classList.remove("visible");
     });
 
-    // Bild vor dem Upload verkleinern, damit Make & Gemini schnell reagieren
     function resizeImage(file, maxSize = 1024) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -379,17 +702,19 @@
     document.getElementById("stamp-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const lang = langSelect.value;
-      const t = translations[lang] || translations.de;
+      const t = translations[lang] || translations.es;
       const btn = document.getElementById("submit-btn");
       const status = document.getElementById("status");
+
+      if (!selectedFile) {
+        status.className = "status err";
+        status.textContent = t.noPhoto;
+        return;
+      }
 
       const nombre = document.getElementById("nombre").value.trim();
       const estilo = document.querySelector('input[name="estilo"]:checked').value;
       const color = document.querySelector('input[name="color"]:checked').value;
-      const fileInput = document.getElementById("foto");
-      const originalFile = fileInput.files[0];
-
-      if (!originalFile) return;
 
       btn.disabled = true;
       btn.textContent = t.sending;
@@ -397,8 +722,8 @@
       status.textContent = "";
 
       try {
-        const resizedBlob = await resizeImage(originalFile, 1024);
-        const safeName = (nombre || "Pilger").replace(/[^a-zA-Z0-9_-]/g, "_") + ".jpg";
+        const resizedBlob = await resizeImage(selectedFile, 1024);
+        const safeName = (nombre || "Peregrino").replace(/[^a-zA-Z0-9_-]/g, "_") + ".jpg";
 
         const formData = new FormData();
         formData.append("nombre", nombre);
@@ -418,6 +743,9 @@
         status.className = "status ok";
         status.textContent = t.ok;
         document.getElementById("stamp-form").reset();
+        selectedFile = null;
+        fileBadge.classList.remove("visible");
+        applyLanguage(lang);
       } catch (err) {
         status.className = "status err";
         status.textContent = t.err;
