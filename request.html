@@ -1,70 +1,431 @@
-<div id="marco-selector">
-  <p>Wähle deinen Rahmen:</p>
-  <div class="marco-grid">
-    <label class="marco-option">
-      <input type="radio" name="estilo" value="marco1.jpg" checked />
-      <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco1.jpg" alt="Rahmen 1" />
-      <span>Rahmen 1</span>
-    </label>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stamp My Face – Warteschlange</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
 
-    <label class="marco-option">
-      <input type="radio" name="estilo" value="marco2.jpg" />
-      <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco2.jpg" alt="Rahmen 2" />
-      <span>Rahmen 2</span>
-    </label>
+    body {
+      margin: 0;
+      padding: 20px 16px 40px;
+      background: #f5f5f4;
+      color: #1c1917;
+      display: flex;
+      justify-content: center;
+    }
 
-    <label class="marco-option">
-      <input type="radio" name="estilo" value="marco3.jpg" />
-      <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco3.jpg" alt="Rahmen 3" />
-      <span>Rahmen 3</span>
-    </label>
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 22px 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
 
-    <label class="marco-option">
-      <input type="radio" name="estilo" value="marco4.jpg" />
-      <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco4.jpg" alt="Rahmen 4" />
-      <span>Rahmen 4</span>
-    </label>
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 1.35rem;
+      margin: 0;
+    }
+
+    select.lang-select {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #d6d3d1;
+      background: #fff;
+      font-size: 0.9rem;
+    }
+
+    p.subtitle {
+      margin: 0 0 18px;
+      font-size: 0.92rem;
+      color: #57534e;
+      line-height: 1.4;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label.field-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #d6d3d1;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: #fafaf9;
+    }
+
+    /* Vorschau der 4 leeren Rahmen */
+    .marco-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .marco-option {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px;
+      border: 2px solid #e7e5e4;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      background: #ffffff;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .marco-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .marco-option img {
+      width: 88px;
+      height: 88px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .marco-option span {
+      font-size: 0.85rem;
+      color: #44403c;
+    }
+
+    .marco-option:has(input[type="radio"]:checked) {
+      border-color: #1c1917;
+      background: #f5f5f4;
+    }
+
+    .marco-option:has(input[type="radio"]:checked) span {
+      font-weight: 700;
+      color: #1c1917;
+    }
+
+    /* Farbauswahl */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .color-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 4px;
+      border: 2px solid #e7e5e4;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .color-option input[type="radio"] {
+      display: none;
+    }
+
+    .swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .color-option:has(input[type="radio"]:checked) {
+      border-color: #1c1917;
+      background: #f5f5f4;
+      font-weight: 700;
+    }
+
+    button.submit-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: #1c1917;
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    button.submit-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      display: none;
+      text-align: center;
+    }
+
+    .status.ok {
+      display: block;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .status.err {
+      display: block;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="top-bar">
+      <h1 id="txt-title">Stamp My Face</h1>
+      <select id="idioma" class="lang-select" aria-label="Language">
+        <option value="es">ES</option>
+        <option value="en">EN</option>
+        <option value="de" selected>DE</option>
+      </select>
+    </div>
+
+    <p class="subtitle" id="txt-sub">
+      Wähle deinen Rahmen und deine Farbe und sende dein Foto direkt an unsere Station.
+    </p>
+
+    <form id="stamp-form">
+      <div class="field">
+        <label class="field-label" for="nombre" id="lbl-name">Dein Name</label>
+        <input type="text" id="nombre" name="nombre" placeholder="z. B. Alex" required />
+      </div>
+
+      <div class="field">
+        <label class="field-label" id="lbl-frame">1. Rahmen wählen</label>
+        <div class="marco-grid">
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco1.jpg" checked />
+            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco1.jpg" alt="Rahmen 1" />
+            <span>Stil 1</span>
+          </label>
+
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco2.jpg" />
+            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco2.jpg" alt="Rahmen 2" />
+            <span>Stil 2</span>
+          </label>
+
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco3.jpg" />
+            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco3.jpg" alt="Rahmen 3" />
+            <span>Stil 3</span>
+          </label>
+
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco4.jpg" />
+            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco4.jpg" alt="Rahmen 4" />
+            <span>Stil 4</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" id="lbl-color">2. Stempelfarbe wählen</label>
+        <div class="color-grid">
+          <label class="color-option">
+            <input type="radio" name="color" value="111827" checked />
+            <span class="swatch" style="background:#111827;"></span>
+            <span>Schwarz</span>
+          </label>
+
+          <label class="color-option">
+            <input type="radio" name="color" value="1e3a8a" />
+            <span class="swatch" style="background:#1e3a8a;"></span>
+            <span>Blau</span>
+          </label>
+
+          <label class="color-option">
+            <input type="radio" name="color" value="7f1d1d" />
+            <span class="swatch" style="background:#7f1d1d;"></span>
+            <span>Rot</span>
+          </label>
+
+          <label class="color-option">
+            <input type="radio" name="color" value="065f46" />
+            <span class="swatch" style="background:#065f46;"></span>
+            <span>Grün</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="foto" id="lbl-photo">3. Selfie auswählen</label>
+        <input type="file" id="foto" name="foto" accept="image/*" capture="user" required />
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">Auftrag absenden</button>
+      <div id="status" class="status"></div>
+    </form>
   </div>
-</div>
 
-<style>
-  .marco-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(110px, 1fr));
-    gap: 12px;
-    max-width: 360px;
-  }
+  <script>
+    // HIER DEINE MAKE-WEBHOOK-URL AUS SZENARIO 8732407 EINTRAGEN:
+    const WEBHOOK_URL = "https://hook.eu1.make.com/phiridpll24la7dvtru2ezv45fkvxc5p";
 
-  .marco-option {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 8px;
-    border: 2px solid #d1d5db;
-    border-radius: 10px;
-    cursor: pointer;
-    user-select: none;
-    background: #fff;
-  }
+    const translations = {
+      de: {
+        sub: "Wähle deinen Rahmen und deine Farbe und sende dein Foto direkt an unsere Station.",
+        name: "Dein Name",
+        frame: "1. Rahmen wählen",
+        color: "2. Stempelfarbe wählen",
+        photo: "3. Selfie auswählen",
+        btn: "Auftrag absenden",
+        sending: "Wird gesendet...",
+        ok: "Perfekt! Dein Auftrag ist in der Warteschlange angekommen.",
+        err: "Fehler beim Senden. Bitte erneut versuchen."
+      },
+      es: {
+        sub: "Elige tu marco y color y envía tu foto directamente a nuestra estación.",
+        name: "Tu nombre",
+        frame: "1. Elige el marco",
+        color: "2. Elige el color",
+        photo: "3. Sube tu selfie",
+        btn: "Enviar pedido",
+        sending: "Enviando...",
+        ok: "¡Listo! Tu pedido ya está en la cola.",
+        err: "Error al enviar. Inténtalo de nuevo."
+      },
+      en: {
+        sub: "Choose your frame and color and send your photo directly to our station.",
+        name: "Your name",
+        frame: "1. Choose frame",
+        color: "2. Choose ink color",
+        photo: "3. Select selfie",
+        btn: "Send request",
+        sending: "Sending...",
+        ok: "Done! Your stamp request is in the queue.",
+        err: "Upload failed. Please try again."
+      }
+    };
 
-  .marco-option input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
+    const langSelect = document.getElementById("idioma");
+    langSelect.addEventListener("change", () => {
+      const t = translations[langSelect.value] || translations.de;
+      document.getElementById("txt-sub").textContent = t.sub;
+      document.getElementById("lbl-name").textContent = t.name;
+      document.getElementById("lbl-frame").textContent = t.frame;
+      document.getElementById("lbl-color").textContent = t.color;
+      document.getElementById("lbl-photo").textContent = t.photo;
+      document.getElementById("submit-btn").textContent = t.btn;
+    });
 
-  .marco-option img {
-    width: 84px;
-    height: 84px;
-    object-fit: contain;
-    display: block;
-  }
+    // Bild vor dem Upload verkleinern, damit Make & Gemini schnell reagieren
+    function resizeImage(file, maxSize = 1024) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let { width, height } = img;
+            if (width > maxSize || height > maxSize) {
+              if (width > height) {
+                height = Math.round((height * maxSize) / width);
+                width = maxSize;
+              } else {
+                width = Math.round((width * maxSize) / height);
+                height = maxSize;
+              }
+            }
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.88);
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
 
-  .marco-option:has(input[type="radio"]:checked) {
-    border-color: #111827;
-    background: #f3f4f6;
-    font-weight: 600;
-  }
-</style>
+    document.getElementById("stamp-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const lang = langSelect.value;
+      const t = translations[lang] || translations.de;
+      const btn = document.getElementById("submit-btn");
+      const status = document.getElementById("status");
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const estilo = document.querySelector('input[name="estilo"]:checked').value;
+      const color = document.querySelector('input[name="color"]:checked').value;
+      const fileInput = document.getElementById("foto");
+      const originalFile = fileInput.files[0];
+
+      if (!originalFile) return;
+
+      btn.disabled = true;
+      btn.textContent = t.sending;
+      status.className = "status";
+      status.textContent = "";
+
+      try {
+        const resizedBlob = await resizeImage(originalFile, 1024);
+        const safeName = (nombre || "Pilger").replace(/[^a-zA-Z0-9_-]/g, "_") + ".jpg";
+
+        const formData = new FormData();
+        formData.append("nombre", nombre);
+        formData.append("archivo_nombre", safeName);
+        formData.append("estilo", estilo);
+        formData.append("color", color);
+        formData.append("idioma", lang);
+        formData.append("foto", resizedBlob, safeName);
+
+        const res = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          body: formData
+        });
+
+        if (!res.ok) throw new Error("HTTP " + res.status);
+
+        status.className = "status ok";
+        status.textContent = t.ok;
+        document.getElementById("stamp-form").reset();
+      } catch (err) {
+        status.className = "status err";
+        status.textContent = t.err;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = t.btn;
+      }
+    });
+  </script>
+</body>
+</html>
