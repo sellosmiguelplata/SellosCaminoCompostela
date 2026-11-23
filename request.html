@@ -9,15 +9,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-parchment: #f4efe6;
-      --bg-card: #fffdf9;
-      --stone-dark: #231f1d;
-      --stone-muted: #635b54;
-      --camino-gold: #c6922c;
-      --camino-gold-soft: #f7eed8;
-      --camino-blue: #1b365d;
-      --border-soft: #e2d8c8;
-      --shadow-card: 0 18px 40px rgba(35, 31, 29, 0.10);
+      --bg-night: #0c0d10;
+      --bg-surface: #14161c;
+      --bg-elevated: #1b1e27;
+      --text-main: #f4f1ea;
+      --text-muted: #a8a29e;
+      --gold: #d4a238;
+      --gold-bright: #f2c96b;
+      --gold-glow: rgba(212, 162, 56, 0.18);
+      --border-subtle: rgba(255, 255, 255, 0.10);
+      --border-gold: rgba(212, 162, 56, 0.55);
+      --success-bg: rgba(16, 185, 129, 0.14);
+      --success-border: rgba(52, 211, 153, 0.45);
+      --success-text: #a7f3d0;
+      --error-bg: rgba(239, 68, 68, 0.14);
+      --error-border: rgba(248, 113, 113, 0.45);
+      --error-text: #fecaca;
     }
 
     * {
@@ -27,12 +34,12 @@
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 20px 14px 44px;
+      padding: 22px 14px 48px;
       background:
-        radial-gradient(circle at top right, rgba(198, 146, 44, 0.14), transparent 45%),
-        radial-gradient(circle at bottom left, rgba(27, 54, 93, 0.10), transparent 50%),
-        var(--bg-parchment);
-      color: var(--stone-dark);
+        radial-gradient(circle at 50% -10%, rgba(212, 162, 56, 0.18), transparent 48%),
+        radial-gradient(circle at 85% 90%, rgba(59, 130, 246, 0.08), transparent 45%),
+        var(--bg-night);
+      color: var(--text-main);
       font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
       display: flex;
       justify-content: center;
@@ -42,11 +49,13 @@
     .card {
       width: 100%;
       max-width: 460px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-soft);
-      border-radius: 22px;
-      padding: 24px 20px 26px;
-      box-shadow: var(--shadow-card);
+      background: linear-gradient(180deg, rgba(25, 28, 36, 0.96) 0%, rgba(17, 19, 25, 0.98) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 24px 20px 28px;
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.65),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
       position: relative;
       overflow: hidden;
     }
@@ -57,14 +66,14 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, var(--camino-blue), var(--camino-gold), var(--camino-blue));
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-bright), var(--gold), transparent);
     }
 
     .header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       gap: 12px;
       margin-bottom: 14px;
     }
@@ -72,60 +81,62 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 11px;
+      gap: 12px;
     }
 
     .shell-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(145deg, var(--camino-blue), #26497d);
-      color: #f6d37f;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(212, 162, 56, 0.22), rgba(212, 162, 56, 0.06));
+      border: 1px solid var(--border-gold);
+      color: var(--gold-bright);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 6px 14px rgba(27, 54, 93, 0.22);
+      box-shadow: 0 8px 20px rgba(212, 162, 56, 0.14);
     }
 
     .brand-text h1 {
       font-family: "Cinzel", Georgia, serif;
-      font-size: 1.25rem;
-      letter-spacing: 0.03em;
+      font-size: 1.24rem;
+      letter-spacing: 0.04em;
       margin: 0;
-      color: var(--stone-dark);
+      color: var(--text-main);
     }
 
     .brand-text .tag {
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--camino-gold);
-      margin-top: 2px;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-top: 3px;
       display: block;
     }
 
     .lang-select {
-      padding: 6px 10px;
-      border-radius: 10px;
-      border: 1px solid var(--border-soft);
-      background: #fbf8f2;
-      color: var(--stone-dark);
+      padding: 7px 11px;
+      border-radius: 11px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+      color: var(--text-main);
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       cursor: pointer;
     }
 
     .subtitle {
-      margin: 0 0 20px;
-      font-size: 0.9rem;
-      line-height: 1.48;
-      color: var(--stone-muted);
-      background: #faf6ee;
-      border-left: 3px solid var(--camino-gold);
-      padding: 10px 12px;
-      border-radius: 0 10px 10px 0;
+      margin: 0 0 22px;
+      font-size: 0.89rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--gold);
+      padding: 11px 13px;
+      border-radius: 12px;
     }
 
     .step-section {
@@ -135,19 +146,20 @@
     .step-title {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
       font-weight: 700;
-      font-size: 0.92rem;
-      margin-bottom: 9px;
-      color: var(--stone-dark);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      color: var(--text-main);
     }
 
     .step-num {
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      background: var(--camino-blue);
-      color: #fff;
+      background: var(--gold-glow);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-bright);
       font-size: 0.75rem;
       font-weight: 700;
       display: inline-flex;
@@ -158,26 +170,30 @@
 
     input[type="text"] {
       width: 100%;
-      padding: 12px 14px;
-      border: 1.5px solid var(--border-soft);
-      border-radius: 12px;
+      padding: 13px 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 13px;
       font-size: 0.98rem;
-      background: #fcfaf5;
-      color: var(--stone-dark);
+      background: var(--bg-elevated);
+      color: var(--text-main);
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input[type="text"]::placeholder {
+      color: #78716c;
     }
 
     input[type="text"]:focus {
       outline: none;
-      border-color: var(--camino-gold);
-      box-shadow: 0 0 0 3px rgba(198, 146, 44, 0.16);
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-glow);
     }
 
-    /* 4 leere Rahmen */
+    /* 4 leere Rahmen auf dunklem Grund */
     .marco-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 11px;
     }
 
     .marco-option {
@@ -185,14 +201,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
-      padding: 11px 8px;
-      border: 1.5px solid var(--border-soft);
-      border-radius: 14px;
+      gap: 8px;
+      padding: 12px 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
       cursor: pointer;
       user-select: none;
-      background: #ffffff;
-      transition: transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+      background: var(--bg-elevated);
+      transition: transform 0.12s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
     }
 
     .marco-option:active {
@@ -205,9 +221,21 @@
       pointer-events: none;
     }
 
+    .marco-frame-box {
+      width: 92px;
+      height: 92px;
+      border-radius: 12px;
+      background: #ffffff;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    }
+
     .marco-option img {
-      width: 86px;
-      height: 86px;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
       display: block;
     }
@@ -215,17 +243,17 @@
     .marco-option span {
       font-size: 0.82rem;
       font-weight: 600;
-      color: var(--stone-muted);
+      color: var(--text-muted);
     }
 
     .marco-option:has(input[type="radio"]:checked) {
-      border-color: var(--camino-gold);
-      background: var(--camino-gold-soft);
-      box-shadow: 0 4px 12px rgba(198, 146, 44, 0.16);
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.11);
+      box-shadow: 0 0 0 1px var(--gold), 0 10px 24px rgba(0, 0, 0, 0.4);
     }
 
     .marco-option:has(input[type="radio"]:checked) span {
-      color: var(--stone-dark);
+      color: var(--gold-bright);
       font-weight: 700;
     }
 
@@ -240,15 +268,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
-      padding: 9px 4px;
-      border: 1.5px solid var(--border-soft);
-      border-radius: 12px;
+      gap: 7px;
+      padding: 10px 6px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 13px;
       cursor: pointer;
-      background: #ffffff;
+      background: var(--bg-elevated);
       font-size: 0.78rem;
       font-weight: 600;
-      color: var(--stone-muted);
+      color: var(--text-muted);
       transition: border-color 0.15s ease, background 0.15s ease;
     }
 
@@ -260,14 +288,14 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      border: 2px solid #fff;
-      box-shadow: 0 0 0 1.5px rgba(35, 31, 29, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
     }
 
     .color-option:has(input[type="radio"]:checked) {
-      border-color: var(--camino-blue);
-      background: #eef3fa;
-      color: var(--camino-blue);
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.12);
+      color: var(--text-main);
       font-weight: 700;
     }
 
@@ -283,28 +311,32 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 13px 10px;
-      border: 1.5px dashed #c8baa4;
-      border-radius: 14px;
-      background: #fcf9f2;
-      color: var(--stone-dark);
+      gap: 7px;
+      padding: 14px 10px;
+      border: 1px dashed rgba(212, 162, 56, 0.42);
+      border-radius: 15px;
+      background: var(--bg-elevated);
+      color: var(--text-main);
       font-size: 0.84rem;
       font-weight: 600;
       cursor: pointer;
       text-align: center;
-      transition: border-color 0.15s ease, background 0.15s ease;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
     }
 
     .photo-btn:hover {
-      border-color: var(--camino-gold);
-      background: var(--camino-gold-soft);
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.10);
+    }
+
+    .photo-btn:active {
+      transform: scale(0.98);
     }
 
     .photo-btn svg {
       width: 22px;
       height: 22px;
-      color: var(--camino-blue);
+      color: var(--gold-bright);
     }
 
     .hidden-input {
@@ -312,12 +344,12 @@
     }
 
     .file-badge {
-      margin-top: 9px;
-      padding: 8px 12px;
-      border-radius: 10px;
-      background: #eef6f0;
-      border: 1px solid #b7dec2;
-      color: #165b33;
+      margin-top: 10px;
+      padding: 9px 12px;
+      border-radius: 11px;
+      background: rgba(212, 162, 56, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-bright);
       font-size: 0.83rem;
       font-weight: 600;
       display: none;
@@ -333,26 +365,30 @@
     .clear-file {
       background: none;
       border: none;
-      color: #165b33;
+      color: var(--text-muted);
       font-weight: 700;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       padding: 0 4px;
+    }
+
+    .clear-file:hover {
+      color: var(--text-main);
     }
 
     .submit-btn {
       width: 100%;
-      padding: 15px;
+      padding: 15px 18px;
       border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--camino-blue), #274c82);
-      color: #ffffff;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+      color: #12100c;
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.02em;
       cursor: pointer;
-      margin-top: 4px;
-      box-shadow: 0 8px 20px rgba(27, 54, 93, 0.25);
+      margin-top: 6px;
+      box-shadow: 0 10px 26px rgba(212, 162, 56, 0.28);
       transition: transform 0.12s ease, opacity 0.15s ease;
     }
 
@@ -366,35 +402,49 @@
     }
 
     .status {
-      margin-top: 14px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 0.88rem;
-      font-weight: 600;
+      margin-top: 16px;
+      padding: 15px 16px;
+      border-radius: 15px;
+      font-size: 0.9rem;
       display: none;
-      text-align: center;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .status.ok {
       display: block;
-      background: #ecfdf5;
-      color: #065f46;
-      border: 1px solid #a7f3d0;
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
     }
 
     .status.err {
       display: block;
-      background: #fef2f2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid var(--error-border);
+    }
+
+    .status-title {
+      font-weight: 800;
+      font-size: 0.98rem;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .status-meta {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.8rem;
+      opacity: 0.92;
     }
 
     .footer-note {
-      margin-top: 16px;
+      margin-top: 18px;
       text-align: center;
       font-size: 0.76rem;
-      color: var(--stone-muted);
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
     }
   </style>
 </head>
@@ -403,8 +453,7 @@
     <div class="header">
       <div class="brand">
         <div class="shell-badge" aria-hidden="true">
-          <!-- Jakobsmuschel-Icon -->
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 20c-4.8 0-9-3.2-9-8.2C3 7.2 7 4 12 4s9 3.2 9 7.8c0 5-4.2 8.2-9 8.2Z"/>
             <path d="M12 20V4"/>
             <path d="M12 20 6.8 5.6"/>
@@ -431,7 +480,6 @@
     </p>
 
     <form id="stamp-form">
-      <!-- Schritt 1: Name -->
       <div class="step-section">
         <div class="step-title">
           <span class="step-num">1</span>
@@ -440,7 +488,6 @@
         <input type="text" id="nombre" name="nombre" placeholder="Ej. Alex / María" required />
       </div>
 
-      <!-- Schritt 2: Rahmen-Vorschau (nur leere Marcos) -->
       <div class="step-section">
         <div class="step-title">
           <span class="step-num">2</span>
@@ -449,31 +496,38 @@
         <div class="marco-grid">
           <label class="marco-option">
             <input type="radio" name="estilo" value="marco1.jpg" checked />
-            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco1.jpg" alt="Diseño 1" />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco1.jpg" alt="Diseño 1" />
+            </div>
             <span id="st-1">Diseño 1</span>
           </label>
 
           <label class="marco-option">
             <input type="radio" name="estilo" value="marco2.jpg" />
-            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco2.jpg" alt="Diseño 2" />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco2.jpg" alt="Diseño 2" />
+            </div>
             <span id="st-2">Diseño 2</span>
           </label>
 
           <label class="marco-option">
             <input type="radio" name="estilo" value="marco3.jpg" />
-            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco3.jpg" alt="Diseño 3" />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco3.jpg" alt="Diseño 3" />
+            </div>
             <span id="st-3">Diseño 3</span>
           </label>
 
           <label class="marco-option">
             <input type="radio" name="estilo" value="marco4.jpg" />
-            <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco4.jpg" alt="Diseño 4" />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco4.jpg" alt="Diseño 4" />
+            </div>
             <span id="st-4">Diseño 4</span>
           </label>
         </div>
       </div>
 
-      <!-- Schritt 3: Tintenfarbe -->
       <div class="step-section">
         <div class="step-title">
           <span class="step-num">3</span>
@@ -506,7 +560,6 @@
         </div>
       </div>
 
-      <!-- Schritt 4: Kamera ODER Galerie -->
       <div class="step-section">
         <div class="step-title">
           <span class="step-num">4</span>
@@ -551,7 +604,6 @@
   </div>
 
   <script>
-    // HIER DEINE MAKE-WEBHOOK-URL AUS SZENARIO 8732407 EINTRAGEN:
     const WEBHOOK_URL = "https://hook.eu1.make.com/phiridpll24la7dvtru2ezv45fkvxc5p";
 
     let selectedFile = null;
@@ -569,11 +621,14 @@
         photo: "Tu retrato (selfie o galería)",
         cam: "Hacer selfie",
         gal: "Subir foto",
-        noPhoto: "Por favor, haz un selfie o sube una foto antes de enviar.",
+        noPhoto: "Falta la foto",
+        noPhotoMsg: "Haz un selfie o sube una foto desde tu galería antes de enviar.",
         btn: "Enviar a producción",
-        sending: "Enviando tu sello...",
-        ok: "¡Buen Camino! Tu solicitud ya está en cola. Acércate al mostrador para estampar tu Credencial.",
-        err: "No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.",
+        sending: "Enviando tu foto a la cola...",
+        okTitle: "¡Foto subida con éxito!",
+        okBody: "Tu solicitud ya está en la cola de preparación. Acércate al mostrador para estampar tu Credencial.",
+        errTitle: "No se pudo completar el envío",
+        errBody: "Comprueba tu conexión a internet e inténtalo de nuevo en unos segundos.",
         footer: "Buen Camino · Recoge tu sello en nuestro punto de estampación"
       },
       en: {
@@ -588,11 +643,14 @@
         photo: "Your portrait (selfie or gallery)",
         cam: "Take selfie",
         gal: "Upload photo",
-        noPhoto: "Please take a selfie or upload a photo first.",
+        noPhoto: "Photo missing",
+        noPhotoMsg: "Please take a selfie or choose a photo from your gallery before sending.",
         btn: "Send to stamp station",
-        sending: "Sending your request...",
-        ok: "Buen Camino! Your stamp is in the queue. Visit the counter to stamp your Credential.",
-        err: "Upload failed. Please check your connection and try again.",
+        sending: "Uploading your photo...",
+        okTitle: "Upload complete!",
+        okBody: "Your stamp request is now in the queue. Head to the stamping counter to stamp your Credential.",
+        errTitle: "Upload could not be completed",
+        errBody: "Please check your connection and try again.",
         footer: "Buen Camino · Pick up your stamp at our stamping desk"
       },
       de: {
@@ -607,11 +665,14 @@
         photo: "Dein Porträt (Selfie oder Galerie)",
         cam: "Selfie machen",
         gal: "Foto hochladen",
-        noPhoto: "Bitte mache zuerst ein Selfie oder wähle ein Foto aus der Galerie.",
+        noPhoto: "Foto fehlt noch",
+        noPhotoMsg: "Bitte mache zuerst ein Selfie oder wähle ein Bild aus deiner Galerie aus.",
         btn: "An Stempelstation senden",
-        sending: "Wird gesendet...",
-        ok: "Buen Camino! Dein Auftrag ist in der Warteschlange. Komm einfach zum Stempeln an den Stand.",
-        err: "Fehler beim Senden. Bitte Verbindung prüfen und erneut versuchen.",
+        sending: "Foto wird hochgeladen...",
+        okTitle: "Erfolgreich hochgeladen!",
+        okBody: "Dein Auftrag ist in der Warteschlange angekommen. Komm einfach zum Stand, um deinen Ausweis zu stempeln.",
+        errTitle: "Upload fehlgeschlagen",
+        errBody: "Bitte prüfe deine Verbindung und versuche es gleich noch einmal.",
         footer: "Buen Camino · Hol dir deinen Abdruck direkt am Stand"
       }
     };
@@ -699,27 +760,35 @@
       });
     }
 
+    function showStatus(type, title, body, metaText = "") {
+      const status = document.getElementById("status");
+      status.className = "status " + type;
+      status.innerHTML =
+        `<span class="status-title">${title}</span>` +
+        `<div>${body}</div>` +
+        (metaText ? `<div class="status-meta">${metaText}</div>` : "");
+      status.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
     document.getElementById("stamp-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const lang = langSelect.value;
       const t = translations[lang] || translations.es;
       const btn = document.getElementById("submit-btn");
-      const status = document.getElementById("status");
 
       if (!selectedFile) {
-        status.className = "status err";
-        status.textContent = t.noPhoto;
+        showStatus("err", t.noPhoto, t.noPhotoMsg);
         return;
       }
 
       const nombre = document.getElementById("nombre").value.trim();
       const estilo = document.querySelector('input[name="estilo"]:checked').value;
       const color = document.querySelector('input[name="color"]:checked').value;
+      const colorLabel = document.querySelector('input[name="color"]:checked').parentElement.querySelector("span:last-child").textContent;
+      const frameLabel = estilo.replace(".jpg", "").toUpperCase();
 
       btn.disabled = true;
       btn.textContent = t.sending;
-      status.className = "status";
-      status.textContent = "";
 
       try {
         const resizedBlob = await resizeImage(selectedFile, 1024);
@@ -740,15 +809,19 @@
 
         if (!res.ok) throw new Error("HTTP " + res.status);
 
-        status.className = "status ok";
-        status.textContent = t.ok;
+        showStatus(
+          "ok",
+          t.okTitle,
+          t.okBody,
+          `${nombre} · ${frameLabel} · ${colorLabel}`
+        );
+
         document.getElementById("stamp-form").reset();
         selectedFile = null;
         fileBadge.classList.remove("visible");
         applyLanguage(lang);
       } catch (err) {
-        status.className = "status err";
-        status.textContent = t.err;
+        showStatus("err", t.errTitle, t.errBody);
       } finally {
         btn.disabled = false;
         btn.textContent = t.btn;
