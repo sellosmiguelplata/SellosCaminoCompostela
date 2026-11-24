@@ -271,7 +271,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </div>
 
-<div id="buildTag">KIOSK v5.4</div>
+<div id="buildTag">KIOSK v5.5</div>
 
 <!-- SCREEN 0 : START -->
 <section id="s0" class="screen">
@@ -466,7 +466,8 @@ input[type="range"] { flex: 1; max-width: 210px; }
 <script>
 const CONFIG = {
   AI_WEBHOOK_URL   : "https://hook.eu1.make.com/lqq9d91pvhkkssmte4ukt8cik4ulgj9v",
-  PRINT_WEBHOOK_URL: "",
+  // HIER DEINE MAKE-WEBHOOK-URL FÜR DEN DIREKT-UPLOAD IN GOOGLE DRIVE EINTRAGEN:
+  PRINT_WEBHOOK_URL: "https://hook.eu1.make.com/DEIN_IMPRIMIR_WEBHOOK_HIER",
   DOWNLOAD_ON_PRINT: true,
   INK_COLOR  : "#8a2222",
   FRAMES: [
@@ -851,7 +852,6 @@ async function requestAI(){
   S.aiAttempt++; S.aiImage=null; $('btnPrint').disabled=true; $('aiError').style.display='none';
   drawPreview();
   
-  // 1. Mostrar el mensaje "Creando tu sello..." en el Paso 2
   const aiBadge = $('aiBadge');
   const aiBadgeTxt = $('aiBadgeTxt');
   if(aiBadge && aiBadgeTxt) {
@@ -871,13 +871,11 @@ async function requestAI(){
     S.aiImage = img; 
     $('btnPrint').disabled=false; 
     
-    // 2. Ocultar el mensaje en cuanto la imagen está lista
     if(aiBadge) aiBadge.style.display = 'none'; 
     drawPreview();
   }catch(err){
     if(S.aiAttempt < CONFIG.AI_MAX_ATTEMPTS && S.screen==='s2') requestAI();
     else {
-      // Si hay error definitivo, ocultamos el mensaje de carga y mostramos panel de error
       if(aiBadge) aiBadge.style.display = 'none';
       $('aiError').style.display='';
     }
@@ -926,15 +924,58 @@ function enterEdit(){
 function openModal(){ $('modalTimeout').classList.add('show'); runCountdown('modal', CONFIG.MODAL_TIMEOUT, $('modalCd'), null, null, function(){ go('s0'); }); }
 function closeModal(){ $('modalTimeout').classList.remove('show'); clearTimer('modal'); }
 
-function exportJpeg(){
+function exportJpegDataUrl(){
   const N=CONFIG.EXPORT_SIZE, c=document.createElement('canvas'); c.width=c.height=N;
   const x=c.getContext('2d'); x.fillStyle='#ffffff'; x.fillRect(0,0,N,N);
   renderStamp(x, N, {frame:S.frame, photo:S.aiImage, date:S.date, background:true});
   return c.toDataURL('image/jpeg', CONFIG.JPEG_QUALITY);
 }
+
+function exportJpegBlob(){
+  return new Promise(resolve => {
+    const N=CONFIG.EXPORT_SIZE, c=document.createElement('canvas'); c.width=c.height=N;
+    const x=c.getContext('2d'); x.fillStyle='#ffffff'; x.fillRect(0,0,N,N);
+    renderStamp(x, N, {frame:S.frame, photo:S.aiImage, date:S.date, background:true});
+    c.toBlob(blob => resolve(blob), 'image/jpeg', CONFIG.JPEG_QUALITY);
+  });
+}
+
+async function sendPrintToDrive(){
+  if(!CONFIG.PRINT_WEBHOOK_URL || CONFIG.PRINT_WEBHOOK_URL.includes("https://hook.eu1.make.com/sr9r5dniiqlkgkyq5eeeihfnw88mj45z")) return;
+  const blob = await exportJpegBlob();
+  if(!blob) return;
+  const estilo = (CONFIG.FRAMES[S.frame] && CONFIG.FRAMES[S.frame].file) || "marco1.jpg";
+  const colorClean = S.color.replace("#", "");
+  const fileName = `Kiosk_${estilo.replace(".jpg","")}_${colorClean}_${S.date}.jpg`;
+
+  const fd = new FormData();
+  fd.append("estilo", estilo);
+  fd.append("color", colorClean);
+  fd.append("fecha", S.date);
+  fd.append("lang", LANG);
+  fd.append("imagen", blob, fileName);
+
+  await fetch(CONFIG.PRINT_WEBHOOK_URL, {
+    method: "POST",
+    body: fd
+  }).catch(err => console.warn("Drive upload warning:", err));
+}
+
 async function doPrint(){
-  if(S.printing || !S.aiImage) return; S.printing=true; clearTimer('edit'); closeModal();
-  const a=document.createElement('a'); a.download='sello.jpg'; a.href=exportJpeg(); a.click();
+  if(S.printing || !S.aiImage) return;
+  S.printing=true;
+  clearTimer('edit');
+  closeModal();
+
+  // Direkt an Google Drive senden (ohne den Kiosk aufzuhalten)
+  sendPrintToDrive();
+
+  if(CONFIG.DOWNLOAD_ON_PRINT){
+    const a=document.createElement('a');
+    a.download='sello.jpg';
+    a.href=exportJpegDataUrl();
+    a.click();
+  }
   go('s3');
 }
 
