@@ -189,7 +189,6 @@
       box-shadow: 0 0 0 3px var(--gold-glow);
     }
 
-    /* 4 leere Rahmen auf dunklem Grund */
     .marco-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -257,7 +256,6 @@
       font-weight: 700;
     }
 
-    /* Tintenfarben */
     .color-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -299,7 +297,80 @@
       font-weight: 700;
     }
 
-    /* Foto: Kamera ODER Galerie */
+    .qty-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+    }
+
+    .qty-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 10px 4px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 13px;
+      cursor: pointer;
+      background: var(--bg-elevated);
+      color: var(--text-main);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .qty-option input[type="radio"] {
+      display: none;
+    }
+
+    .qty-option strong {
+      font-size: 0.92rem;
+    }
+
+    .qty-option span {
+      font-size: 0.76rem;
+      color: var(--gold-bright);
+      font-weight: 700;
+    }
+
+    .qty-option:has(input[type="radio"]:checked) {
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.14);
+      box-shadow: 0 0 0 1px var(--gold);
+    }
+
+    .pickup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .pickup-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 13px;
+      cursor: pointer;
+      background: var(--bg-elevated);
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .pickup-option input[type="radio"] {
+      display: none;
+    }
+
+    .pickup-option:has(input[type="radio"]:checked) {
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.14);
+      color: var(--gold-bright);
+      box-shadow: 0 0 0 1px var(--gold);
+    }
+
     .photo-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -476,7 +547,7 @@
     </div>
 
     <p class="subtitle" id="txt-sub">
-      Prepara tu sello personalizado para la Credencial del Peregrino sin hacer cola. Elige marco, tinta y envía tu foto.
+      Prepara tu sello personalizado para la Credencial del Peregrino sin hacer cola. Elige marco, tinta, copias y envía tu foto.
     </p>
 
     <form id="stamp-form">
@@ -563,6 +634,57 @@
       <div class="step-section">
         <div class="step-title">
           <span class="step-num">4</span>
+          <span id="lbl-qty">Cantidad de sellos</span>
+        </div>
+        <div class="qty-grid">
+          <label class="qty-option">
+            <input type="radio" name="cantidad" value="1" data-price="4" checked />
+            <strong>1x</strong>
+            <span>4 €</span>
+          </label>
+          <label class="qty-option">
+            <input type="radio" name="cantidad" value="2" data-price="8" />
+            <strong>2x</strong>
+            <span>8 €</span>
+          </label>
+          <label class="qty-option">
+            <input type="radio" name="cantidad" value="3" data-price="11" />
+            <strong>3x</strong>
+            <span>11 €</span>
+          </label>
+          <label class="qty-option">
+            <input type="radio" name="cantidad" value="4" data-price="14" />
+            <strong>4x</strong>
+            <span>14 €</span>
+          </label>
+          <label class="qty-option">
+            <input type="radio" name="cantidad" value="5" data-price="16" />
+            <strong>5x</strong>
+            <span>16 €</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">5</span>
+          <span id="lbl-pickup">¿Cuándo lo recogerás?</span>
+        </div>
+        <div class="pickup-grid">
+          <label class="pickup-option">
+            <input type="radio" name="recogida" value="HOY" checked />
+            <span id="txt-now">⚡ Hoy en mostrador</span>
+          </label>
+          <label class="pickup-option">
+            <input type="radio" name="recogida" value="MANANA" />
+            <span id="txt-tomorrow">📅 Mañana</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">6</span>
           <span id="lbl-photo">Tu retrato (selfie o galería)</span>
         </div>
 
@@ -594,12 +716,12 @@
         </div>
       </div>
 
-      <button type="submit" class="submit-btn" id="submit-btn">Enviar a producción</button>
+      <button type="submit" class="submit-btn" id="submit-btn">Enviar · 4 €</button>
       <div id="status" class="status"></div>
     </form>
 
     <div class="footer-note" id="txt-footer">
-      Buen Camino · Recoge tu sello en nuestro punto de estampación
+      Buen Camino · Abona y recoge tu sello en nuestro punto de estampación
     </div>
   </div>
 
@@ -611,73 +733,100 @@
     const translations = {
       es: {
         tag: "Camino de Santiago · Sello Peregrino",
-        sub: "Prepara tu sello personalizado para la Credencial del Peregrino sin hacer cola. Elige marco, tinta y envía tu foto.",
+        sub: "Prepara tu sello personalizado para la Credencial del Peregrino sin hacer cola. Elige marco, tinta, copias y envía tu foto.",
         name: "Nombre del peregrino",
         placeholder: "Ej. Alex / María",
         frame: "Elige el diseño de tu marco",
         st: ["Diseño 1", "Diseño 2", "Diseño 3", "Diseño 4"],
         color: "Color de tinta del sello",
         cols: ["Negro", "Azul", "Rojo", "Verde"],
+        qty: "Cantidad de sellos",
+        pickup: "¿Cuándo lo recogerás?",
+        now: "⚡ Hoy en mostrador",
+        tomorrow: "📅 Mañana",
         photo: "Tu retrato (selfie o galería)",
         cam: "Hacer selfie",
         gal: "Subir foto",
         noPhoto: "Falta la foto",
         noPhotoMsg: "Haz un selfie o sube una foto desde tu galería antes de enviar.",
-        btn: "Enviar a producción",
+        btnPrefix: "Enviar a producción",
         sending: "Enviando tu foto a la cola...",
         okTitle: "¡Foto subida con éxito!",
-        okBody: "Tu solicitud ya está en la cola de preparación. Acércate al mostrador para estampar tu Credencial.",
+        okBody: "Tu solicitud ya está en la cola. Acércate al mostrador para abonar y recoger tu sello.",
         errTitle: "No se pudo completar el envío",
         errBody: "Comprueba tu conexión a internet e inténtalo de nuevo en unos segundos.",
-        footer: "Buen Camino · Recoge tu sello en nuestro punto de estampación"
+        footer: "Buen Camino · Abona y recoge tu sello en nuestro punto de estampación"
       },
       en: {
         tag: "Camino de Santiago · Pilgrim Stamp",
-        sub: "Prepare your custom Pilgrim Credential stamp without waiting in line. Pick a frame, ink color, and send your photo.",
+        sub: "Prepare your custom Pilgrim Credential stamp without waiting in line. Pick a frame, ink color, copies, and send your photo.",
         name: "Pilgrim name",
         placeholder: "e.g. Alex / Maria",
         frame: "Choose your frame design",
         st: ["Design 1", "Design 2", "Design 3", "Design 4"],
         color: "Stamp ink color",
         cols: ["Black", "Blue", "Red", "Green"],
+        qty: "Number of stamps",
+        pickup: "When will you pick it up?",
+        now: "⚡ Today at desk",
+        tomorrow: "📅 Tomorrow",
         photo: "Your portrait (selfie or gallery)",
         cam: "Take selfie",
         gal: "Upload photo",
         noPhoto: "Photo missing",
         noPhotoMsg: "Please take a selfie or choose a photo from your gallery before sending.",
-        btn: "Send to stamp station",
+        btnPrefix: "Send to stamp station",
         sending: "Uploading your photo...",
         okTitle: "Upload complete!",
-        okBody: "Your stamp request is now in the queue. Head to the stamping counter to stamp your Credential.",
+        okBody: "Your stamp request is in the queue. Head to the stamping counter to pay and collect your stamp.",
         errTitle: "Upload could not be completed",
         errBody: "Please check your connection and try again.",
-        footer: "Buen Camino · Pick up your stamp at our stamping desk"
+        footer: "Buen Camino · Pay and pick up your stamp at our stamping desk"
       },
       de: {
         tag: "Camino de Santiago · Pilgerstempel",
-        sub: "Erstelle deinen persönlichen Stempel für den Pilgerausweis ohne Wartezeit. Rahmen und Farbe wählen und Foto senden.",
+        sub: "Erstelle deinen persönlichen Stempel für den Pilgerausweis ohne Wartezeit. Rahmen, Farbe und Anzahl wählen und Foto senden.",
         name: "Name des Pilgers",
         placeholder: "z. B. Alex / Maria",
         frame: "Wähle dein Rahmendesign",
         st: ["Design 1", "Design 2", "Design 3", "Design 4"],
         color: "Stempelfarbe wählen",
         cols: ["Schwarz", "Blau", "Rot", "Grün"],
+        qty: "Anzahl der Stempel",
+        pickup: "Wann abholen?",
+        now: "⚡ Heute am Stand",
+        tomorrow: "📅 Morgen",
         photo: "Dein Porträt (Selfie oder Galerie)",
         cam: "Selfie machen",
         gal: "Foto hochladen",
         noPhoto: "Foto fehlt noch",
         noPhotoMsg: "Bitte mache zuerst ein Selfie oder wähle ein Bild aus deiner Galerie aus.",
-        btn: "An Stempelstation senden",
+        btnPrefix: "An Stempelstation senden",
         sending: "Foto wird hochgeladen...",
         okTitle: "Erfolgreich hochgeladen!",
-        okBody: "Dein Auftrag ist in der Warteschlange angekommen. Komm einfach zum Stand, um deinen Ausweis zu stempeln.",
+        okBody: "Dein Auftrag ist in der Warteschlange angekommen. Komm zum Stand zum Bezahlen und Abholen.",
         errTitle: "Upload fehlgeschlagen",
         errBody: "Bitte prüfe deine Verbindung und versuche es gleich noch einmal.",
-        footer: "Buen Camino · Hol dir deinen Abdruck direkt am Stand"
+        footer: "Buen Camino · Bezahle und hole deinen Stempel direkt am Stand ab"
       }
     };
 
     const langSelect = document.getElementById("idioma");
+
+    function getSelectedQtyPrice() {
+      const checked = document.querySelector('input[name="cantidad"]:checked');
+      return {
+        qty: checked ? checked.value : "1",
+        price: checked ? checked.dataset.price : "4"
+      };
+    }
+
+    function updateSubmitButtonLabel() {
+      const t = translations[langSelect.value] || translations.es;
+      const { price } = getSelectedQtyPrice();
+      document.getElementById("submit-btn").textContent = `${t.btnPrefix} · ${price} €`;
+    }
+
     function applyLanguage(lang) {
       const t = translations[lang] || translations.es;
       document.getElementById("txt-tag").textContent = t.tag;
@@ -694,12 +843,20 @@
       document.getElementById("col-blue").textContent = t.cols[1];
       document.getElementById("col-red").textContent = t.cols[2];
       document.getElementById("col-green").textContent = t.cols[3];
+      document.getElementById("lbl-qty").textContent = t.qty;
+      document.getElementById("lbl-pickup").textContent = t.pickup;
+      document.getElementById("txt-now").textContent = t.now;
+      document.getElementById("txt-tomorrow").textContent = t.tomorrow;
       document.getElementById("lbl-photo").textContent = t.photo;
       document.getElementById("txt-cam").textContent = t.cam;
       document.getElementById("txt-gal").textContent = t.gal;
-      document.getElementById("submit-btn").textContent = t.btn;
       document.getElementById("txt-footer").textContent = t.footer;
+      updateSubmitButtonLabel();
     }
+
+    document.querySelectorAll('input[name="cantidad"]').forEach(el => {
+      el.addEventListener("change", updateSubmitButtonLabel);
+    });
 
     langSelect.addEventListener("change", () => applyLanguage(langSelect.value));
     applyLanguage(langSelect.value);
@@ -785,16 +942,23 @@
       const estilo = document.querySelector('input[name="estilo"]:checked').value;
       const color = document.querySelector('input[name="color"]:checked').value;
       const colorLabel = document.querySelector('input[name="color"]:checked').parentElement.querySelector("span:last-child").textContent;
+      const { qty, price } = getSelectedQtyPrice();
+      const pickup = document.querySelector('input[name="recogida"]:checked').value;
       const frameLabel = estilo.replace(".jpg", "").toUpperCase();
+      const cleanClient = (nombre || "Peregrino").replace(/[^a-zA-Z0-9_-]/g, "_");
+      const safeName = `QUEUE_${pickup}_${cleanClient}_${frameLabel}_${color}_x${qty}.jpg`;
 
       btn.disabled = true;
       btn.textContent = t.sending;
 
       try {
         const resizedBlob = await resizeImage(selectedFile, 1024);
-        const safeName = (nombre || "Peregrino").replace(/[^a-zA-Z0-9_-]/g, "_") + ".jpg";
 
         const formData = new FormData();
+        formData.append("canal", "QUEUE");
+        formData.append("recogida", pickup);
+        formData.append("cantidad", qty);
+        formData.append("precio", price);
         formData.append("nombre", nombre);
         formData.append("archivo_nombre", safeName);
         formData.append("estilo", estilo);
@@ -813,7 +977,7 @@
           "ok",
           t.okTitle,
           t.okBody,
-          `${nombre} · ${frameLabel} · ${colorLabel}`
+          `${nombre} · ${qty}x (${price} €) · ${pickup} · ${frameLabel} · ${colorLabel}`
         );
 
         document.getElementById("stamp-form").reset();
@@ -824,7 +988,7 @@
         showStatus("err", t.errTitle, t.errBody);
       } finally {
         btn.disabled = false;
-        btn.textContent = t.btn;
+        updateSubmitButtonLabel();
       }
     });
   </script>
