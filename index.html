@@ -44,24 +44,6 @@ button{font-family:inherit}
 .screen.show{display:flex}
 .screen.visible{opacity:1;transform:scale(1)}
 
-#lockScreen {
-  position: fixed; inset: 0; z-index: 99999; background: var(--bg0);
-  display: flex !important; align-items: center; justify-content: center; flex-direction: column;
-}
-.lock-box {
-  background: var(--card); border: 3px solid var(--gold); border-radius: 24px;
-  padding: 30px; max-width: 400px; width: 90%; text-align: center;
-  box-shadow: 0 15px 50px rgba(0,0,0,0.8);
-}
-.lock-box h2 { color: var(--gold); margin-top: 0; font-size: 1.5rem; }
-.lock-box input {
-  width: 100%; padding: 14px; margin: 15px 0; border-radius: 12px;
-  background: var(--bg0); border: 2px solid var(--line); color: #fff;
-  font-size: 1.2rem; text-align: center; outline: none;
-}
-.lock-box input:focus { border-color: var(--gold); }
-.lock-box button { width: 100%; padding: 14px; font-size: 1.1rem; }
-
 .topbar{width:100%;max-width:850px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto;z-index:5}
 .brand{font-size:.85rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
 
@@ -89,7 +71,7 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 .btn:active{transform:scale(.97)}
 .btn[disabled]{opacity:.42;cursor:not-allowed}
 .btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--txt)}
-.btn.big{padding:18px 48px;font-size:1.3rem;border-radius:20px;min-height:66px;
+.btn.big{padding:16px 40px;font-size:1.25rem;border-radius:20px;min-height:62px;
   box-shadow:0 10px 34px rgba(138,34,34,.45)}
 .btn.ok{background:var(--ok)}
 .btn.sm{padding:11px 15px;font-size:.88rem;min-height:46px;border-radius:12px}
@@ -104,8 +86,6 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 .tutorial-box video { width: 100%; height: auto; max-height: 340px; object-fit: cover; display: block; }
 
 .fall{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.fall span{position:absolute;top:-8vh;will-change:transform;opacity:.85;animation:drop linear forwards}
-@keyframes drop{to{transform:translateY(118vh) rotate(var(--spin))}}
 
 .stage0{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
   justify-content:center;flex:1 1 auto;gap:clamp(6px,1.2vh,12px);width:100%}
@@ -178,7 +158,7 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 
 @keyframes blinker {
   0% { opacity: 1; transform: scale(1); text-shadow: 0 0 10px rgba(216,178,95,0.8); }
-  50% { opacity: 0.5; transform: scale(1.03); text-shadow: 0 0 2px rgba(216,178,95,0.2); }
+  50% { opacity: 0.6; transform: scale(1.02); text-shadow: 0 0 2px rgba(216,178,95,0.2); }
   100% { opacity: 1; transform: scale(1); text-shadow: 0 0 10px rgba(216,178,95,0.8); }
 }
 
@@ -190,16 +170,33 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 
 .section-row {
   display: flex; align-items: center; justify-content: flex-start;
-  width: 100%; max-width: 520px; gap: 12px; margin-top: 4px;
+  width: 100%; max-width: 540px; gap: 10px; margin-top: 3px;
 }
 .side-label {
-  min-width: 135px; color: var(--gold); font-size: 0.9rem; font-weight: 900;
+  min-width: 128px; color: var(--gold); font-size: 0.85rem; font-weight: 900;
   text-align: left; animation: blinker 1.8s infinite ease-in-out;
 }
 
 .color-pickers{display:flex;gap:8px;flex:1;}
-.color-btn{flex:1;height:38px;border:2px solid var(--line);border-radius:10px;cursor:pointer;transition:.2s;}
+.color-btn{flex:1;height:34px;border:2px solid var(--line);border-radius:10px;cursor:pointer;transition:.2s;}
 .color-btn.sel{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,178,95,.3);}
+
+.qty-pickers{display:flex;gap:6px;flex:1;}
+.qty-btn{
+  flex:1;background:var(--card);border:2px solid var(--line);color:var(--txt);
+  border-radius:10px;padding:5px 2px;cursor:pointer;text-align:center;transition:.18s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.qty-btn strong{font-size:0.95rem;line-height:1.1;}
+.qty-btn span{font-size:0.72rem;color:var(--gold);font-weight:700;}
+.qty-btn.sel{border-color:var(--gold);background:var(--card2);box-shadow:0 0 0 3px rgba(216,178,95,.25);}
+
+.pickup-pickers{display:flex;gap:8px;flex:1;}
+.pickup-btn{
+  flex:1;background:var(--card);border:2px solid var(--line);color:var(--txt);
+  border-radius:10px;padding:8px 6px;font-size:0.82rem;font-weight:800;cursor:pointer;transition:.18s;
+}
+.pickup-btn.sel{border-color:var(--gold);background:var(--card2);color:var(--gold);box-shadow:0 0 0 3px rgba(216,178,95,.25);}
 
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex:1;}
 .card{
@@ -214,20 +211,19 @@ h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:cen
 
 .datebox{
   display:flex;align-items:center;gap:10px;justify-content:center;
-  width:100%;max-width:520px;margin-top:4px;
-  border: 2px dashed rgba(216,178,95,0.6); padding: 6px; border-radius: 14px; background: rgba(216,178,95,0.05);
+  width:100%;max-width:540px;margin-top:3px;
+  border: 2px dashed rgba(216,178,95,0.6); padding: 5px 8px; border-radius: 14px; background: rgba(216,178,95,0.05);
 }
 .datebox label{
-  font-size:0.85rem;color:var(--gold);font-weight:900;white-space:nowrap;
-  animation: blinker 1.8s infinite ease-in-out;
+  font-size:0.82rem;color:var(--gold);font-weight:900;white-space:nowrap;
 }
 input[type="date"] {
   background:var(--card);border:1px solid var(--line);color:var(--txt);
-  padding:8px 10px;border-radius:12px;font-size:.9rem;min-height:40px;flex:1;max-width:210px;
+  padding:6px 10px;border-radius:10px;font-size:.88rem;min-height:36px;flex:1;max-width:190px;
 }
-input[type="range"] { flex: 1; max-width: 210px; }
+input[type="range"] { flex: 1; max-width: 160px; }
 .ctlblock{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
-  gap:clamp(3px,0.8vh,6px);width:100%;z-index:2}
+  gap:clamp(3px,0.7vh,5px);width:100%;z-index:2}
 
 .print-container {
   display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; margin-top: 2px;
@@ -240,7 +236,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
 
 .panel{
   background:var(--card);border:1px solid var(--line);border-left:4px solid var(--err);
-  border-radius:14px;padding:12px 14px;max-width:520px;width:100%;
+  border-radius:14px;padding:12px 14px;max-width:540px;width:100%;
 }
 .panel h3{margin:0 0 4px;font-size:0.95rem}
 .panel p{margin:0 0 10px;color:var(--txt-dim);font-size:0.82rem;line-height:1.4}
@@ -257,21 +253,16 @@ input[type="range"] { flex: 1; max-width: 210px; }
 .modal .btn{flex:1 1 150px}
 
 .done-ico{font-size:4rem}
+.summary-ticket{
+  background:var(--card);border:2px solid var(--gold);border-radius:18px;
+  padding:18px 24px;max-width:460px;width:92%;text-align:center;margin:8px 0;
+}
+.summary-ticket .price{font-size:2rem;font-weight:900;color:var(--gold);margin:4px 0;}
 </style>
 </head>
 <body>
 
-<div id="lockScreen">
-  <div class="lock-box">
-    <h2>🔒 Kiosco Protegido</h2>
-    <p style="color:var(--txt-dim); font-size:0.9rem;">Introduce la contraseña para desbloquear:</p>
-    <input type="password" id="lockInput" placeholder="Contraseña..." autocomplete="current-password">
-    <button class="btn ok" id="btnUnlock">Desbloquear</button>
-    <p id="lockError" style="color:var(--err); font-size:0.8rem; margin-top:8px; display:none;">Contraseña incorrecta</p>
-  </div>
-</div>
-
-<div id="buildTag">KIOSK v5.7</div>
+<div id="buildTag">KIOSK v5.8</div>
 
 <!-- SCREEN 0 : START -->
 <section id="s0" class="screen">
@@ -379,7 +370,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </section>
 
-<!-- SCREEN 2 : DESIGN + DATE -->
+<!-- SCREEN 2 : DESIGN + DATE + COPIES + PICKUP -->
 <section id="s2" class="screen">
   <div class="topbar">
     <div class="brand" data-t="step2">Paso 2 · Tu sello</div>
@@ -420,20 +411,38 @@ input[type="range"] { flex: 1; max-width: 210px; }
       <div class="side-label" data-t="lblChooseStamp">👉 Elige tu sello:</div>
       <div class="cards" id="designCards"></div>
     </div>
-    
-    <div class="datebox">
-      <label data-t="lblChooseDate">📍 Elige tu día:</label>
-      <input type="date" id="dateInput" style="max-width:100%;">
+
+    <div class="section-row">
+      <div class="side-label" data-t="lblChooseQty">👨‍👩‍👧‍👦 Copias:</div>
+      <div class="qty-pickers" id="qtyPickers">
+        <button class="qty-btn sel" data-qty="1" data-price="4"><strong>1x</strong><span>4 €</span></button>
+        <button class="qty-btn" data-qty="2" data-price="8"><strong>2x</strong><span>8 €</span></button>
+        <button class="qty-btn" data-qty="3" data-price="11"><strong>3x</strong><span>11 €</span></button>
+        <button class="qty-btn" data-qty="4" data-price="14"><strong>4x</strong><span>14 €</span></button>
+        <button class="qty-btn" data-qty="5" data-price="16"><strong>5x</strong><span>16 €</span></button>
+      </div>
     </div>
 
-    <div class="datebox" style="margin-top:0; border-style:solid; border-color:var(--line); background:var(--card);">
-      <label style="animation:none; color:var(--txt-dim);" data-t="thresholdLabel">Detalle:</label>
+    <div class="section-row">
+      <div class="side-label" data-t="lblPickup">🕒 Entrega:</div>
+      <div class="pickup-pickers" id="pickupPickers">
+        <button class="pickup-btn sel" data-pickup="HOY" data-t="pickupNow">⚡ Ahora mismo</button>
+        <button class="pickup-btn" data-pickup="MANANA" data-t="pickupTomorrow">📅 Recoger mañana</button>
+      </div>
+    </div>
+    
+    <div class="datebox">
+      <label data-t="lblChooseDate">📍 Día:</label>
+      <input type="date" id="dateInput">
+      <label style="color:var(--txt-dim);" data-t="thresholdLabel">Detalle:</label>
       <input type="range" id="thresholdRange" min="10" max="240" step="5" value="110">
     </div>
 
     <div class="print-container">
       <span class="pulse-arrow left">👉</span>
-      <button class="btn ok big" id="btnPrint" disabled data-t="print">Imprimir sello</button>
+      <button class="btn ok big" id="btnPrint" disabled>
+        <span data-t="print">Imprimir sello</span> · <span id="btnPriceTag">4 €</span>
+      </button>
       <span class="pulse-arrow right">👈</span>
     </div>
   </div>
@@ -445,7 +454,12 @@ input[type="range"] { flex: 1; max-width: 210px; }
   <div class="stage0">
     <div class="done-ico">🐚</div>
     <h1 data-t="doneTitle">¡Buen Camino!</h1>
-    <p class="sub" data-t="doneSub">Tu sello se está imprimiendo. Retíralo de la impresora.</p>
+    <div class="summary-ticket">
+      <div id="doneSummaryText" style="font-size:1.05rem;font-weight:700;"></div>
+      <div class="price" id="doneSummaryPrice">4 €</div>
+      <div id="doneSummaryPickup" style="font-size:0.9rem;color:var(--txt-dim);"></div>
+    </div>
+    <p class="sub" data-t="doneSub">Pasa por el mostrador para abonar y recoger tu sello.</p>
     <button class="btn ghost" id="btnDoneNow" data-t="finish">Finalizar</button>
   </div>
 </section>
@@ -467,7 +481,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
 const CONFIG = {
   AI_WEBHOOK_URL   : "https://hook.eu1.make.com/lqq9d91pvhkkssmte4ukt8cik4ulgj9v",
   PRINT_WEBHOOK_URL: "https://hook.eu1.make.com/sr9r5dniiqlkgkyq5eeeihfnw88mj45z",
-  DOWNLOAD_ON_PRINT: true,
+  DOWNLOAD_ON_PRINT: false,
   INK_COLOR  : "#8a2222",
   FRAMES: [
     { file:"marco1.jpg", key:"opt1" },
@@ -488,7 +502,7 @@ const CONFIG = {
   SELFIE_COUNTDOWN : 10,
   EDIT_COUNTDOWN   : 60,
   MODAL_TIMEOUT    : 25,
-  DONE_TIMEOUT     : 6,
+  DONE_TIMEOUT     : 10,
   IDLE_TIMEOUT     : 90,
   AI_TIMEOUT       : 30,
   AI_MAX_ATTEMPTS  : 3,
@@ -496,28 +510,11 @@ const CONFIG = {
   JPEG_QUALITY  : 0.95,
   CAPTURE_SIZE  : 1024,
   MIRROR_SELFIE : true,
-  MAX_STAGE_PX  : 480,
+  MAX_STAGE_PX  : 420,
   DEFAULT_LANG  : "es"
 };
 
 const $ = id => document.getElementById(id);
-
-function intentarDesbloqueo() {
-  const errorEl = $('lockError');
-  const screenEl = $('lockScreen');
-  if (errorEl) errorEl.style.display = 'none';
-  if (screenEl) screenEl.style.cssText = "display: none !important;";
-  go('s0');
-  if (promoVideoEl) { currentVideoIdx = 0; playNextPromoVideo(); }
-}
-
-document.addEventListener('DOMContentLoaded', function(){
-  intentarDesbloqueo();
-  const btnUnlock = $('btnUnlock');
-  const lockInput = $('lockInput');
-  if (btnUnlock) btnUnlock.addEventListener('click', intentarDesbloqueo);
-  if (lockInput) lockInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') intentarDesbloqueo(); });
-});
 
 const I18N = {
   es:{welcomeTitle:"Sello del Peregrino",welcomeSub:"Hazte una foto y llévate tu sello en la credencial.",start:"Comenzar",
@@ -530,9 +527,10 @@ const I18N = {
    aiLoading:"Creando tu sello…",aiRetrying:"Reintentando…",
    aiErrTitle:"No hemos podido crear el dibujo",aiErrMsg:"El servicio no responde. Inténtalo de nuevo.",
    tmTitle:"¿Imprimimos tu sello?",tmMsg:"Se ha acabado el tiempo de edición.",
-   doneTitle:"¡Buen Camino!",doneSub:"Tu sello se está imprimiendo. Retíralo de la impresora.",finish:"Finalizar",
+   doneTitle:"¡Buen Camino!",doneSub:"Pasa por el mostrador para abonar y recoger tu sello.",finish:"Finalizar",
    opt1:"Sello 1",opt2:"Sello 2",opt3:"Sello 3",opt4:"Sello 4",
-   lblChooseColor:"👉 Elige tu color:", lblChooseStamp:"👉 Elige tu sello:", lblChooseDate:"📍 Elige tu día:"},
+   lblChooseColor:"👉 Color:", lblChooseStamp:"👉 Sello:", lblChooseDate:"📍 Día:",
+   lblChooseQty:"👨‍👩‍👧‍👦 Copias:", lblPickup:"🕒 Entrega:", pickupNow:"⚡ Ahora mismo", pickupTomorrow:"📅 Recoger mañana"},
   gb:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in your credential.",start:"Start",
    step1:"Step 1 · Photo",choiceTitle:"How would you like your photo?",choiceSub:"Take a selfie or scan the QR.",
    optCamTitle:"Take a Selfie",optCamDesc:"Use tablet camera with countdown.",
@@ -543,9 +541,10 @@ const I18N = {
    aiLoading:"Creating your stamp…",aiRetrying:"Retrying…",
    aiErrTitle:"We could not create the drawing",aiErrMsg:"Service not responding.",
    tmTitle:"Shall we print?",tmMsg:"Time is over.",
-   doneTitle:"Buen Camino!",doneSub:"Printing stamp.",finish:"Finish",
+   doneTitle:"Buen Camino!",doneSub:"Please pay and collect your stamp at the counter.",finish:"Finish",
    opt1:"Stamp 1",opt2:"Stamp 2",opt3:"Stamp 3",opt4:"Stamp 4",
-   lblChooseColor:"👉 Choose color:", lblChooseStamp:"👉 Choose stamp:", lblChooseDate:"📍 Choose date:"},
+   lblChooseColor:"👉 Color:", lblChooseStamp:"👉 Stamp:", lblChooseDate:"📍 Date:",
+   lblChooseQty:"👨‍👩‍👧‍👦 Copies:", lblPickup:"🕒 Pickup:", pickupNow:"⚡ Right now", pickupTomorrow:"📅 Pick up tomorrow"},
   de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie oder scanne den QR-Code.",start:"Starten",
    step1:"Schritt 1 · Foto",choiceTitle:"Wie möchten Sie Ihr Foto hinzufügen?",choiceSub:"Machen Sie ein Selfie oder scannen Sie den QR-Code.",
    optCamTitle:"Selfie machen",optCamDesc:"Tabletkamera nutzen.",
@@ -556,9 +555,10 @@ const I18N = {
    aiLoading:"Erstelle Stempel…",aiRetrying:"Neuer Versuch…",
    aiErrTitle:"Fehler",aiErrMsg:"Dienst antwortet nicht.",
    tmTitle:"Drucken?",tmMsg:"Zeit abgelaufen.",
-   doneTitle:"Buen Camino!",doneSub:"Wird gedruckt.",finish:"Beenden",
+   doneTitle:"Buen Camino!",doneSub:"Bitte am Tresen bezahlen und abholen.",finish:"Beenden",
    opt1:"Stempel 1",opt2:"Stempel 2",opt3:"Stempel 3",opt4:"Stempel 4",
-   lblChooseColor:"👉 Farbe wählen:", lblChooseStamp:"👉 Stempel wählen:", lblChooseDate:"📍 Datum wählen:"},
+   lblChooseColor:"👉 Farbe:", lblChooseStamp:"👉 Stempel:", lblChooseDate:"📍 Datum:",
+   lblChooseQty:"👨‍👩‍👧‍👦 Anzahl:", lblPickup:"🕒 Abholung:", pickupNow:"⚡ Sofort", pickupTomorrow:"📅 Morgen abholen"},
   fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie ou scanne le QR code.",start:"Commencer",
    step1:"Étape 1 · Photo",choiceTitle:"Comment ajouter votre photo ?",choiceSub:"Prenez un selfie ou scannez le QR code.",
    optCamTitle:"Prendre un selfie",optCamDesc:"Utilisez la caméra.",
@@ -569,9 +569,10 @@ const I18N = {
    aiLoading:"Création du tampon…",aiRetrying:"Nouvel essai…",
    aiErrTitle:"Erreur",aiErrMsg:"Pas de réponse.",
    tmTitle:"On imprime ?",tmMsg:"Temps écoulé.",
-   doneTitle:"Buen Camino !",doneSub:"Impression...",finish:"Terminer",
+   doneTitle:"Buen Camino !",doneSub:"Passez au comptoir pour régler et récupérer.",finish:"Terminer",
    opt1:"Tampon 1",opt2:"Tampon 2",opt3:"Tampon 3",opt4:"Tampon 4",
-   lblChooseColor:"👉 Couleur :", lblChooseStamp:"👉 Tampon :", lblChooseDate:"📍 Date :"},
+   lblChooseColor:"👉 Couleur :", lblChooseStamp:"👉 Tampon :", lblChooseDate:"📍 Date :",
+   lblChooseQty:"👨‍👩‍👧‍👦 Copies :", lblPickup:"🕒 Retrait :", pickupNow:"⚡ Maintenant", pickupTomorrow:"📅 Retrait demain"},
   pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma selfie ou escaneie o QR.",start:"Começar",
    step1:"Passo 1 · Foto",choiceTitle:"Como deseja colocar sua foto?",choiceSub:"Tire uma selfie ou escaneie o QR.",
    optCamTitle:"Tirar selfie",optCamDesc:"Use a câmera.",
@@ -582,9 +583,10 @@ const I18N = {
    aiLoading:"Criando o carimbo…",aiRetrying:"Tentando…",
    aiErrTitle:"Erro",aiErrMsg:"Sem resposta.",
    tmTitle:"Imprimir?",tmMsg:"Tempo esgotado.",
-   doneTitle:"Buen Camino!",doneSub:"Imprimindo.",finish:"Finalizar",
+   doneTitle:"Buen Camino!",doneSub:"Passe no balcão para pagar e retirar.",finish:"Finalizar",
    opt1:"Carimbo 1",opt2:"Carimbo 2",opt3:"Carimbo 3",opt4:"Carimbo 4",
-   lblChooseColor:"👉 Cor:", lblChooseStamp:"👉 Carimbo:", lblChooseDate:"📍 Data:"},
+   lblChooseColor:"👉 Cor:", lblChooseStamp:"👉 Carimbo:", lblChooseDate:"📍 Data:",
+   lblChooseQty:"👨‍👩‍👧‍👦 Cópias:", lblPickup:"🕒 Entrega:", pickupNow:"⚡ Agora mesmo", pickupTomorrow:"📅 Retirar amanhã"},
   cn:{welcomeTitle:"朝圣者印章",welcomeSub:"自拍或扫描二维码。",start:"开始",
    step1:"第一步 · 拍照",choiceTitle:"您想如何添加照片？",choiceSub:"自拍或扫描二维码。",
    optCamTitle:"自拍",optCamDesc:"使用相机",
@@ -595,22 +597,24 @@ const I18N = {
    aiLoading:"制作印章中…",aiRetrying:"重试…",
    aiErrTitle:"错误",aiErrMsg:"无响应",
    tmTitle:"打印？",tmMsg:"时间到",
-   doneTitle:"一路平安!",doneSub:"正在打印",finish:"完成",
+   doneTitle:"一路平安!",doneSub:"请到柜台付款并领取印章。",finish:"完成",
    opt1:"印章 1",opt2:"印章 2",opt3:"印章 3",opt4:"印章 4",
-   lblChooseColor:"👉 颜色:", lblChooseStamp:"👉 印章:", lblChooseDate:"📍 日期:"},
+   lblChooseColor:"👉 颜色:", lblChooseStamp:"👉 印章:", lblChooseDate:"📍 日期:",
+   lblChooseQty:"👨‍👩‍👧‍👦 数量:", lblPickup:"🕒 领取:", pickupNow:"⚡ 立即", pickupTomorrow:"📅 明天领取"},
   ua:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть селфі або скануйте QR.",start:"Почати",
    step1:"Крок 1 · Фото",choiceTitle:"Як додати фото?",choiceSub:"Зробіть селфі або скануйте QR.",
    optCamTitle:"Селфі",optCamDesc:"Камера планшета.",
    optMemTitle:"Сканувати QR",optMemDesc:"Завантажити з мобільного.",
    step1cam:"Крок 1 · Камера",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото",back:"Назад",cancel:"Скасувати",retry:"Повторити",
    step1mem:"Крок 1 · Сканувати QR",qrBoxTitle:"📱 Завантажити з мобільного",qrBoxSub:"Скануйте код та оберіть фото.",qrWaiting:"Очікування фото...",
-   step2:"Kрок 2 · Печатка",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
+   step2:"Крок 2 · Печатка",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
    aiLoading:"Створення печатки…",aiRetrying:"Повтор…",
    aiErrTitle:"Помилка",aiErrMsg:"Немає відповіді.",
    tmTitle:"Друкувати?",tmMsg:"Час вийшов.",
-   doneTitle:"Buen Camino!",doneSub:"Друкується.",finish:"Завершити",
+   doneTitle:"Buen Camino!",doneSub:"Підійдіть до стійки для оплати та отримання.",finish:"Завершити",
    opt1:"Печатка 1",opt2:"Печатка 2",opt3:"Печатка 3",opt4:"Печатка 4",
-   lblChooseColor:"👉 Колір:", lblChooseStamp:"👉 Печатка:", lblChooseDate:"📍 Дата:"}
+   lblChooseColor:"👉 Колір:", lblChooseStamp:"👉 Печатка:", lblChooseDate:"📍 Дата:",
+   lblChooseQty:"👨‍👩‍👧‍👦 Копії:", lblPickup:"🕒 Отримання:", pickupNow:"⚡ Зараз", pickupTomorrow:"📅 Забрати завтра"}
 };
 let LANG = CONFIG.DEFAULT_LANG;
 const T = k => (I18N[LANG] && I18N[LANG][k]) || I18N.es[k] || k;
@@ -629,8 +633,9 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
 
 const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null, color: CONFIG.INK_COLOR,
              location: "", threshold: CONFIG.LINE_THRESHOLD,
+             qty: 1, price: 4, pickup: "HOY", canal: "LIVE",
              rawPhoto: null, aiAttempt: 0, screen: null, printing:false, editStarted:false };
-const timers = { selfie:null, edit:null, idle:null, modal:null, done:null, fall:[] };
+const timers = { selfie:null, edit:null, idle:null, modal:null, done:null };
 
 function todayISO(){ const d=new Date(), p=n=>String(n).padStart(2,'0');
   return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
@@ -656,7 +661,6 @@ function runCountdown(key, seconds, numEl, barEl, boxEl, onEnd){
 }
 
 const FRAME_CACHE = [];
-let CANVAS_TAINTED = false;
 function loadImage(src){
   return new Promise(res=>{
     const im = new Image(); im.crossOrigin = "anonymous";
@@ -680,7 +684,7 @@ function recolourFrame(img, colorHex){
     }
     x.putImageData(d,0,0);
     return {canvas:c, tainted:false};
-  }catch(e){ CANVAS_TAINTED = true; return {canvas:c, tainted:true}; }
+  }catch(e){ return {canvas:c, tainted:true}; }
 }
 async function preloadFrames(){
   for(let i=0;i<CONFIG.FRAMES.length;i++){
@@ -793,10 +797,14 @@ function resetSession(){
   S.aiImage=null; S.rawPhoto=null; S.aiAttempt=0; S.printing=false; S.editStarted=false;
   S.frame=CONFIG.DEFAULT_FRAME_INDEX; S.date=todayISO();
   S.color = CONFIG.INK_COLOR;
+  S.qty = 1; S.price = 4; S.pickup = "HOY"; S.canal = "LIVE";
   applyColor(S.color);
   S.location = "";
   S.threshold = $('thresholdRange').value = CONFIG.LINE_THRESHOLD;
   $('dateInput').value=S.date; $('btnPrint').disabled=true;
+  $('btnPriceTag').textContent = "4 €";
+  document.querySelectorAll('.qty-btn').forEach(b => b.classList.toggle('sel', b.dataset.qty === "1"));
+  document.querySelectorAll('.pickup-btn').forEach(b => b.classList.toggle('sel', b.dataset.pickup === "HOY"));
   if(FRAME_CACHE.length > 0) updateCards();
 }
 
@@ -814,6 +822,7 @@ function drawOverlay(){
   renderStamp(x, c.width, {drawPhoto:false, background:false, frame:S.frame, date:S.date});
 }
 async function enterSelfie(){
+  S.canal = "LIVE";
   $('camError').style.display='none'; $('camControls').style.display=''; $('timer1').style.display='';
   drawOverlay(); requestAnimationFrame(function(){ sizeStages(); });
   await startCamera();
@@ -908,6 +917,22 @@ document.querySelectorAll('.color-btn').forEach(b => b.addEventListener('click',
   this.classList.add('sel');
 }));
 
+document.querySelectorAll('.qty-btn').forEach(b => b.addEventListener('click', function(e){
+  e.stopPropagation();
+  S.qty = parseInt(this.dataset.qty, 10);
+  S.price = parseInt(this.dataset.price, 10);
+  $('btnPriceTag').textContent = S.price + " €";
+  document.querySelectorAll('.qty-btn').forEach(btn => btn.classList.remove('sel'));
+  this.classList.add('sel');
+}));
+
+document.querySelectorAll('.pickup-btn').forEach(b => b.addEventListener('click', function(e){
+  e.stopPropagation();
+  S.pickup = this.dataset.pickup;
+  document.querySelectorAll('.pickup-btn').forEach(btn => btn.classList.remove('sel'));
+  this.classList.add('sel');
+}));
+
 $('dateInput').addEventListener('change', function(e){ S.date = e.target.value || todayISO(); drawPreview(); });
 $('thresholdRange').addEventListener('input', function(e){ S.threshold = parseInt(e.target.value); drawPreview(); });
 
@@ -918,13 +943,6 @@ function enterEdit(){
 }
 function openModal(){ $('modalTimeout').classList.add('show'); runCountdown('modal', CONFIG.MODAL_TIMEOUT, $('modalCd'), null, null, function(){ go('s0'); }); }
 function closeModal(){ $('modalTimeout').classList.remove('show'); clearTimer('modal'); }
-
-function exportJpegDataUrl(){
-  const N=CONFIG.EXPORT_SIZE, c=document.createElement('canvas'); c.width=c.height=N;
-  const x=c.getContext('2d'); x.fillStyle='#ffffff'; x.fillRect(0,0,N,N);
-  renderStamp(x, N, {frame:S.frame, photo:S.aiImage, date:S.date, background:true});
-  return c.toDataURL('image/jpeg', CONFIG.JPEG_QUALITY);
-}
 
 function exportJpegBlob(){
   return new Promise(resolve => {
@@ -941,9 +959,13 @@ async function sendPrintToDrive(){
   if(!blob) return;
   const estilo = (CONFIG.FRAMES[S.frame] && CONFIG.FRAMES[S.frame].file) || "marco1.jpg";
   const colorClean = S.color.replace("#", "");
-  const fileName = `Kiosk_${estilo.replace(".jpg","")}_${colorClean}_${S.date}.jpg`;
+  const fileName = `${S.canal}_${S.pickup}_${estilo.replace(".jpg","")}_${colorClean}_x${S.qty}.jpg`;
 
   const fd = new FormData();
+  fd.append("canal", S.canal);
+  fd.append("recogida", S.pickup);
+  fd.append("cantidad", String(S.qty));
+  fd.append("precio", String(S.price));
   fd.append("estilo", estilo);
   fd.append("color", colorClean);
   fd.append("fecha", S.date);
@@ -962,14 +984,11 @@ async function doPrint(){
   clearTimer('edit');
   closeModal();
 
-  await sendPrintToDrive();
+  $('doneSummaryText').textContent = `${S.qty}x ${T(CONFIG.FRAMES[S.frame].key)}`;
+  $('doneSummaryPrice').textContent = `${S.price} €`;
+  $('doneSummaryPickup').textContent = S.pickup === "MANANA" ? T('pickupTomorrow') : T('pickupNow');
 
-  if(CONFIG.DOWNLOAD_ON_PRINT){
-    const a=document.createElement('a');
-    a.download='sello.jpg';
-    a.href=exportJpegDataUrl();
-    a.click();
-  }
+  await sendPrintToDrive();
   go('s3');
 }
 
@@ -993,6 +1012,7 @@ const URL_APP_MOVIL = "https://stampmyface.com/subir.html";
 const WEBHOOK_CONSULTA = "https://hook.eu1.make.com/cefuk6tab3wwawyvmjg36rg92jh9pnbd";
 
 $('btnChooseMemory').addEventListener('click', function(){ 
+  S.canal = "QUEUE";
   go('s1b'); 
   const sessionId = Math.random().toString(36).substring(2, 10);
   const langActual = LANG || 'es';
@@ -1024,13 +1044,20 @@ $('btnBackMem').addEventListener('click', function(){ clearInterval(pollingInter
 
 /* Botones y navegación */
 $('btnStart').addEventListener('click', function(e){ e.stopPropagation(); go('s1'); });
-$('s0').addEventListener('click', function(e){ if(e.target.closest('.lang-btn')) return; go('s1'); });$('btnChooseCamera').addEventListener('click', function(){ go('s1a'); });
-$('btnBack1').addEventListener('click', function(){ go('s0'); });$('btnBackCam').addEventListener('click', function(){ go('s1'); });
-$('btnBackCamErr').addEventListener('click', function(){ go('s1'); });$('btnShoot').addEventListener('click', shoot);
-$('btnRetryCam').addEventListener('click', function(){ startCamera(); });$('btnCancel2').addEventListener('click', function(){ go('s0'); });
-$('btnRetryAi').addEventListener('click', function(){ S.aiAttempt=0; requestAI(); });$('btnRestartAi').addEventListener('click', function(){ go('s0'); });
-$('btnPrint').addEventListener('click', doPrint);$('btnModalPrint').addEventListener('click', doPrint);
-$('btnModalRestart').addEventListener('click', function(){ go('s0'); });$('btnDoneNow').addEventListener('click', function(){ go('s0'); });
+$('s0').addEventListener('click', function(e){ if(e.target.closest('.lang-btn')) return; go('s1'); });
+$('btnChooseCamera').addEventListener('click', function(){ go('s1a'); });
+$('btnBack1').addEventListener('click', function(){ go('s0'); });
+$('btnBackCam').addEventListener('click', function(){ go('s1'); });
+$('btnBackCamErr').addEventListener('click', function(){ go('s1'); });
+$('btnShoot').addEventListener('click', shoot);
+$('btnRetryCam').addEventListener('click', function(){ startCamera(); });
+$('btnCancel2').addEventListener('click', function(){ go('s0'); });
+$('btnRetryAi').addEventListener('click', function(){ S.aiAttempt=0; requestAI(); });
+$('btnRestartAi').addEventListener('click', function(){ go('s0'); });
+$('btnPrint').addEventListener('click', doPrint);
+$('btnModalPrint').addEventListener('click', doPrint);
+$('btnModalRestart').addEventListener('click', function(){ go('s0'); });
+$('btnDoneNow').addEventListener('click', function(){ go('s0'); });
 
 /* Inicialización */
 (async function boot(){
@@ -1039,6 +1066,8 @@ $('btnModalRestart').addEventListener('click', function(){ go('s0'); });$('btnDo
   buildCards();
   setLang(CONFIG.DEFAULT_LANG);
   try{ await preloadFrames(); }catch(e){}
+  go('s0');
+  if (promoVideoEl) { currentVideoIdx = 0; playNextPromoVideo(); }
   setTimeout(sizeStages, 60);
 })();
 </script>
