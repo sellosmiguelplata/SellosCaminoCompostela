@@ -271,7 +271,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </div>
 
-<div id="buildTag">KIOSK v5.5</div>
+<div id="buildTag">KIOSK v5.6</div>
 
 <!-- SCREEN 0 : START -->
 <section id="s0" class="screen">
@@ -466,7 +466,6 @@ input[type="range"] { flex: 1; max-width: 210px; }
 <script>
 const CONFIG = {
   AI_WEBHOOK_URL   : "https://hook.eu1.make.com/lqq9d91pvhkkssmte4ukt8cik4ulgj9v",
-  // HIER DEINE MAKE-WEBHOOK-URL FÜR DEN DIREKT-UPLOAD IN GOOGLE DRIVE EINTRAGEN:
   PRINT_WEBHOOK_URL: "https://hook.eu1.make.com/sr9r5dniiqlkgkyq5eeeihfnw88mj45z",
   DOWNLOAD_ON_PRINT: true,
   INK_COLOR  : "#8a2222",
@@ -941,7 +940,7 @@ function exportJpegBlob(){
 }
 
 async function sendPrintToDrive(){
-  if(!CONFIG.PRINT_WEBHOOK_URL || CONFIG.PRINT_WEBHOOK_URL.includes("https://hook.eu1.make.com/sr9r5dniiqlkgkyq5eeeihfnw88mj45z")) return;
+  if(!CONFIG.PRINT_WEBHOOK_URL) return;
   const blob = await exportJpegBlob();
   if(!blob) return;
   const estilo = (CONFIG.FRAMES[S.frame] && CONFIG.FRAMES[S.frame].file) || "marco1.jpg";
@@ -967,7 +966,6 @@ async function doPrint(){
   clearTimer('edit');
   closeModal();
 
-  // Direkt an Google Drive senden (ohne den Kiosk aufzuhalten)
   sendPrintToDrive();
 
   if(CONFIG.DOWNLOAD_ON_PRINT){
