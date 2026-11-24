@@ -271,7 +271,7 @@ input[type="range"] { flex: 1; max-width: 210px; }
   </div>
 </div>
 
-<div id="buildTag">KIOSK v5.6</div>
+<div id="buildTag">KIOSK v5.7</div>
 
 <!-- SCREEN 0 : START -->
 <section id="s0" class="screen">
@@ -966,7 +966,7 @@ async function doPrint(){
   clearTimer('edit');
   closeModal();
 
-  sendPrintToDrive();
+  await sendPrintToDrive();
 
   if(CONFIG.DOWNLOAD_ON_PRINT){
     const a=document.createElement('a');
