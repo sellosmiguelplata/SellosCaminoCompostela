@@ -503,20 +503,16 @@ const CONFIG = {
 const $ = id => document.getElementById(id);
 
 function intentarDesbloqueo() {
-  const inputEl = $('lockInput');
   const errorEl = $('lockError');
   const screenEl = $('lockScreen');
-  if (!inputEl) return;
-  if (inputEl.value.trim() === "peregrino123") {
-    if (screenEl) screenEl.style.cssText = "display: none !important;";
-    go('s0');
-    if (promoVideoEl) { currentVideoIdx = 0; playNextPromoVideo(); }
-  } else {
-    if (errorEl) errorEl.style.display = 'block';
-  }
+  if (errorEl) errorEl.style.display = 'none';
+  if (screenEl) screenEl.style.cssText = "display: none !important;";
+  go('s0');
+  if (promoVideoEl) { currentVideoIdx = 0; playNextPromoVideo(); }
 }
 
 document.addEventListener('DOMContentLoaded', function(){
+  intentarDesbloqueo();
   const btnUnlock = $('btnUnlock');
   const lockInput = $('lockInput');
   if (btnUnlock) btnUnlock.addEventListener('click', intentarDesbloqueo);
