@@ -53,7 +53,7 @@
     #dayLockOverlay {
       position: fixed;
       inset: 0;
-      z-index: 999;
+      z-index: 9999;
       background: radial-gradient(circle at 50% 15%, rgba(212, 162, 56, 0.16), rgba(10, 11, 15, 0.98) 65%);
       backdrop-filter: blur(8px);
       display: flex;
@@ -63,7 +63,7 @@
     }
 
     #dayLockOverlay.hidden {
-      display: none;
+      display: none !important;
     }
 
     .lock-card {
@@ -399,6 +399,353 @@
       cursor: pointer;
       background: var(--bg-elevated);
       color: var(--text-main);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .qty-option input[type="radio"] {
+      display: none;
+    }
+
+    .qty-option strong {
+      font-size: 0.92rem;
+    }
+
+    .qty-option span {
+      font-size: 0.76rem;
+      color: var(--gold-bright);
+      font-weight: 700;
+    }
+
+    .qty-option:has(input[type="radio"]:checked) {
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.14);
+      box-shadow: 0 0 0 1px var(--gold);
+    }
+
+    .pickup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .pickup-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 13px;
+      cursor: pointer;
+      background: var(--bg-elevated);
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .pickup-option input[type="radio"] {
+      display: none;
+    }
+
+    .pickup-option:has(input[type="radio"]:checked) {
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.14);
+      color: var(--gold-bright);
+      box-shadow: 0 0 0 1px var(--gold);
+    }
+
+    .photo-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .photo-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 14px 10px;
+      border: 1px dashed rgba(212, 162, 56, 0.42);
+      border-radius: 15px;
+      background: var(--bg-elevated);
+      color: var(--text-main);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+    }
+
+    .photo-btn:hover {
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.10);
+    }
+
+    .photo-btn:active {
+      transform: scale(0.98);
+    }
+
+    .photo-btn svg {
+      width: 22px;
+      height: 22px;
+      color: var(--gold-bright);
+    }
+
+    .hidden-input {
+      display: none;
+    }
+
+    .file-badge {
+      margin-top: 10px;
+      padding: 9px 12px;
+      border-radius: 11px;
+      background: rgba(212, 162, 56, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-bright);
+      font-size: 0.83rem;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .file-badge.visible {
+      display: flex;
+    }
+
+    .clear-file {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 0 4px;
+    }
+
+    .clear-file:hover {
+      color: var(--text-main);
+    }
+
+    #preview-box {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      text-align: center;
+    }
+
+    .preview-caption {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    #previewCanvas {
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      border: 2px solid var(--border-gold);
+      background: #ffffff;
+      display: inline-block;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px 18px;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+      color: #12100c;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      margin-top: 6px;
+      box-shadow: 0 10px 26px rgba(212, 162, 56, 0.28);
+      transition: transform 0.12s ease, opacity 0.15s ease;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 15px 16px;
+      border-radius: 15px;
+      font-size: 0.9rem;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .status.ok {
+      display: block;
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
+    }
+
+    .status.err {
+      display: block;
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid var(--error-border);
+    }
+
+    .status-title {
+      font-weight: 800;
+      font-size: 0.98rem;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .status-meta {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.8rem;
+      opacity: 0.92;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body class="locked">
+  <div id="dayLockOverlay" role="dialog" aria-modal="true" aria-labelledby="lockTitle">
+    <div class="lock-card">
+      <h2 id="lockTitle">Acceso del día · Piloto</h2>
+      <p id="lockDesc">Introduce la clave del día (formato <b>DDMMYYYY</b>, ej. hoy).</p>
+      <input type="text" inputmode="numeric" maxlength="10" id="dayPassInput" class="lock-input" placeholder="DDMMYYYY" autocomplete="off" />
+      <button type="button" id="btnUnlockDay" class="lock-btn">Entrar</button>
+      <div id="lockError" class="lock-error"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="header">
+      <div class="brand">
+        <div class="shell-badge" aria-hidden="true">
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20c-4.8 0-9-3.2-9-8.2C3 7.2 7 4 12 4s9 3.2 9 7.8c0 5-4.2 8.2-9 8.2Z"/>
+            <path d="M12 20V4"/>
+            <path d="M12 20 6.8 5.6"/>
+            <path d="M12 20 17.2 5.6"/>
+            <path d="M12 20 3.6 10.5"/>
+            <path d="M12 20 20.4 10.5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Stamp My Face</h1>
+          <span class="tag" id="txt-tag">Camino de Santiago · Sello Peregrino</span>
+        </div>
+      </div>
+
+      <select id="idioma" class="lang-select" aria-label="Language">
+        <option value="es" selected>ES</option>
+        <option value="en">EN</option>
+        <option value="de">DE</option>
+      </select>
+    </div>
+
+    <p class="subtitle" id="txt-sub">
+      Prepara tu sello personalizado para la Credencial del Peregrino sin hacer cola. Elige marco, tinta, copias y envía tu foto.
+    </p>
+
+    <form id="stamp-form">
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">1</span>
+          <span id="lbl-name">Nombre del peregrino</span>
+        </div>
+        <input type="text" id="nombre" name="nombre" placeholder="Ej. Alex / María" required />
+      </div>
+
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">2</span>
+          <span id="lbl-frame">Elige el diseño de tu marco</span>
+        </div>
+        <div class="marco-grid">
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco1.jpg" checked />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco1.jpg" alt="Diseño 1" crossorigin="anonymous" />
+            </div>
+            <span id="st-1">Diseño 1</span>
+          </label>
+
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco2.jpg" />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco2.jpg" alt="Diseño 2" crossorigin="anonymous" />
+            </div>
+            <span id="st-2">Diseño 2</span>
+          </label>
+
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco3.jpg" />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco3.jpg" alt="Diseño 3" crossorigin="anonymous" />
+            </div>
+            <span id="st-3">Diseño 3</span>
+          </label>
+
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco4.jpg" />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco4.jpg" alt="Diseño 4" crossorigin="anonymous" />
+            </div>
+            <span id="st-4">Diseño 4</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">3</span>
+          <span id="lbl-color">Color de tinta del sello</span>
+        </div>
+        <div class="color-grid">
+          <label class="color-option">
+            <input type="radio" name="color" value="111827" checked />
+            <span class="swatch" style="background:#111827;"></span>
+            <span id="col-black">Negro</span>
+          </label>
+
+          <label class="color-option">
+            <input type="radio" name="color" value="1e3a8a" />
+            <span class="swatch" style="background:#1e3a8a;"></span>
+            <span id="col-blue">Azul</span>
+          </label>
+
+          <label class="color-option">
+            <input type="radio" name="color" value="7f1d1d" />
+            <span class="swatch" style="background:#7f1d1d;"></span>
+            <span id="col-red">Rojo</span>
+          </label>
+
+          <label class="color-option">
+         or: var(--text-main);
       transition: border-color 0.15s ease, background 0.15s ease;
     }
 
