@@ -1,1075 +1,933 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Sello del Peregrino · Camino de Santiago · KIOSK</title>
-<style>
-:root{
-  --ink:#8a2222;
-  --bg0:#0d0f14;
-  --bg1:#161a22;
-  --card:#1e232e;
-  --card2:#272d3a;
-  --line:#343c4c;
-  --txt:#f2f4f8;
-  --txt-dim:#9aa4b8;
-  --gold:#d8b25f;
-  --ok:#2f9e6b;
-  --err:#d0534a;
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;margin:0;overflow:hidden}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  background:radial-gradient(120% 90% at 50% 0%,var(--bg1) 0%,var(--bg0) 70%);
-  color:var(--txt);
-  user-select:none;-webkit-user-select:none;
-  touch-action:manipulation;
-}
-button{font-family:inherit}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stamp My Face – Live Kiosk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-night: #0c0d10;
+      --bg-elevated: #1b1e27;
+      --text-main: #f4f1ea;
+      --text-muted: #a8a29e;
+      --gold: #d4a238;
+      --gold-bright: #f2c96b;
+      --gold-glow: rgba(212, 162, 56, 0.18);
+      --border-subtle: rgba(255, 255, 255, 0.10);
+      --border-gold: rgba(212, 162, 56, 0.55);
+      --success-bg: rgba(16, 185, 129, 0.14);
+      --success-border: rgba(52, 211, 153, 0.45);
+      --success-text: #a7f3d0;
+      --error-bg: rgba(239, 68, 68, 0.14);
+      --error-border: rgba(248, 113, 113, 0.45);
+      --error-text: #fecaca;
+    }
 
-#buildTag{position:fixed;left:6px;bottom:6px;z-index:120;
-  font-size:.62rem;letter-spacing:.08em;color:#4a5466;pointer-events:none}
+    * {
+      box-sizing: border-box;
+    }
 
-.screen{
-  position:fixed;inset:0;display:none;flex-direction:column;
-  align-items:center;justify-content:flex-start;
-  padding:calc(env(safe-area-inset-top) + 6px) 16px calc(env(safe-area-inset-bottom) + 6px);
-  opacity:0;transform:scale(.985);
-  transition:opacity .35s ease,transform .35s ease;
-  overflow:hidden;
-  overflow-y:auto;
-}
-.screen.show{display:flex}
-.screen.visible{opacity:1;transform:scale(1)}
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
 
-.topbar{width:100%;max-width:850px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto;z-index:5}
-.brand{font-size:.85rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 20px 14px 44px;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(212, 162, 56, 0.18), transparent 48%),
+        var(--bg-night);
+      color: var(--text-main);
+      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
 
-.langs-hero {
-  display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
-  width: 100%; max-width: 850px; margin: 8px 0 12px 0; z-index: 10;
-}
-.lang-btn{
-  background:var(--card);border:2px solid var(--line);color:var(--txt);
-  padding:12px 20px;border-radius:18px;font-size:2.6rem;cursor:pointer;
-  min-width:85px;min-height:70px;transition:.2s; display:inline-flex;align-items:center;justify-content:center;
-}
-.lang-btn.active{background:var(--ink);border-color:var(--gold);box-shadow:0 0 20px rgba(216,178,95,.6);transform:scale(1.08);}
+    .card {
+      width: 100%;
+      max-width: 500px;
+      background: linear-gradient(180deg, rgba(25, 28, 36, 0.96) 0%, rgba(17, 19, 25, 0.98) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 22px 18px 26px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+      position: relative;
+      overflow: hidden;
+    }
 
-h1{font-size:clamp(1.5rem,4.2vw,2.2rem);margin:2px 0;text-align:center;font-weight:800}
-.sub{color:var(--txt-dim);text-align:center;font-size:clamp(.85rem,2.2vw,1rem);margin:0 0 6px;max-width:42ch}
-h2.scr-title{font-size:clamp(1rem,3.4vw,1.35rem);margin:4px 0 2px;text-align:center;font-weight:700}
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-bright), var(--gold), transparent);
+    }
 
-.btn{
-  border:none;border-radius:14px;cursor:pointer;font-weight:800;
-  padding:14px 22px;font-size:1rem;min-height:50px;
-  background:var(--ink);color:#fff;transition:transform .12s ease,opacity .2s;
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;
-}
-.btn:active{transform:scale(.97)}
-.btn[disabled]{opacity:.42;cursor:not-allowed}
-.btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--txt)}
-.btn.big{padding:16px 40px;font-size:1.25rem;border-radius:20px;min-height:62px;
-  box-shadow:0 10px 34px rgba(138,34,34,.45)}
-.btn.ok{background:var(--ok)}
-.btn.sm{padding:11px 15px;font-size:.88rem;min-height:46px;border-radius:12px}
-.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:850px}
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
 
-.tutorial-box {
-  width: 100%; max-width: 520px; margin: 6px auto;
-  border-radius: 20px; overflow: hidden; text-align: center;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  box-shadow: 0 14px 40px rgba(0,0,0,0.8); background: #000; border: 3px solid var(--gold);
-}
-.tutorial-box video { width: 100%; height: auto; max-height: 340px; object-fit: cover; display: block; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
 
-.fall{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+    .shell-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(212, 162, 56, 0.22), rgba(212, 162, 56, 0.06));
+      border: 1px solid var(--border-gold);
+      color: var(--gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
 
-.stage0{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;flex:1 1 auto;gap:clamp(6px,1.2vh,12px);width:100%}
+    .brand-text h1 {
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 1.2rem;
+      margin: 0;
+      color: var(--text-main);
+    }
 
-.dual-container {
-  display: flex; gap: 20px; width: 100%; max-width: 700px; justify-content: center; margin-top: 15px;
-}
-.dual-card {
-  flex: 1; background: var(--card); border: 3px solid var(--line); border-radius: 22px;
-  padding: 30px 20px; text-align: center; cursor: pointer; transition: 0.2s;
-  display: flex; flex-direction: column; align-items: center; gap: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-}
-.dual-card:hover, .dual-card:active {
-  border-color: var(--gold); background: var(--card2); transform: translateY(-3px);
-}
-.dual-icon { font-size: 3.8rem; }
-.dual-title { font-size: 1.25rem; font-weight: 800; color: var(--txt); }
-.dual-desc { font-size: 0.85rem; color: var(--txt-dim); line-height: 1.4; }
+    .brand-text .tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      margin-top: 2px;
+      display: block;
+    }
 
-.whatsapp-box {
-  background: var(--card); border: 2px solid var(--gold); border-radius: 20px;
-  padding: 24px; max-width: 580px; width: 90%; text-align: center;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.6); margin: auto;
-}
-.whatsapp-box h3 { color: var(--gold); margin-top: 0; font-size: 1.4rem; }
+    .lang-select {
+      padding: 7px 10px;
+      border-radius: 11px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
 
-.stagewrap{position:relative;z-index:2;flex:1 1 auto;display:flex;
-  align-items:center;justify-content:center;width:100%;min-height:0}
-.stage{
-  position:relative;border-radius:50%;background:#fff;
-  box-shadow:0 12px 40px rgba(0,0,0,.55);overflow:hidden;
-  width:10px;height:10px;
-  flex:0 0 auto;
-}
-.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-#liveVideo{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scaleX(-1);
-  border-radius:50%;object-fit:cover;background:#111;z-index:1;
-}
-#liveVideo.nomirror{transform:translate(-50%,-50%)}
-#frameOverlay{z-index:2}
+    .subtitle {
+      margin: 0 0 20px;
+      font-size: 0.88rem;
+      line-height: 1.48;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--gold);
+      padding: 11px 13px;
+      border-radius: 12px;
+    }
 
-.timer{
-  position:absolute;z-index:8;top:0;right:0;
-  display:flex;flex-direction:column;align-items:center;gap:2px;
-  background:rgba(12,14,20,.92);border:2px solid var(--gold);
-  border-radius:16px;padding:8px 12px;min-width:72px;
-  box-shadow:0 6px 20px rgba(0,0,0,.5);
-}
-.timer .num{font-size:1.7rem;font-weight:800;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums}
-.timer .lab{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--txt-dim);white-space:nowrap}
-.timer.warn{border-color:var(--err);animation:pulse 1s ease-in-out infinite}
-.timer.warn .num{color:#ff8b82}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
-.timer .bar{width:100%;height:4px;border-radius:3px;background:rgba(255,255,255,.15);overflow:hidden}
-.timer .bar i{display:block;height:100%;width:100%;background:var(--gold);transition:width .2s linear}
-.timer.warn .bar i{background:var(--err)}
+    .step-section {
+      margin-bottom: 18px;
+    }
 
-.badge{
-  position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);
-  background:rgba(10,12,16,.9);color:#fff;padding:14px 22px;border-radius:30px;
-  font-weight:700;font-size:.9rem;text-align:center;max-width:86%;
-  border:1px solid rgba(216,178,95,.45);
-}
-.badge .spin{display:inline-block;width:16px;height:16px;margin-right:8px;vertical-align:-3px;
-  border:2px solid rgba(255,255,255,.3);border-top-color:var(--gold);border-radius:50%;
-  animation:sp .9s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
+    .step-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 10px;
+    }
 
-@keyframes blinker {
-  0% { opacity: 1; transform: scale(1); text-shadow: 0 0 10px rgba(216,178,95,0.8); }
-  50% { opacity: 0.6; transform: scale(1.02); text-shadow: 0 0 2px rgba(216,178,95,0.2); }
-  100% { opacity: 1; transform: scale(1); text-shadow: 0 0 10px rgba(216,178,95,0.8); }
-}
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--gold-glow);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-bright);
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
 
-@keyframes pulseArrow {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(6px); }
-  100% { transform: translateX(0); }
-}
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
 
-.section-row {
-  display: flex; align-items: center; justify-content: flex-start;
-  width: 100%; max-width: 540px; gap: 10px; margin-top: 3px;
-}
-.side-label {
-  min-width: 128px; color: var(--gold); font-size: 0.85rem; font-weight: 900;
-  text-align: left; animation: blinker 1.8s infinite ease-in-out;
-}
+    .color-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 4px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 13px;
+      cursor: pointer;
+      background: var(--bg-elevated);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
 
-.color-pickers{display:flex;gap:8px;flex:1;}
-.color-btn{flex:1;height:34px;border:2px solid var(--line);border-radius:10px;cursor:pointer;transition:.2s;}
-.color-btn.sel{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,178,95,.3);}
+    .color-option input[type="radio"] {
+      display: none;
+    }
 
-.qty-pickers{display:flex;gap:6px;flex:1;}
-.qty-btn{
-  flex:1;background:var(--card);border:2px solid var(--line);color:var(--txt);
-  border-radius:10px;padding:5px 2px;cursor:pointer;text-align:center;transition:.18s;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-}
-.qty-btn strong{font-size:0.95rem;line-height:1.1;}
-.qty-btn span{font-size:0.72rem;color:var(--gold);font-weight:700;}
-.qty-btn.sel{border-color:var(--gold);background:var(--card2);box-shadow:0 0 0 3px rgba(216,178,95,.25);}
+    .swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+    }
 
-.pickup-pickers{display:flex;gap:8px;flex:1;}
-.pickup-btn{
-  flex:1;background:var(--card);border:2px solid var(--line);color:var(--txt);
-  border-radius:10px;padding:8px 6px;font-size:0.82rem;font-weight:800;cursor:pointer;transition:.18s;
-}
-.pickup-btn.sel{border-color:var(--gold);background:var(--card2);color:var(--gold);box-shadow:0 0 0 3px rgba(216,178,95,.25);}
+    .color-option:has(input[type="radio"]:checked) {
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.14);
+      color: var(--text-main);
+      font-weight: 700;
+    }
 
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex:1;}
-.card{
-  background:var(--card);border:2px solid var(--line);border-radius:12px;
-  padding:4px 3px 4px;cursor:pointer;text-align:center;transition:.18s;
-}
-.card.sel{border-color:var(--gold);background:var(--card2);box-shadow:0 0 0 3px rgba(216,178,95,.25)}
-.card canvas{width:100%;aspect-ratio:1/1;border-radius:50%;background:#fff;display:block}
-.card .nm{font-size:.58rem;color:var(--txt-dim);margin-top:3px;line-height:1.15;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card.sel .nm{color:var(--gold);font-weight:700}
+    .marco-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
 
-.datebox{
-  display:flex;align-items:center;gap:10px;justify-content:center;
-  width:100%;max-width:540px;margin-top:3px;
-  border: 2px dashed rgba(216,178,95,0.6); padding: 5px 8px; border-radius: 14px; background: rgba(216,178,95,0.05);
-}
-.datebox label{
-  font-size:0.82rem;color:var(--gold);font-weight:900;white-space:nowrap;
-}
-input[type="date"] {
-  background:var(--card);border:1px solid var(--line);color:var(--txt);
-  padding:6px 10px;border-radius:10px;font-size:.88rem;min-height:36px;flex:1;max-width:190px;
-}
-input[type="range"] { flex: 1; max-width: 160px; }
-.ctlblock{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
-  gap:clamp(3px,0.7vh,5px);width:100%;z-index:2}
+    .marco-option {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 8px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      cursor: pointer;
+      background: var(--bg-elevated);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
 
-.print-container {
-  display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; margin-top: 2px;
-}
-.pulse-arrow {
-  font-size: 1.8rem; color: var(--gold); font-weight: 900;
-  animation: pulseArrow 0.8s infinite ease-in-out;
-}
-.pulse-arrow.left { animation-direction: reverse; }
+    .marco-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
 
-.panel{
-  background:var(--card);border:1px solid var(--line);border-left:4px solid var(--err);
-  border-radius:14px;padding:12px 14px;max-width:540px;width:100%;
-}
-.panel h3{margin:0 0 4px;font-size:0.95rem}
-.panel p{margin:0 0 10px;color:var(--txt-dim);font-size:0.82rem;line-height:1.4}
+    .marco-frame-box {
+      width: 92px;
+      height: 92px;
+      border-radius: 12px;
+      background: #ffffff;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;
-  background:rgba(6,8,12,.82);padding:18px}
-.modal.show{display:flex}
-.modal .box{background:var(--card);border:1px solid var(--line);border-radius:22px;
-  padding:26px 22px;max-width:440px;width:100%;text-align:center}
-.modal h3{margin:0 0 8px;font-size:1.3rem}
-.modal p{margin:0 0 6px;color:var(--txt-dim)}
-.modal .mini{font-size:.8rem;color:var(--txt-dim);margin-bottom:16px}
-.modal .row{gap:12px}
-.modal .btn{flex:1 1 150px}
+    .marco-option img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
 
-.done-ico{font-size:4rem}
-.summary-ticket{
-  background:var(--card);border:2px solid var(--gold);border-radius:18px;
-  padding:18px 24px;max-width:460px;width:92%;text-align:center;margin:8px 0;
-}
-.summary-ticket .price{font-size:2rem;font-weight:900;color:var(--gold);margin:4px 0;}
-</style>
+    .marco-option span {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .marco-option:has(input[type="radio"]:checked) {
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.14);
+    }
+
+    .marco-option:has(input[type="radio"]:checked) span {
+      color: var(--gold-bright);
+      font-weight: 700;
+    }
+
+    .qty-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .qty-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 10px 2px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 13px;
+      cursor: pointer;
+      background: var(--bg-elevated);
+    }
+
+    .qty-option input[type="radio"] {
+      display: none;
+    }
+
+    .qty-option strong {
+      font-size: 0.92rem;
+    }
+
+    .qty-option span {
+      font-size: 0.75rem;
+      color: var(--gold-bright);
+      font-weight: 700;
+    }
+
+    .qty-option:has(input[type="radio"]:checked) {
+      border-color: var(--gold);
+      background: rgba(212, 162, 56, 0.14);
+    }
+
+    .photo-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .photo-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 14px 10px;
+      border: 1px dashed rgba(212, 162, 56, 0.42);
+      border-radius: 15px;
+      background: var(--bg-elevated);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .photo-btn svg {
+      width: 22px;
+      height: 22px;
+      color: var(--gold-bright);
+    }
+
+    .hidden-input {
+      display: none;
+    }
+
+    .file-badge {
+      margin-top: 10px;
+      padding: 9px 12px;
+      border-radius: 11px;
+      background: rgba(212, 162, 56, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-bright);
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .file-badge.visible {
+      display: flex;
+    }
+
+    .clear-file {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .consent-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 13px 14px;
+      margin: 16px 0 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      user-select: none;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .consent-box:has(input[type="checkbox"]:checked) {
+      border-color: var(--border-gold);
+      background: rgba(212, 162, 56, 0.09);
+    }
+
+    .consent-box input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: var(--gold);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .consent-text {
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--text-muted);
+    }
+
+    .consent-box:has(input[type="checkbox"]:checked) .consent-text {
+      color: var(--text-main);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+      color: #12100c;
+      font-size: 1.02rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: opacity 0.15s ease, filter 0.15s ease;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.42;
+      filter: grayscale(0.5);
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      display: none;
+      line-height: 1.45;
+    }
+
+    .status.ok {
+      display: block;
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
+    }
+
+    .status.err {
+      display: block;
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid var(--error-border);
+    }
+
+    .status-title {
+      font-weight: 800;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
 <body>
-
-<div id="buildTag">KIOSK v5.8</div>
-
-<!-- SCREEN 0 : START -->
-<section id="s0" class="screen">
-  <div class="fall" id="fall0"></div>
-  <div class="topbar" style="justify-content: center;">
-    <div class="brand">Ultreia et Suseia</div>
-  </div>
-
-  <div class="langs-hero">
-    <button class="lang-btn active" data-lang="es" title="Español">🇪🇸</button>
-    <button class="lang-btn" data-lang="gb" title="English">🇬🇧</button>
-    <button class="lang-btn" data-lang="de" title="Deutsch">🇩🇪</button>
-    <button class="lang-btn" data-lang="fr" title="Français">🇫🇷</button>
-    <button class="lang-btn" data-lang="pt" title="Português">🇵🇹</button>
-    <button class="lang-btn" data-lang="cn" title="中文">🇨🇳</button>
-    <button class="lang-btn" data-lang="ua" title="Українська">🇺🇦</button>
-  </div>
-
-  <div class="stage0">
-    <h1 data-t="welcomeTitle">Sello del Peregrino</h1>
-    <p class="sub" data-t="welcomeSub">Hazte una foto y llévate tu sello en la credencial.</p>
-    
-    <div class="tutorial-box">
-      <video id="promoVideo" autoplay muted playsinline></video>
-    </div>
-
-    <button class="btn big" id="btnStart" data-t="start">Comenzar</button>
-  </div>
-</section>
-
-<!-- SCREEN 1 : DUAL CHOICE -->
-<section id="s1" class="screen">
-  <div class="fall" id="fall1"></div>
-  <div class="topbar">
-    <div class="brand" data-t="step1">Paso 1 · Elige tu foto</div>
-    <button class="btn ghost sm" id="btnBack1" data-t="back">Volver</button>
-  </div>
-  <div class="stage0" style="justify-content: center; gap: 20px;">
-    <h1 data-t="choiceTitle">¿Cómo quieres poner tu foto?</h1>
-    <p class="sub" data-t="choiceSub">Hazte un selfie ahora mismo o escanea el QR desde tu móvil.</p>
-    
-    <div class="dual-container">
-      <div class="dual-card" id="btnChooseCamera">
-        <div class="dual-icon">📸</div>
-        <div class="dual-title" data-t="optCamTitle">Hacerse un Selfie</div>
-        <div class="dual-desc" data-t="optCamDesc">Usa la cámara de la tablet con cuenta atrás.</div>
+  <div class="card">
+    <div class="header">
+      <div class="brand">
+        <div class="shell-badge" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20c-4.8 0-9-3.2-9-8.2C3 7.2 7 4 12 4s9 3.2 9 7.8c0 5-4.2 8.2-9 8.2Z"/>
+            <path d="M12 20V4"/>
+            <path d="M12 20 6.8 5.6"/>
+            <path d="M12 20 17.2 5.6"/>
+            <path d="M12 20 3.6 10.5"/>
+            <path d="M12 20 20.4 10.5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Stamp My Face</h1>
+          <span class="tag" id="txt-tag">Camino de Santiago · Live Kiosk</span>
+        </div>
       </div>
-      <div class="dual-card" id="btnChooseMemory">
-        <div class="dual-icon">📱</div>
-        <div class="dual-title" data-t="optMemTitle">Escanear QR</div>
-        <div class="dual-desc" data-t="optMemDesc">Sube la foto escaneando el código con tu móvil.</div>
+
+      <select id="idioma" class="lang-select" aria-label="Language">
+        <option value="es" selected>ES</option>
+        <option value="en">EN</option>
+        <option value="de">DE</option>
+      </select>
+    </div>
+
+    <p class="subtitle" id="txt-sub">
+      Elige primero el color de tinta y el marco de tu sello, haz tu foto y pulsa Imprimir.
+    </p>
+
+    <form id="kiosk-form">
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">1</span>
+          <span id="lbl-color">Color de tinta del sello</span>
+        </div>
+        <div class="color-grid">
+          <label class="color-option">
+            <input type="radio" name="color" value="111827" checked />
+            <span class="swatch" style="background:#111827;"></span>
+            <span id="col-black">Negro</span>
+          </label>
+
+          <label class="color-option">
+            <input type="radio" name="color" value="1e3a8a" />
+            <span class="swatch" style="background:#1e3a8a;"></span>
+            <span id="col-blue">Azul</span>
+          </label>
+
+          <label class="color-option">
+            <input type="radio" name="color" value="7f1d1d" />
+            <span class="swatch" style="background:#7f1d1d;"></span>
+            <span id="col-red">Rojo</span>
+          </label>
+
+          <label class="color-option">
+            <input type="radio" name="color" value="065f46" />
+            <span class="swatch" style="background:#065f46;"></span>
+            <span id="col-green">Verde</span>
+          </label>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- SCREEN 1A : LIVE CAMERA -->
-<section id="s1a" class="screen">
-  <div class="fall" id="fall1a"></div>
-  <div class="topbar">
-    <div class="brand" data-t="step1cam">Paso 1 · Cámara</div>
-    <button class="btn ghost sm" id="btnBackCam" data-t="back">Volver</button>
-  </div>
-  <h2 class="scr-title" data-t="lookCamera">Mira a la cámara</h2>
-  <div class="stagewrap" id="wrap1">
-    <div class="stage" id="stage1">
-      <video id="liveVideo" autoplay playsinline muted></video>
-      <canvas id="frameOverlay" width="600" height="600"></canvas>
-    </div>
-    <div class="timer" id="timer1">
-      <div class="num" id="cd1">10</div>
-      <div class="bar"><i id="bar1"></i></div>
-      <div class="lab" data-t="tmrPhoto">Foto en</div>
-    </div>
-  </div>
-  <div class="ctlblock">
-    <div id="camError" class="panel" style="display:none">
-      <h3 data-t="camErrTitle">No se puede abrir la cámara</h3>
-      <p id="camErrMsg"></p>
-      <div class="row">
-        <button class="btn sm" id="btnRetryCam" data-t="retry">Reintentar</button>
-        <button class="btn sm ghost" id="btnBackCamErr" data-t="back">Volver</button>
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">2</span>
+          <span id="lbl-frame">Elige el diseño de tu marco</span>
+        </div>
+        <div class="marco-grid">
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco1.jpg" checked />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco1.jpg" alt="Diseño 1" />
+            </div>
+            <span id="st-1">Diseño 1</span>
+          </label>
+
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco2.jpg" />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco2.jpg" alt="Diseño 2" />
+            </div>
+            <span id="st-2">Diseño 2</span>
+          </label>
+
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco3.jpg" />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco3.jpg" alt="Diseño 3" />
+            </div>
+            <span id="st-3">Diseño 3</span>
+          </label>
+
+          <label class="marco-option">
+            <input type="radio" name="estilo" value="marco4.jpg" />
+            <div class="marco-frame-box">
+              <img src="https://raw.githubusercontent.com/sellosmiguelplata/SellosCaminoCompostela/main/marco4.jpg" alt="Diseño 4" />
+            </div>
+            <span id="st-4">Diseño 4</span>
+          </label>
+        </div>
       </div>
-    </div>
-    <div class="row" id="camControls">
-      <button class="btn" id="btnShoot" data-t="shootNow">Hacer la foto ahora</button>
-    </div>
-  </div>
-</section>
 
-<!-- SCREEN 1B : QR INSTRUCTIONS -->
-<section id="s1b" class="screen">
-  <div class="fall" id="fall1b"></div>
-  <div class="topbar">
-    <div class="brand" data-t="step1mem">Paso 1 · Escanea el QR</div>
-    <button class="btn ghost sm" id="btnBackMem" data-t="back">Volver</button>
-  </div>
-  <div class="stage0" style="justify-content: center;">
-    <div class="whatsapp-box" style="text-align: center;">
-      <h3 style="color: var(--gold);" data-t="qrBoxTitle">📱 Sube la foto desde tu móvil</h3>
-      <p data-t="qrBoxSub">Escanea este código con tu cámara y elige la foto. Aparecerá aquí al instante.</p>
-      <img id="qrImage" src="" alt="Código QR" style="width: 220px; height: 220px; margin: 15px auto; border-radius: 10px; display: block; border: 4px solid white;">
-      <p id="qrStatus" data-t="qrWaiting" style="color: var(--ok); font-weight: bold;">Esperando foto...</p>
-    </div>
-  </div>
-</section>
-
-<!-- SCREEN 2 : DESIGN + DATE + COPIES + PICKUP -->
-<section id="s2" class="screen">
-  <div class="topbar">
-    <div class="brand" data-t="step2">Paso 2 · Tu sello</div>
-    <button class="btn ghost sm" id="btnCancel2" data-t="cancel">Cancelar</button>
-  </div>
-  <div class="stagewrap" id="wrap2">
-    <div class="stage" id="stage2">
-      <canvas id="stampCanvas" width="600" height="600"></canvas>
-      <div class="badge" id="aiBadge" style="display:none"><span class="spin"></span><span id="aiBadgeTxt"></span></div>
-    </div>
-    <div class="timer" id="timer2">
-      <div class="num" id="cd2">60</div>
-      <div class="bar"><i id="bar2"></i></div>
-      <div class="lab" data-t="tmrEdit">Tiempo</div>
-    </div>
-  </div>
-  <div class="ctlblock">
-    <div id="aiError" class="panel" style="display:none">
-      <h3 data-t="aiErrTitle">No hemos podido crear el dibujo</h3>
-      <p id="aiErrMsg" data-t="aiErrMsg">El servicio no responde. Inténtalo de nuevo.</p>
-      <div class="row">
-        <button class="btn sm" id="btnRetryAi" data-t="retry">Reintentar</button>
-        <button class="btn sm ghost" id="btnRestartAi" data-t="startAgain">Empezar de nuevo</button>
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">3</span>
+          <span id="lbl-qty">Cantidad de sellos</span>
+        </div>
+        <div class="qty-grid">
+          <label class="qty-option">
+            <input type="radio" name="cantidad" value="1" data-price="4" checked />
+            <strong>1x</strong>
+            <span>4 €</span>
+          </label>
+          <label class="qty-option">
+            <input type="radio" name="cantidad" value="2" data-price="8" />
+            <strong>2x</strong>
+            <span>8 €</span>
+          </label>
+          <label class="qty-option">
+            <input type="radio" name="cantidad" value="3" data-price="11" />
+            <strong>3x</strong>
+            <span>11 €</span>
+          </label>
+          <label class="qty-option">
+            <input type="radio" name="cantidad" value="4" data-price="14" />
+            <strong>4x</strong>
+            <span>14 €</span>
+          </label>
+          <label class="qty-option">
+            <input type="radio" name="cantidad" value="5" data-price="16" />
+            <strong>5x</strong>
+            <span>16 €</span>
+          </label>
+        </div>
       </div>
-    </div>
-    
-    <div class="section-row">
-      <div class="side-label" data-t="lblChooseColor">👉 Elige tu color:</div>
-      <div class="color-pickers" id="colorPickers">
-        <button class="color-btn sel" data-color="#8a2222" style="background: #8a2222;"></button>
-        <button class="color-btn" data-color="#1e3a8a" style="background: #1e3a8a;"></button>
-        <button class="color-btn" data-color="#065f46" style="background: #065f46;"></button>
-        <button class="color-btn" data-color="#111827" style="background: #111827;"></button>
+
+      <div class="step-section">
+        <div class="step-title">
+          <span class="step-num">4</span>
+          <span id="lbl-photo">Tu retrato (selfie o galería)</span>
+        </div>
+
+        <input type="file" id="foto-camera" class="hidden-input" accept="image/*" capture="user" />
+        <input type="file" id="foto-gallery" class="hidden-input" accept="image/*" />
+
+        <div class="photo-actions">
+          <button type="button" class="photo-btn" id="btn-camera">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+              <circle cx="12" cy="13" r="3"/>
+            </svg>
+            <span id="txt-cam">Hacer selfie</span>
+          </button>
+
+          <button type="button" class="photo-btn" id="btn-gallery">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span id="txt-gal">Subir foto</span>
+          </button>
+        </div>
+
+        <div class="file-badge" id="file-badge">
+          <span id="file-name-text">Foto lista</span>
+          <button type="button" class="clear-file" id="clear-file" title="Quitar">✕</button>
+        </div>
       </div>
-    </div>
 
-    <div class="section-row">
-      <div class="side-label" data-t="lblChooseStamp">👉 Elige tu sello:</div>
-      <div class="cards" id="designCards"></div>
-    </div>
+      <label class="consent-box" for="gdpr-consent">
+        <input type="checkbox" id="gdpr-consent" required />
+        <span class="consent-text" id="txt-consent">
+          Autorizo el tratamiento temporal de mi fotografía exclusivamente para generar y grabar mi sello de peregrino (RGPD / Protección de datos).
+        </span>
+      </label>
 
-    <div class="section-row">
-      <div class="side-label" data-t="lblChooseQty">👨‍👩‍👧‍👦 Copias:</div>
-      <div class="qty-pickers" id="qtyPickers">
-        <button class="qty-btn sel" data-qty="1" data-price="4"><strong>1x</strong><span>4 €</span></button>
-        <button class="qty-btn" data-qty="2" data-price="8"><strong>2x</strong><span>8 €</span></button>
-        <button class="qty-btn" data-qty="3" data-price="11"><strong>3x</strong><span>11 €</span></button>
-        <button class="qty-btn" data-qty="4" data-price="14"><strong>4x</strong><span>14 €</span></button>
-        <button class="qty-btn" data-qty="5" data-price="16"><strong>5x</strong><span>16 €</span></button>
-      </div>
-    </div>
+      <button type="submit" class="submit-btn" id="submit-btn" disabled>Imprimir · 4 €</button>
+      <div id="status" class="status"></div>
+    </form>
 
-    <div class="section-row">
-      <div class="side-label" data-t="lblPickup">🕒 Entrega:</div>
-      <div class="pickup-pickers" id="pickupPickers">
-        <button class="pickup-btn sel" data-pickup="HOY" data-t="pickupNow">⚡ Ahora mismo</button>
-        <button class="pickup-btn" data-pickup="MANANA" data-t="pickupTomorrow">📅 Recoger mañana</button>
-      </div>
-    </div>
-    
-    <div class="datebox">
-      <label data-t="lblChooseDate">📍 Día:</label>
-      <input type="date" id="dateInput">
-      <label style="color:var(--txt-dim);" data-t="thresholdLabel">Detalle:</label>
-      <input type="range" id="thresholdRange" min="10" max="240" step="5" value="110">
-    </div>
-
-    <div class="print-container">
-      <span class="pulse-arrow left">👉</span>
-      <button class="btn ok big" id="btnPrint" disabled>
-        <span data-t="print">Imprimir sello</span> · <span id="btnPriceTag">4 €</span>
-      </button>
-      <span class="pulse-arrow right">👈</span>
+    <div class="footer-note" id="txt-footer">
+      Buen Camino · Recoge tu sello grabado al instante
     </div>
   </div>
-</section>
 
-<!-- SCREEN 3 : DONE -->
-<section id="s3" class="screen">
-  <div class="fall" id="fall3"></div>
-  <div class="stage0">
-    <div class="done-ico">🐚</div>
-    <h1 data-t="doneTitle">¡Buen Camino!</h1>
-    <div class="summary-ticket">
-      <div id="doneSummaryText" style="font-size:1.05rem;font-weight:700;"></div>
-      <div class="price" id="doneSummaryPrice">4 €</div>
-      <div id="doneSummaryPickup" style="font-size:0.9rem;color:var(--txt-dim);"></div>
-    </div>
-    <p class="sub" data-t="doneSub">Pasa por el mostrador para abonar y recoger tu sello.</p>
-    <button class="btn ghost" id="btnDoneNow" data-t="finish">Finalizar</button>
-  </div>
-</section>
+  <script>
+    const WEBHOOK_URL = "https://hook.eu1.make.com/lqq9d91pvhkkssmte4ukt8cik4ulgj9v";
 
-<!-- MODAL -->
-<div class="modal" id="modalTimeout">
-  <div class="box">
-    <h3 data-t="tmTitle">¿Imprimimos tu sello?</h3>
-    <p data-t="tmMsg">Se ha acabado el tiempo de edición.</p>
-    <div class="mini"><span data-t="tmAuto">Volvemos al inicio en</span> <b id="modalCd">25</b> s</div>
-    <div class="row">
-      <button class="btn ok" id="btnModalPrint" data-t="print">Imprimir sello</button>
-      <button class="btn ghost" id="btnModalRestart" data-t="startAgain">Empezar de nuevo</button>
-    </div>
-  </div>
-</div>
+    let selectedFile = null;
+    let detectedPhotoDate = null;
 
-<script>
-const CONFIG = {
-  AI_WEBHOOK_URL   : "https://hook.eu1.make.com/lqq9d91pvhkkssmte4ukt8cik4ulgj9v",
-  PRINT_WEBHOOK_URL: "https://hook.eu1.make.com/sr9r5dniiqlkgkyq5eeeihfnw88mj45z",
-  DOWNLOAD_ON_PRINT: false,
-  INK_COLOR  : "#8a2222",
-  FRAMES: [
-    { file:"marco1.jpg", key:"opt1" },
-    { file:"marco2.jpg", key:"opt2" },
-    { file:"marco3.jpg", key:"opt3" },
-    { file:"marco4.jpg", key:"opt4" }
-  ],
-  DEFAULT_FRAME_INDEX: 0,
-  PHOTO_RADIUS     : 170,
-  PHOTO_SCALE      : 1.00,
-  PHOTO_OFFSET_Y   : -6,
-  LINE_THRESHOLD   : 110,
-  FRAME_THRESHOLD  : 120,
-  FONT_TOP         : 40,
-  FONT_DATE        : 36,
-  RADIUS_TOP       : 268,
-  RADIUS_DATE      : 275,
-  SELFIE_COUNTDOWN : 10,
-  EDIT_COUNTDOWN   : 60,
-  MODAL_TIMEOUT    : 25,
-  DONE_TIMEOUT     : 10,
-  IDLE_TIMEOUT     : 90,
-  AI_TIMEOUT       : 30,
-  AI_MAX_ATTEMPTS  : 3,
-  EXPORT_SIZE   : 1800,
-  JPEG_QUALITY  : 0.95,
-  CAPTURE_SIZE  : 1024,
-  MIRROR_SELFIE : true,
-  MAX_STAGE_PX  : 420,
-  DEFAULT_LANG  : "es"
-};
-
-const $ = id => document.getElementById(id);
-
-const I18N = {
-  es:{welcomeTitle:"Sello del Peregrino",welcomeSub:"Hazte una foto y llévate tu sello en la credencial.",start:"Comenzar",
-   step1:"Paso 1 · Foto",choiceTitle:"¿Cómo quieres poner tu foto?",choiceSub:"Hazte un selfie ahora mismo o escanea el QR.",
-   optCamTitle:"Hacerse un Selfie",optCamDesc:"Usa la cámara de la tablet con cuenta atrás.",
-   optMemTitle:"Escanear QR",optMemDesc:"Sube la foto escaneando el código con tu móvil.",
-   step1cam:"Paso 1 · Cámara",lookCamera:"Mira a la cámara",shootNow:"Hacer la foto ahora",back:"Volver",cancel:"Cancelar",retry:"Reintentar",
-   step1mem:"Paso 1 · Escanea el QR",qrBoxTitle:"📱 Sube la foto desde tu móvil",qrBoxSub:"Escanea este código con tu cámara y elige la foto.",qrWaiting:"Esperando foto...",
-   step2:"Paso 2 · Tu sello",thresholdLabel:"Detalle:",print:"Imprimir sello",startAgain:"Empezar de nuevo",
-   aiLoading:"Creando tu sello…",aiRetrying:"Reintentando…",
-   aiErrTitle:"No hemos podido crear el dibujo",aiErrMsg:"El servicio no responde. Inténtalo de nuevo.",
-   tmTitle:"¿Imprimimos tu sello?",tmMsg:"Se ha acabado el tiempo de edición.",
-   doneTitle:"¡Buen Camino!",doneSub:"Pasa por el mostrador para abonar y recoger tu sello.",finish:"Finalizar",
-   opt1:"Sello 1",opt2:"Sello 2",opt3:"Sello 3",opt4:"Sello 4",
-   lblChooseColor:"👉 Color:", lblChooseStamp:"👉 Sello:", lblChooseDate:"📍 Día:",
-   lblChooseQty:"👨‍👩‍👧‍👦 Copias:", lblPickup:"🕒 Entrega:", pickupNow:"⚡ Ahora mismo", pickupTomorrow:"📅 Recoger mañana"},
-  gb:{welcomeTitle:"Pilgrim Stamp",welcomeSub:"Take a selfie and get your stamp in your credential.",start:"Start",
-   step1:"Step 1 · Photo",choiceTitle:"How would you like your photo?",choiceSub:"Take a selfie or scan the QR.",
-   optCamTitle:"Take a Selfie",optCamDesc:"Use tablet camera with countdown.",
-   optMemTitle:"Scan QR",optMemDesc:"Upload photo by scanning code with mobile.",
-   step1cam:"Step 1 · Camera",lookCamera:"Look at the camera",shootNow:"Take photo now",back:"Back",cancel:"Cancel",retry:"Retry",
-   step1mem:"Step 1 · Scan QR",qrBoxTitle:"📱 Upload photo from mobile",qrBoxSub:"Scan code and choose photo.",qrWaiting:"Waiting for photo...",
-   step2:"Step 2 · Your stamp",thresholdLabel:"Details:",print:"Print stamp",startAgain:"Start again",
-   aiLoading:"Creating your stamp…",aiRetrying:"Retrying…",
-   aiErrTitle:"We could not create the drawing",aiErrMsg:"Service not responding.",
-   tmTitle:"Shall we print?",tmMsg:"Time is over.",
-   doneTitle:"Buen Camino!",doneSub:"Please pay and collect your stamp at the counter.",finish:"Finish",
-   opt1:"Stamp 1",opt2:"Stamp 2",opt3:"Stamp 3",opt4:"Stamp 4",
-   lblChooseColor:"👉 Color:", lblChooseStamp:"👉 Stamp:", lblChooseDate:"📍 Date:",
-   lblChooseQty:"👨‍👩‍👧‍👦 Copies:", lblPickup:"🕒 Pickup:", pickupNow:"⚡ Right now", pickupTomorrow:"📅 Pick up tomorrow"},
-  de:{welcomeTitle:"Pilgerstempel",welcomeSub:"Mach ein Selfie oder scanne den QR-Code.",start:"Starten",
-   step1:"Schritt 1 · Foto",choiceTitle:"Wie möchten Sie Ihr Foto hinzufügen?",choiceSub:"Machen Sie ein Selfie oder scannen Sie den QR-Code.",
-   optCamTitle:"Selfie machen",optCamDesc:"Tabletkamera nutzen.",
-   optMemTitle:"QR scannen",optMemDesc:"Foto mit dem Handy hochladen.",
-   step1cam:"Schritt 1 · Kamera",lookCamera:"Schau in die Kamera",shootNow:"Foto machen",back:"Zurück",cancel:"Abbrechen",retry:"Erneut",
-   step1mem:"Schritt 1 · QR scannen",qrBoxTitle:"📱 Foto vom Handy hochladen",qrBoxSub:"Code scannen und Foto wählen.",qrWaiting:"Warten auf Foto...",
-   step2:"Schritt 2 · Dein Stempel",thresholdLabel:"Details:",print:"Drucken",startAgain:"Neu starten",
-   aiLoading:"Erstelle Stempel…",aiRetrying:"Neuer Versuch…",
-   aiErrTitle:"Fehler",aiErrMsg:"Dienst antwortet nicht.",
-   tmTitle:"Drucken?",tmMsg:"Zeit abgelaufen.",
-   doneTitle:"Buen Camino!",doneSub:"Bitte am Tresen bezahlen und abholen.",finish:"Beenden",
-   opt1:"Stempel 1",opt2:"Stempel 2",opt3:"Stempel 3",opt4:"Stempel 4",
-   lblChooseColor:"👉 Farbe:", lblChooseStamp:"👉 Stempel:", lblChooseDate:"📍 Datum:",
-   lblChooseQty:"👨‍👩‍👧‍👦 Anzahl:", lblPickup:"🕒 Abholung:", pickupNow:"⚡ Sofort", pickupTomorrow:"📅 Morgen abholen"},
-  fr:{welcomeTitle:"Tampon du Pèlerin",welcomeSub:"Prends un selfie ou scanne le QR code.",start:"Commencer",
-   step1:"Étape 1 · Photo",choiceTitle:"Comment ajouter votre photo ?",choiceSub:"Prenez un selfie ou scannez le QR code.",
-   optCamTitle:"Prendre un selfie",optCamDesc:"Utilisez la caméra.",
-   optMemTitle:"Scanner QR",optMemDesc:"Téléchargez la photo via mobile.",
-   step1cam:"Étape 1 · Caméra",lookCamera:"Regardez l'objectif",shootNow:"Prendre la photo",back:"Retour",cancel:"Annuler",retry:"Réessayer",
-   step1mem:"Étape 1 · Scanner QR",qrBoxTitle:"📱 Télécharger depuis le mobile",qrBoxSub:"Scannez le code et choisissez la photo.",qrWaiting:"En attente de la photo...",
-   step2:"Étape 2 · Votre tampon",thresholdLabel:"Détails :",print:"Imprimer",startAgain:"Recommencer",
-   aiLoading:"Création du tampon…",aiRetrying:"Nouvel essai…",
-   aiErrTitle:"Erreur",aiErrMsg:"Pas de réponse.",
-   tmTitle:"On imprime ?",tmMsg:"Temps écoulé.",
-   doneTitle:"Buen Camino !",doneSub:"Passez au comptoir pour régler et récupérer.",finish:"Terminer",
-   opt1:"Tampon 1",opt2:"Tampon 2",opt3:"Tampon 3",opt4:"Tampon 4",
-   lblChooseColor:"👉 Couleur :", lblChooseStamp:"👉 Tampon :", lblChooseDate:"📍 Date :",
-   lblChooseQty:"👨‍👩‍👧‍👦 Copies :", lblPickup:"🕒 Retrait :", pickupNow:"⚡ Maintenant", pickupTomorrow:"📅 Retrait demain"},
-  pt:{welcomeTitle:"Carimbo do Peregrino",welcomeSub:"Tire uma selfie ou escaneie o QR.",start:"Começar",
-   step1:"Passo 1 · Foto",choiceTitle:"Como deseja colocar sua foto?",choiceSub:"Tire uma selfie ou escaneie o QR.",
-   optCamTitle:"Tirar selfie",optCamDesc:"Use a câmera.",
-   optMemTitle:"Escanear QR",optMemDesc:"Envie a foto pelo celular.",
-   step1cam:"Passo 1 · Câmera",lookCamera:"Olhe para a câmera",shootNow:"Tirar foto",back:"Voltar",cancel:"Cancelar",retry:"Tentar",
-   step1mem:"Passo 1 · Escanear QR",qrBoxTitle:"📱 Enviar pelo celular",qrBoxSub:"Escaneie o código e escolha a foto.",qrWaiting:"Aguardando foto...",
-   step2:"Passo 2 · Seu carimbo",thresholdLabel:"Detalhe:",print:"Imprimir",startAgain:"Recomeçar",
-   aiLoading:"Criando o carimbo…",aiRetrying:"Tentando…",
-   aiErrTitle:"Erro",aiErrMsg:"Sem resposta.",
-   tmTitle:"Imprimir?",tmMsg:"Tempo esgotado.",
-   doneTitle:"Buen Camino!",doneSub:"Passe no balcão para pagar e retirar.",finish:"Finalizar",
-   opt1:"Carimbo 1",opt2:"Carimbo 2",opt3:"Carimbo 3",opt4:"Carimbo 4",
-   lblChooseColor:"👉 Cor:", lblChooseStamp:"👉 Carimbo:", lblChooseDate:"📍 Data:",
-   lblChooseQty:"👨‍👩‍👧‍👦 Cópias:", lblPickup:"🕒 Entrega:", pickupNow:"⚡ Agora mesmo", pickupTomorrow:"📅 Retirar amanhã"},
-  cn:{welcomeTitle:"朝圣者印章",welcomeSub:"自拍或扫描二维码。",start:"开始",
-   step1:"第一步 · 拍照",choiceTitle:"您想如何添加照片？",choiceSub:"自拍或扫描二维码。",
-   optCamTitle:"自拍",optCamDesc:"使用相机",
-   optMemTitle:"扫描二维码",optMemDesc:"用手机上传",
-   step1cam:"第一步 · 相机",lookCamera:"看镜头",shootNow:"拍照",back:"返回",cancel:"取消",retry:"重试",
-   step1mem:"第一步 · 扫描二维码",qrBoxTitle:"📱 从手机上传",qrBoxSub:"扫描二维码并选择照片。",qrWaiting:"等待照片...",
-   step2:"第二步 · 印章",thresholdLabel:"细节:",print:"打印",startAgain:"重来",
-   aiLoading:"制作印章中…",aiRetrying:"重试…",
-   aiErrTitle:"错误",aiErrMsg:"无响应",
-   tmTitle:"打印？",tmMsg:"时间到",
-   doneTitle:"一路平安!",doneSub:"请到柜台付款并领取印章。",finish:"完成",
-   opt1:"印章 1",opt2:"印章 2",opt3:"印章 3",opt4:"印章 4",
-   lblChooseColor:"👉 颜色:", lblChooseStamp:"👉 印章:", lblChooseDate:"📍 日期:",
-   lblChooseQty:"👨‍👩‍👧‍👦 数量:", lblPickup:"🕒 领取:", pickupNow:"⚡ 立即", pickupTomorrow:"📅 明天领取"},
-  ua:{welcomeTitle:"Печатка паломника",welcomeSub:"Зробіть селфі або скануйте QR.",start:"Почати",
-   step1:"Крок 1 · Фото",choiceTitle:"Як додати фото?",choiceSub:"Зробіть селфі або скануйте QR.",
-   optCamTitle:"Селфі",optCamDesc:"Камера планшета.",
-   optMemTitle:"Сканувати QR",optMemDesc:"Завантажити з мобільного.",
-   step1cam:"Крок 1 · Камера",lookCamera:"Дивіться в камеру",shootNow:"Зробити фото",back:"Назад",cancel:"Скасувати",retry:"Повторити",
-   step1mem:"Крок 1 · Сканувати QR",qrBoxTitle:"📱 Завантажити з мобільного",qrBoxSub:"Скануйте код та оберіть фото.",qrWaiting:"Очікування фото...",
-   step2:"Крок 2 · Печатка",thresholdLabel:"Деталі:",print:"Друкувати",startAgain:"Знову",
-   aiLoading:"Створення печатки…",aiRetrying:"Повтор…",
-   aiErrTitle:"Помилка",aiErrMsg:"Немає відповіді.",
-   tmTitle:"Друкувати?",tmMsg:"Час вийшов.",
-   doneTitle:"Buen Camino!",doneSub:"Підійдіть до стійки для оплати та отримання.",finish:"Завершити",
-   opt1:"Печатка 1",opt2:"Печатка 2",opt3:"Печатка 3",opt4:"Печатка 4",
-   lblChooseColor:"👉 Колір:", lblChooseStamp:"👉 Печатка:", lblChooseDate:"📍 Дата:",
-   lblChooseQty:"👨‍👩‍👧‍👦 Копії:", lblPickup:"🕒 Отримання:", pickupNow:"⚡ Зараз", pickupTomorrow:"📅 Забрати завтра"}
-};
-let LANG = CONFIG.DEFAULT_LANG;
-const T = k => (I18N[LANG] && I18N[LANG][k]) || I18N.es[k] || k;
-
-function setLang(l){
-  LANG=l;
-  document.documentElement.lang=l;
-  const btns=document.querySelectorAll('.lang-btn');
-  for(let i=0;i<btns.length;i++) btns[i].classList.toggle('active', btns[i].dataset.lang===l);
-  const els=document.querySelectorAll('[data-t]');
-  for(let i=0;i<els.length;i++) els[i].textContent=T(els[i].getAttribute('data-t'));
-}
-document.querySelectorAll('.lang-btn').forEach(btn => {
-  btn.addEventListener('click', function(ev){ ev.stopPropagation(); setLang(this.dataset.lang); });
-});
-
-const S  = { frame: CONFIG.DEFAULT_FRAME_INDEX, date: todayISO(), aiImage: null, color: CONFIG.INK_COLOR,
-             location: "", threshold: CONFIG.LINE_THRESHOLD,
-             qty: 1, price: 4, pickup: "HOY", canal: "LIVE",
-             rawPhoto: null, aiAttempt: 0, screen: null, printing:false, editStarted:false };
-const timers = { selfie:null, edit:null, idle:null, modal:null, done:null };
-
-function todayISO(){ const d=new Date(), p=n=>String(n).padStart(2,'0');
-  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
-function isoToPretty(iso){ if(!iso) return ''; const a=iso.split('-'); return a[2]+'/'+a[1]+'/'+a[0]; }
-function clearTimer(k){ if(timers[k]){ clearInterval(timers[k]); clearTimeout(timers[k]); timers[k]=null; } }
-function hexToRgb(h){ return {r:parseInt(h.slice(1,3),16), g:parseInt(h.slice(3,5),16), b:parseInt(h.slice(5,7),16)}; }
-
-function runCountdown(key, seconds, numEl, barEl, boxEl, onEnd){
-  clearTimer(key);
-  const total = seconds*1000, end = Date.now()+total;
-  const paint = () => {
-    const left = Math.max(0, end - Date.now());
-    const secs = Math.ceil(left/1000);
-    if(numEl) numEl.textContent = secs;
-    if(barEl) barEl.style.width = (left/total*100)+'%';
-    if(boxEl) boxEl.classList.toggle('warn', secs<=5);
-    return left;
-  };
-  paint();
-  timers[key] = setInterval(() => {
-    if(paint() <= 0){ clearTimer(key); if(onEnd) onEnd(); }
-  }, 200);
-}
-
-const FRAME_CACHE = [];
-function loadImage(src){
-  return new Promise(res=>{
-    const im = new Image(); im.crossOrigin = "anonymous";
-    im.onload  = () => res(im.naturalWidth ? im : null);
-    im.onerror = () => res(null);
-    im.src = src;
-  });
-}
-function recolourFrame(img, colorHex){
-  const N = 1200, c = document.createElement('canvas'); c.width=c.height=N;
-  const x = c.getContext('2d', {willReadFrequently:true});
-  x.drawImage(img,0,0,N,N);
-  const ink = hexToRgb(colorHex);
-  try{
-    const d = x.getImageData(0,0,N,N), px = d.data;
-    for(let i=0;i<px.length;i+=4){
-      const avg = px[i]*0.299 + px[i+1]*0.587 + px[i+2]*0.114;
-      if(avg < CONFIG.FRAME_THRESHOLD && px[i+3] > 50){
-        px[i]=ink.r; px[i+1]=ink.g; px[i+2]=ink.b; px[i+3]=255;
-      } else px[i+3]=0;
-    }
-    x.putImageData(d,0,0);
-    return {canvas:c, tainted:false};
-  }catch(e){ return {canvas:c, tainted:true}; }
-}
-async function preloadFrames(){
-  for(let i=0;i<CONFIG.FRAMES.length;i++){
-    const img = await loadImage(CONFIG.FRAMES[i].file);
-    if(img){ FRAME_CACHE[i] = { rawImage: img, ok: true }; rebuildFrameCacheColor(i); }
-    else { FRAME_CACHE[i] = { canvas:null, rawImage:null, ok:false, tainted:false }; }
-  }
-}
-function rebuildFrameCacheColor(i) {
-  if(!FRAME_CACHE[i] || !FRAME_CACHE[i].rawImage) return;
-  const r = recolourFrame(FRAME_CACHE[i].rawImage, S.color);
-  FRAME_CACHE[i].canvas = r.canvas; FRAME_CACHE[i].tainted = r.tainted;
-}
-function applyColor(hex) {
-  S.color = hex;
-  document.documentElement.style.setProperty('--ink', hex);
-  for(let i=0; i<CONFIG.FRAMES.length; i++) rebuildFrameCacheColor(i);
-  if (S.screen === 's2') { updateCards(); drawPreview(); }
-}
-
-function renderStamp(ctx, size, opts){
-  const o = Object.assign({photo:null, frame:S.frame, date:S.date, background:true, drawPhoto:true}, opts||{});
-  const k = size/600, cx = size/2, cy = size/2;
-  ctx.clearRect(0,0,size,size);
-  if(o.background){ ctx.fillStyle="#ffffff"; ctx.fillRect(0,0,size,size); }
-  if(o.drawPhoto && o.photo) drawPhotoInk(ctx, size, o.photo);
-  const F = FRAME_CACHE[o.frame];
-  if(F && F.ok && F.canvas){
-    if(F.tainted){ ctx.save(); ctx.globalCompositeOperation='multiply'; ctx.drawImage(F.canvas,0,0,size,size); ctx.restore(); }
-    else ctx.drawImage(F.canvas,0,0,size,size);
-  } else { drawVectorBorder(ctx,size); }
-  ctx.fillStyle = S.color;
-  curvedText(ctx, S.location, cx, cy, CONFIG.RADIUS_TOP*k, -Math.PI/2, CONFIG.FONT_TOP*k, false);
-  curvedText(ctx, isoToPretty(o.date), cx, cy, CONFIG.RADIUS_DATE*k, Math.PI/2, CONFIG.FONT_DATE*k, true);
-}
-function drawPhotoInk(ctx, size, img){
-  const k = size/600, cx=size/2, cy=size/2, R = CONFIG.PHOTO_RADIUS*k;
-  const t = document.createElement('canvas'); t.width=t.height=size;
-  const c = t.getContext('2d',{willReadFrequently:true});
-  c.save(); c.beginPath(); c.arc(cx, cy + CONFIG.PHOTO_OFFSET_Y*k, R, 0, Math.PI*2); c.clip();
-  const box = 2*R*CONFIG.PHOTO_SCALE, iw = img.naturalWidth||img.width, ih = img.naturalHeight||img.height;
-  const sc = Math.max(box/iw, box/ih), dw = iw*sc, dh = ih*sc;
-  c.drawImage(img, cx-dw/2, cy + CONFIG.PHOTO_OFFSET_Y*k - dh/2, dw, dh);
-  c.restore();
-  try{
-    const d = c.getImageData(0,0,size,size), px=d.data, ink=hexToRgb(S.color);
-    for(let i=0;i<px.length;i+=4){
-      const avg = px[i]*0.299+px[i+1]*0.587+px[i+2]*0.114;
-      if(avg < S.threshold && px[i+3] > 50){ px[i]=ink.r; px[i+1]=ink.g; px[i+2]=ink.b; px[i+3]=255; } else px[i+3]=0;
-    }
-    c.putImageData(d,0,0); ctx.drawImage(t,0,0);
-  }catch(e){
-    ctx.save(); ctx.globalCompositeOperation='multiply'; ctx.drawImage(t,0,0); ctx.restore();
-  }
-}
-function drawVectorBorder(ctx,size){
-  const k=size/600, cx=size/2, cy=size/2;
-  ctx.save(); ctx.strokeStyle=S.color; ctx.fillStyle=S.color;
-  [[282,6],[274,2],[CONFIG.PHOTO_RADIUS+2,4]].forEach(function(p){
-    ctx.lineWidth=p[1]*k; ctx.beginPath(); ctx.arc(cx,cy,p[0]*k,0,Math.PI*2); ctx.stroke();
-  });
-  ctx.restore();
-}
-function curvedText(ctx,text,cx,cy,radius,centerAngle,fontSize,reverse){
-  if(!text || !text.trim()) return;
-  ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.font = "bold "+fontSize+"px 'Courier New',monospace";
-  const len=text.length, arc=(fontSize*0.62)/radius, start=centerAngle-(len*arc)/2;
-  for(let i=0;i<len;i++){
-    ctx.save();
-    const ci = reverse ? (len-1-i) : i, a = start + (i+0.5)*arc;
-    ctx.translate(cx+Math.cos(a)*radius, cy+Math.sin(a)*radius);
-    ctx.rotate(reverse ? a-Math.PI/2 : a+Math.PI/2);
-    ctx.fillText(text[ci],0,0);
-    ctx.restore();
-  }
-  ctx.restore();
-}
-
-function sizeStage(wrapId, stageId){
-  const wrap=$(wrapId), stage=$(stageId);
-  if(!wrap || !stage) return 0;
-  const w = wrap.clientWidth, h = wrap.clientHeight;
-  if(!w || !h) return 0;
-  const side = Math.max(120, Math.floor(Math.min(w, h, CONFIG.MAX_STAGE_PX)));
-  stage.style.width = side+'px'; stage.style.height = side+'px';
-  return side;
-}
-function sizeStages(){ sizeStage('wrap1','stage1'); sizeStage('wrap2','stage2'); layoutVideo(); }
-window.addEventListener('resize', sizeStages);
-
-function go(id){
-  ['s0','s1','s1a','s1b','s2','s3'].forEach(function(s){ const el=$(s); if(el){ el.classList.remove('visible'); el.classList.remove('show'); } });
-  const el=$(id);
-  if(!el) return;
-  el.classList.add('show');
-  requestAnimationFrame(function(){ sizeStages(); requestAnimationFrame(function(){ el.classList.add('visible'); sizeStages(); }); });
-  S.screen=id;
-  closeModal();
-  if(id!=='s1a') stopCamera();
-  clearTimer('selfie'); clearTimer('modal'); clearTimer('done');
-  if(id!=='s2') clearTimer('edit');
-  if(id==='s0'){ resetSession(); }
-  if(id==='s1a'){ enterSelfie(); }
-  if(id==='s2'){ enterEdit(); }
-  if(id==='s3'){ timers.done=setTimeout(function(){go('s0');}, CONFIG.DONE_TIMEOUT*1000); }
-}
-
-function resetSession(){
-  S.aiImage=null; S.rawPhoto=null; S.aiAttempt=0; S.printing=false; S.editStarted=false;
-  S.frame=CONFIG.DEFAULT_FRAME_INDEX; S.date=todayISO();
-  S.color = CONFIG.INK_COLOR;
-  S.qty = 1; S.price = 4; S.pickup = "HOY"; S.canal = "LIVE";
-  applyColor(S.color);
-  S.location = "";
-  S.threshold = $('thresholdRange').value = CONFIG.LINE_THRESHOLD;
-  $('dateInput').value=S.date; $('btnPrint').disabled=true;
-  $('btnPriceTag').textContent = "4 €";
-  document.querySelectorAll('.qty-btn').forEach(b => b.classList.toggle('sel', b.dataset.qty === "1"));
-  document.querySelectorAll('.pickup-btn').forEach(b => b.classList.toggle('sel', b.dataset.pickup === "HOY"));
-  if(FRAME_CACHE.length > 0) updateCards();
-}
-
-let stream=null;
-const video=$('liveVideo');
-function layoutVideo(){
-  const stage=$('stage1'); if(!stage) return;
-  const w=stage.clientWidth||0; if(!w) return;
-  const d = w * (2*CONFIG.PHOTO_RADIUS*CONFIG.PHOTO_SCALE)/600;
-  video.style.width=d+'px'; video.style.height=d+'px';
-  video.style.marginTop = (CONFIG.PHOTO_OFFSET_Y*(w/600))+'px';
-}
-function drawOverlay(){
-  const c=$('frameOverlay'), x=c.getContext('2d');
-  renderStamp(x, c.width, {drawPhoto:false, background:false, frame:S.frame, date:S.date});
-}
-async function enterSelfie(){
-  S.canal = "LIVE";
-  $('camError').style.display='none'; $('camControls').style.display=''; $('timer1').style.display='';
-  drawOverlay(); requestAnimationFrame(function(){ sizeStages(); });
-  await startCamera();
-}
-async function startCamera(){
-  stopCamera();
-  try{
-    stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user', width:{ideal:1280}, height:{ideal:1280} }, audio:false });
-    video.srcObject = stream; await video.play().catch(e=>{});
-    sizeStages();
-    runCountdown('selfie', CONFIG.SELFIE_COUNTDOWN, $('cd1'), $('bar1'), $('timer1'), shoot);
-  }catch(err){ showCamError("Error de cámara"); }
-}
-function showCamError(msg){ clearTimer('selfie'); $('camErrMsg').textContent=msg; $('camError').style.display=''; }
-function stopCamera(){ if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; } if(video) video.srcObject=null; }
-function shoot(){
-  clearTimer('selfie');
-  const N=CONFIG.CAPTURE_SIZE, side=Math.min(video.videoWidth||N, video.videoHeight||N);
-  const sx=((video.videoWidth||N)-side)/2, sy=((video.videoHeight||N)-side)/2;
-  const c=document.createElement('canvas'); c.width=c.height=N;
-  const x=c.getContext('2d');
-  x.drawImage(video, sx, sy, side, side, 0, 0, N, N);
-  stopCamera();
-  S.rawPhoto = c.toDataURL('image/jpeg',0.92);
-  S.aiAttempt = 0; S.editStarted = false;
-  go('s2'); requestAI();
-}
-
-async function requestAI(){
-  if(!S.rawPhoto) return;
-  S.aiAttempt++; S.aiImage=null; $('btnPrint').disabled=true; $('aiError').style.display='none';
-  drawPreview();
-  
-  const aiBadge = $('aiBadge');
-  const aiBadgeTxt = $('aiBadgeTxt');
-  if(aiBadge && aiBadgeTxt) {
-    aiBadgeTxt.textContent = S.aiAttempt > 1 ? T('aiRetrying') : T('aiLoading');
-    aiBadge.style.display = 'block';
-  }
-
-  try{
-    const res = await fetch(CONFIG.AI_WEBHOOK_URL,{
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ image:S.rawPhoto, design:CONFIG.FRAMES[S.frame].file, lang:LANG })
-    });
-    const txt = await res.text();
-    let u = JSON.parse(txt); u = (typeof u==='string') ? u : (u.url||u.image||u.data||'');
-    const img = await loadImage(u);
-    if(!img) throw new Error();
-    S.aiImage = img; 
-    $('btnPrint').disabled=false; 
-    
-    if(aiBadge) aiBadge.style.display = 'none'; 
-    drawPreview();
-  }catch(err){
-    if(S.aiAttempt < CONFIG.AI_MAX_ATTEMPTS && S.screen==='s2') requestAI();
-    else {
-      if(aiBadge) aiBadge.style.display = 'none';
-      $('aiError').style.display='';
-    }
-  }
-}
-
-function buildCards(){
-  const box=$('designCards'); if(!box) return; box.innerHTML='';
-  CONFIG.FRAMES.forEach(function(f,i){
-    const d=document.createElement('div'); d.className='card';
-    const c=document.createElement('canvas'); c.width=240; c.height=240;
-    const nm=document.createElement('div'); nm.className='nm'; nm.textContent=T(f.key);
-    d.appendChild(c); d.appendChild(nm);
-    d.addEventListener('click',function(){ S.frame=i; drawPreview(); });
-    box.appendChild(d);
-  });
-}
-function updateCards(){
-  const cards=document.querySelectorAll('#designCards .card');
-  for(let i=0;i<cards.length;i++){
-    cards[i].classList.toggle('sel', i===S.frame);
-    const c=cards[i].querySelector('canvas');
-    renderStamp(c.getContext('2d'), c.width, {frame:i, photo:S.aiImage, date:S.date});
-  }
-}
-function drawPreview(){
-  const c=$('stampCanvas'); if(!c) return;
-  renderStamp(c.getContext('2d'), c.width, {frame:S.frame, photo:S.aiImage, date:S.date});
-  updateCards();
-}
-
-document.querySelectorAll('.color-btn').forEach(b => b.addEventListener('click', function(e){
-  e.stopPropagation(); applyColor(this.getAttribute('data-color'));
-  document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('sel'));
-  this.classList.add('sel');
-}));
-
-document.querySelectorAll('.qty-btn').forEach(b => b.addEventListener('click', function(e){
-  e.stopPropagation();
-  S.qty = parseInt(this.dataset.qty, 10);
-  S.price = parseInt(this.dataset.price, 10);
-  $('btnPriceTag').textContent = S.price + " €";
-  document.querySelectorAll('.qty-btn').forEach(btn => btn.classList.remove('sel'));
-  this.classList.add('sel');
-}));
-
-document.querySelectorAll('.pickup-btn').forEach(b => b.addEventListener('click', function(e){
-  e.stopPropagation();
-  S.pickup = this.dataset.pickup;
-  document.querySelectorAll('.pickup-btn').forEach(btn => btn.classList.remove('sel'));
-  this.classList.add('sel');
-}));
-
-$('dateInput').addEventListener('change', function(e){ S.date = e.target.value || todayISO(); drawPreview(); });
-$('thresholdRange').addEventListener('input', function(e){ S.threshold = parseInt(e.target.value); drawPreview(); });
-
-function enterEdit(){
-  $('dateInput').value = S.date; $('thresholdRange').value = S.threshold;
-  drawPreview();
-  if(!S.editStarted){ S.editStarted = true; runCountdown('edit', CONFIG.EDIT_COUNTDOWN, $('cd2'), $('bar2'), $('timer2'), openModal); }
-}
-function openModal(){ $('modalTimeout').classList.add('show'); runCountdown('modal', CONFIG.MODAL_TIMEOUT, $('modalCd'), null, null, function(){ go('s0'); }); }
-function closeModal(){ $('modalTimeout').classList.remove('show'); clearTimer('modal'); }
-
-function exportJpegBlob(){
-  return new Promise(resolve => {
-    const N=CONFIG.EXPORT_SIZE, c=document.createElement('canvas'); c.width=c.height=N;
-    const x=c.getContext('2d'); x.fillStyle='#ffffff'; x.fillRect(0,0,N,N);
-    renderStamp(x, N, {frame:S.frame, photo:S.aiImage, date:S.date, background:true});
-    c.toBlob(blob => resolve(blob), 'image/jpeg', CONFIG.JPEG_QUALITY);
-  });
-}
-
-async function sendPrintToDrive(){
-  if(!CONFIG.PRINT_WEBHOOK_URL) return;
-  const blob = await exportJpegBlob();
-  if(!blob) return;
-  const estilo = (CONFIG.FRAMES[S.frame] && CONFIG.FRAMES[S.frame].file) || "marco1.jpg";
-  const colorClean = S.color.replace("#", "");
-  const fileName = `${S.canal}_${S.pickup}_${estilo.replace(".jpg","")}_${colorClean}_x${S.qty}.jpg`;
-
-  const fd = new FormData();
-  fd.append("canal", S.canal);
-  fd.append("recogida", S.pickup);
-  fd.append("cantidad", String(S.qty));
-  fd.append("precio", String(S.price));
-  fd.append("estilo", estilo);
-  fd.append("color", colorClean);
-  fd.append("fecha", S.date);
-  fd.append("lang", LANG);
-  fd.append("imagen", blob, fileName);
-
-  await fetch(CONFIG.PRINT_WEBHOOK_URL, {
-    method: "POST",
-    body: fd
-  }).catch(err => console.warn("Drive upload warning:", err));
-}
-
-async function doPrint(){
-  if(S.printing || !S.aiImage) return;
-  S.printing=true;
-  clearTimer('edit');
-  closeModal();
-
-  $('doneSummaryText').textContent = `${S.qty}x ${T(CONFIG.FRAMES[S.frame].key)}`;
-  $('doneSummaryPrice').textContent = `${S.price} €`;
-  $('doneSummaryPickup').textContent = S.pickup === "MANANA" ? T('pickupTomorrow') : T('pickupNow');
-
-  await sendPrintToDrive();
-  go('s3');
-}
-
-/* Vídeos promocionales */
-const promoVideos = ["Tutorialalex.mp4", "Tutorialangela.mp4"];
-let currentVideoIdx = 0;
-const promoVideoEl = document.getElementById('promoVideo');
-function playNextPromoVideo() {
-  if (!promoVideoEl) return;
-  promoVideoEl.src = promoVideos[currentVideoIdx];
-  promoVideoEl.play().catch(e => {});
-  currentVideoIdx = (currentVideoIdx + 1) % promoVideos.length;
-}
-if (promoVideoEl) {
-  promoVideoEl.addEventListener('ended', playNextPromoVideo);
-}
-
-/* QR Code y Polling */
-let pollingInterval = null;
-const URL_APP_MOVIL = "https://stampmyface.com/subir.html";
-const WEBHOOK_CONSULTA = "https://hook.eu1.make.com/cefuk6tab3wwawyvmjg36rg92jh9pnbd";
-
-$('btnChooseMemory').addEventListener('click', function(){ 
-  S.canal = "QR";
-  go('s1b'); 
-  const sessionId = Math.random().toString(36).substring(2, 10);
-  const langActual = LANG || 'es';
-  const qrUrl = `${URL_APP_MOVIL}?sesion=${sessionId}&lang=${langActual}&t=${Date.now()}`;
-  
-  $('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrUrl)}`;
-  $('qrStatus').textContent = T('qrWaiting');
-
-  clearInterval(pollingInterval);
-  pollingInterval = setInterval(async () => {
-    try {
-      const res = await fetch(`${WEBHOOK_CONSULTA}?sesion=${sessionId}&_t=${Date.now()}`);
-      if (res.ok) {
-        const textData = await res.text();
-        if (textData && textData.includes('data:image')) {
-          clearInterval(pollingInterval);
-          const base64Data = textData.substring(textData.indexOf('data:image'));
-          
-          S.rawPhoto = base64Data;
-          S.aiAttempt = 0; S.editStarted = false;
-          go('s2'); requestAI();
-        }
+    const translations = {
+      es: {
+        tag: "Camino de Santiago · Live Kiosk",
+        sub: "Elige primero el color de tinta y el marco de tu sello, haz tu foto y pulsa Imprimir.",
+        color: "Color de tinta del sello",
+        cols: ["Negro", "Azul", "Rojo", "Verde"],
+        frame: "Elige el diseño de tu marco",
+        st: ["Diseño 1", "Diseño 2", "Diseño 3", "Diseño 4"],
+        qty: "Cantidad de sellos",
+        photo: "Tu retrato (selfie o galería)",
+        cam: "Hacer selfie",
+        gal: "Subir foto",
+        consent: "Autorizo el tratamiento temporal de mi fotografía exclusivamente para generar y grabar mi sello de peregrino (RGPD / Protección de datos).",
+        noConsentTitle: "Falta autorización",
+        noConsentMsg: "Marca la casilla de autorización de tratamiento de imagen antes de imprimir.",
+        noPhoto: "Falta la foto",
+        noPhotoMsg: "Haz un selfie o selecciona una foto antes de imprimir.",
+        btnPrefix: "Imprimir",
+        sending: "Preparando e imprimiendo...",
+        okTitle: "¡Enviado a imprimir!",
+        okBody: "Tu sello está pasando a grabación con la fecha de la foto. Espera un momento junto al mostrador.",
+        errTitle: "Error al enviar",
+        errBody: "Comprueba la conexión e inténtalo de nuevo.",
+        footer: "Buen Camino · Recoge tu sello grabado al instante"
+      },
+      en: {
+        tag: "Camino de Santiago · Live Kiosk",
+        sub: "First pick your ink color and frame design, take your photo, and tap Print.",
+        color: "Stamp ink color",
+        cols: ["Black", "Blue", "Red", "Green"],
+        frame: "Choose your frame design",
+        st: ["Design 1", "Design 2", "Design 3", "Design 4"],
+        qty: "Number of stamps",
+        photo: "Your portrait (selfie or gallery)",
+        cam: "Take selfie",
+        gal: "Upload photo",
+        consent: "I consent to the temporary processing of my photo solely to generate and engrave my pilgrim stamp (GDPR / Data Protection).",
+        noConsentTitle: "Consent required",
+        noConsentMsg: "Please check the image processing consent box before printing.",
+        noPhoto: "Photo missing",
+        noPhotoMsg: "Please take a selfie or choose a photo before printing.",
+        btnPrefix: "Print",
+        sending: "Sending to engraver...",
+        okTitle: "Sent to print!",
+        okBody: "Your stamp is being prepared with the photo's date. Please wait at the counter.",
+        errTitle: "Upload failed",
+        errBody: "Please check your connection and try again.",
+        footer: "Buen Camino · Collect your freshly engraved stamp"
+      },
+      de: {
+        tag: "Camino de Santiago · Live-Kiosk",
+        sub: "Wähle zuerst Stempelfarbe und Rahmendesign, mach dein Foto und tippe auf Drucken.",
+        color: "Stempelfarbe wählen",
+        cols: ["Schwarz", "Blau", "Rot", "Grün"],
+        frame: "Wähle dein Rahmendesign",
+        st: ["Design 1", "Design 2", "Design 3", "Design 4"],
+        qty: "Anzahl der Stempel",
+        photo: "Dein Porträt (Selfie oder Galerie)",
+        cam: "Selfie machen",
+        gal: "Foto hochladen",
+        consent: "Ich willige in die vorübergehende Verarbeitung meines Fotos ausschließlich zur Erstellung und Gravur meines Pilgerstempels ein (DSGVO / Datenschutz).",
+        noConsentTitle: "Einwilligung erforderlich",
+        noConsentMsg: "Bitte setze zuerst das Häkchen zur Einwilligung in die Bildverarbeitung, bevor du auf Drucken tippst.",
+        noPhoto: "Foto fehlt noch",
+        noPhotoMsg: "Bitte mache zuerst ein Selfie oder wähle ein Foto aus.",
+        btnPrefix: "Drucken",
+        sending: "Wird zum Gravieren gesendet...",
+        okTitle: "An den Drucker gesendet!",
+        okBody: "Dein Stempel wird mit dem Aufnahmedatum des Fotos vorbereitet. Bitte warte kurz am Stand.",
+        errTitle: "Fehler beim Senden",
+        errBody: "Bitte prüfe die Verbindung und versuche es erneut.",
+        footer: "Buen Camino · Hole deinen frisch gravierten Stempel direkt ab"
       }
-    } catch(e){}
-  }, 3000);
-});
+    };
 
-$('btnBackMem').addEventListener('click', function(){ clearInterval(pollingInterval); go('s1'); });
+    const langSelect = document.getElementById("idioma");
+    const consentCheckbox = document.getElementById("gdpr-consent");
+    const submitBtn = document.getElementById("submit-btn");
 
-/* Botones y navegación */
-$('btnStart').addEventListener('click', function(e){ e.stopPropagation(); go('s1'); });
-$('s0').addEventListener('click', function(e){ if(e.target.closest('.lang-btn')) return; go('s1'); });
-$('btnChooseCamera').addEventListener('click', function(){ go('s1a'); });
-$('btnBack1').addEventListener('click', function(){ go('s0'); });
-$('btnBackCam').addEventListener('click', function(){ go('s1'); });
-$('btnBackCamErr').addEventListener('click', function(){ go('s1'); });
-$('btnShoot').addEventListener('click', shoot);
-$('btnRetryCam').addEventListener('click', function(){ startCamera(); });
-$('btnCancel2').addEventListener('click', function(){ go('s0'); });
-$('btnRetryAi').addEventListener('click', function(){ S.aiAttempt=0; requestAI(); });
-$('btnRestartAi').addEventListener('click', function(){ go('s0'); });
-$('btnPrint').addEventListener('click', doPrint);
-$('btnModalPrint').addEventListener('click', doPrint);
-$('btnModalRestart').addEventListener('click', function(){ go('s0'); });
-$('btnDoneNow').addEventListener('click', function(){ go('s0'); });
+    function formatDateISO(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const d = String(dateObj.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
 
-/* Inicialización */
-(async function boot(){
-  document.documentElement.style.setProperty('--ink', CONFIG.INK_COLOR);
-  $('dateInput').value = S.date;
-  buildCards();
-  setLang(CONFIG.DEFAULT_LANG);
-  try{ await preloadFrames(); }catch(e){}
-  go('s0');
-  if (promoVideoEl) { currentVideoIdx = 0; playNextPromoVideo(); }
-  setTimeout(sizeStages, 60);
-})();
-</script>
+    async function extractPhotoDateISO(file) {
+      try {
+        const slice = await file.slice(0, 131072).arrayBuffer();
+        const bytes = new Uint8Array(slice);
+        let text = "";
+        for (let i = 0; i < bytes.length; i++) {
+          const c = bytes[i];
+          if (c >= 32 && c <= 126) text += String.fromCharCode(c);
+        }
+        const match = text.match(/(\d{4}):(\d{2}):(\d{2})/);
+        if (match) {
+          return `${match[1]}-${match[2]}-${match[3]}`;
+        }
+      } catch (e) {}
+      if (file && typeof file.lastModified === "number" && file.lastModified > 0) {
+        return formatDateISO(new Date(file.lastModified));
+      }
+      return formatDateISO(new Date());
+    }
+
+    function getSelectedQtyPrice() {
+      const checked = document.querySelector('input[name="cantidad"]:checked');
+      return {
+        qty: checked ? checked.value : "1",
+        price: checked ? checked.dataset.price : "4"
+      };
+    }
+
+    function updateSubmitButtonState() {
+      const t = translations[langSelect.value] || translations.es;
+      const { price } = getSelectedQtyPrice();
+      submitBtn.textContent = `${t.btnPrefix} · ${price} €`;
+      submitBtn.disabled = !consentCheckbox.checked;
+    }
+
+    function applyLanguage(lang) {
+      const t = translations[lang] || translations.es;
+      document.getElementById("txt-tag").textContent = t.tag;
+      document.getElementById("txt-sub").textContent = t.sub;
+      document.getElementById("lbl-color").textContent = t.color;
+      document.getElementById("col-black").textContent = t.cols[0];
+      document.getElementById("col-blue").textContent = t.cols[1];
+      document.getElementById("col-red").textContent = t.cols[2];
+      document.getElementById("col-green").textContent = t.cols[3];
+      document.getElementById("lbl-frame").textContent = t.frame;
+      document.getElementById("st-1").textContent = t.st[0];
+      document.getElementById("st-2").textContent = t.st[1];
+      document.getElementById("st-3").textContent = t.st[2];
+      document.getElementById("st-4").textContent = t.st[3];
+      document.getElementById("lbl-qty").textContent = t.qty;
+      document.getElementById("lbl-photo").textContent = t.photo;
+      document.getElementById("txt-cam").textContent = t.cam;
+      document.getElementById("txt-gal").textContent = t.gal;
+      document.getElementById("txt-consent").textContent = t.consent;
+      document.getElementById("txt-footer").textContent = t.footer;
+      updateSubmitButtonState();
+    }
+
+    consentCheckbox.addEventListener("change", updateSubmitButtonState);
+    document.querySelectorAll('input[name="cantidad"]').forEach(el => {
+      el.addEventListener("change", updateSubmitButtonState);
+    });
+    langSelect.addEventListener("change", () => applyLanguage(langSelect.value));
+    applyLanguage(langSelect.value);
+
+    const camInput = document.getElementById("foto-camera");
+    const galInput = document.getElementById("foto-gallery");
+    const fileBadge = document.getElementById("file-badge");
+    const fileNameText = document.getElementById("file-name-text");
+
+    document.getElementById("btn-camera").addEventListener("click", () => camInput.click());
+    document.getElementById("btn-gallery").addEventListener("click", () => galInput.click());
+
+    async function handleFilePicked(file) {
+      if (!file) return;
+      selectedFile = file;
+      detectedPhotoDate = await extractPhotoDateISO(file);
+      fileNameText.textContent = `✓ ${file.name} (${detectedPhotoDate})`;
+      fileBadge.classList.add("visible");
+    }
+
+    camInput.addEventListener("change", (e) => handleFilePicked(e.target.files[0]));
+    galInput.addEventListener("change", (e) => handleFilePicked(e.target.files[0]));
+
+    document.getElementById("clear-file").addEventListener("click", () => {
+      selectedFile = null;
+      detectedPhotoDate = null;
+      camInput.value = "";
+      galInput.value = "";
+      fileBadge.classList.remove("visible");
+    });
+
+    function resizeImage(file, maxSize = 1024) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let { width, height } = img;
+            if (width > maxSize || height > maxSize) {
+              if (width > height) {
+                height = Math.round((height * maxSize) / width);
+                width = maxSize;
+              } else {
+                width = Math.round((width * maxSize) / height);
+                height = maxSize;
+              }
+            }
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.88);
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function showStatus(type, title, body) {
+      const status = document.getElementById("status");
+      status.className = "status " + type;
+      status.innerHTML = `<span class="status-title">${title}</span><div>${body}</div>`;
+      status.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    document.getElementById("kiosk-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const lang = langSelect.value;
+      const t = translations[lang] || translations.es;
+
+      if (!consentCheckbox.checked) {
+        showStatus("err", t.noConsentTitle, t.noConsentMsg);
+        return;
+      }
+
+      if (!selectedFile) {
+        showStatus("err", t.noPhoto, t.noPhotoMsg);
+        return;
+      }
+
+      const estilo = document.querySelector('input[name="estilo"]:checked').value;
+      const color = document.querySelector('input[name="color"]:checked').value;
+      const { qty, price } = getSelectedQtyPrice();
+      const frameLabel = estilo.replace(".jpg", "").toUpperCase();
+      const fechaFoto = detectedPhotoDate || formatDateISO(new Date());
+      const safeName = `LIVE_${fechaFoto}_${frameLabel}_${color}_x${qty}.jpg`;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = t.sending;
+
+      try {
+        const resizedBlob = await resizeImage(selectedFile, 1024);
+
+        const formData = new FormData();
+        formData.append("canal", "LIVE");
+        formData.append("fecha_foto", fechaFoto);
+        formData.append("cantidad", qty);
+        formData.append("precio", price);
+        formData.append("consentimiento_rgpd", "true");
+        formData.append("archivo_nombre", safeName);
+        formData.append("estilo", estilo);
+        formData.append("color", color);
+        formData.append("lang", lang);
+        formData.append("imagen", resizedBlob, safeName);
+
+        const res = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          body: formData
+        });
+
+        if (!res.ok) throw new Error("HTTP " + res.status);
+
+        showStatus("ok", t.okTitle, t.okBody);
+
+        document.getElementById("kiosk-form").reset();
+        selectedFile = null;
+        detectedPhotoDate = null;
+        fileBadge.classList.remove("visible");
+        applyLanguage(lang);
+      } catch (err) {
+        showStatus("err", t.errTitle, t.errBody);
+      } finally {
+        updateSubmitButtonState();
+      }
+    });
+  </script>
 </body>
 </html>
