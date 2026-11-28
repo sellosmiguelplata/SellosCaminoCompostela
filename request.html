@@ -2642,7 +2642,7 @@
         formData.append("estilo", estilo);
         formData.append("color", color);
         formData.append("idioma", lang);
-        formData.append("foto", resizedBlob, safeName);
+        formData.append("imagen", resizedBlob, safeName);
 
         const res = await fetch(WEBHOOK_URL, {
           method: "POST",
